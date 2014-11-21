@@ -10,26 +10,28 @@ app.controller('MainCtrl', function ($scope) {
     this.isSelected = function(checkTab) {
         return this.tab === checkTab;
     };
-
-
 });
 
 app.controller('AdminCtrl', function($scope) {
-    $scope.isCollapsed = false;
-
-    $scope.selectRole = function(user, role){
-        user.newRole = role;
-    };
-
-    this.addNewRole = function(user){
-        user.roles.push(user.newRole);
-    };
+    $scope.addUserCollapse = true;
 
     this.possibleRoles = [
         "admin",
         "createur",
         "traducteur"
     ];
+    this.tmpUser = {
+        id: 0,
+        username: "",
+        roles: [],
+        newRole: "Ajouter un role"
+    };
+    this.tmpUserOrigin = {
+        id: 0,
+        username: "",
+        roles: [],
+        newRole: "Ajouter un role"
+    };
 
     this.users = [
         {
@@ -45,10 +47,22 @@ app.controller('AdminCtrl', function($scope) {
             newRole: "Ajouter un role"
         }
     ];
+    this.selectRole = function(user, role){
+        user.newRole = role;
+    };
+
+    this.addNewRole = function(user){
+        if($.inArray(user.newRole, user.roles) == -1)
+            user.roles.push(user.newRole);
+    };
+    this.addNewUser = function(){
+        this.users.push(angular.copy(this.tmpUser));
+        this.tmpUser = angular.copy(this.tmpUserOrigin);
+    };
+
     this.hasRole = function(user, role) {
         var hasRole = false;
         console.log('Htest');
-        //console.log(element.attributes['hasRole'].value);
         if($.inArray(role, user.roles) != -1)
             hasRole = true;
         return hasRole;

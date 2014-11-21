@@ -1,9 +1,24 @@
 #admin-panel{
-    background-color: #14d5cd;
     height: 100%;
     padding-top: 20px;
 }
 
 .drop-button{
     float: right;
+}
+
+#add-form{
+	margin-top: 10px;
+	padding-left: 20px;
+	padding-right: 20px;
+	padding-bottom: 10px;
+	width: 35%;
+	background-color: #eaeaea;
+	border-radius: 10px;
+}
+#add-form label{
+	padding-top: 10px;
+}
+#add-form .drop-button{
+	padding-top: 10px;
 }
