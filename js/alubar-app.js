@@ -1,4 +1,4 @@
-var app = angular.module('alubar-app', []);
+var app = angular.module('alubar-app', ['ui.bootstrap']);
 
 app.controller('MainCtrl', function ($scope) {
     this.tab = 3;
@@ -10,9 +10,16 @@ app.controller('MainCtrl', function ($scope) {
     this.isSelected = function(checkTab) {
         return this.tab === checkTab;
     };
+
+
 });
 
 app.controller('AdminCtrl', function($scope) {
+    $scope.isCollapsed = false;
+
+    $scope.selectRole = function(user, role){
+        user.newRole = role;
+    };
     this.possibleRoles = [
         "admin",
         "createur",
@@ -23,15 +30,16 @@ app.controller('AdminCtrl', function($scope) {
         {
             id: 1,
             username: "Alice",
-            roles: ["admin", "createur"]
+            roles: ["admin", "createur"],
+            newRole: "Ajouter un role"
         },
         {
             id: 2,
             username: "Bob",
-            roles: ["admin", "traducteur"]
+            roles: ["admin", "traducteur"],
+            newRole: "Ajouter un role"
         }
     ];
-console.log('Htest');
     this.hasRole = function(user, role) {
         var hasRole = false;
         console.log('Htest');
