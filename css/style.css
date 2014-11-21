@@ -8,7 +8,7 @@
 }
 
 #menu{
-    margin-top: 20px;
+    padding-top: 20px;
     margin-left: auto;
     margin-right: auto;
     width: 100%;
@@ -19,9 +19,5 @@
 }
 #library-panel{
     background-color: #3b5998;
-    height: 100%;
-}
-#admin-panel{
-    background-color: #14d5cd;
     height: 100%;
 }
