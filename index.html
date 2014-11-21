@@ -49,7 +49,11 @@
                                 <tr ng-repeat="user in admin.users">
                                     <td>{{user.id}}</td>
                                     <td>{{user.username}}</td>
-                                    <td>{{user.role}}</td>
+                                    <td>
+                                        <span ng-repeat="possibleRole in admin.possibleRoles">
+                                            <input type="checkbox" > {{possibleRole}}
+                                        </span>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
