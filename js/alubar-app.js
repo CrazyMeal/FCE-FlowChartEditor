@@ -20,6 +20,11 @@ app.controller('AdminCtrl', function($scope) {
     $scope.selectRole = function(user, role){
         user.newRole = role;
     };
+
+    this.addNewRole = function(user){
+        user.roles.push(user.newRole);
+    };
+
     this.possibleRoles = [
         "admin",
         "createur",
