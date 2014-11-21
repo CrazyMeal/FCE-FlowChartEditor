@@ -12,9 +12,15 @@
     </head>
     <body ng-app="alubar-app">
         <div id="left-panel" class="col-md-2">
+            <img src="img/logo-alubar.png" alt="logo alubar" />
 
+            <div id="menu" class="btn-group-vertical" role="group" aria-label="...">
+                <a class="btn btn-default">Nouveau document</a>
+                <a class="btn btn-default">Parcourir la bibliotheque</a>
+                <a class="btn btn-default">Administration</a>
+            </div>
         </div>
-        <div id="main-panel" class="col-md-10">
+        <div id="main-panel" ng-controller="MainCtrl" class="col-md-10">
 
         </div>
     </body>

@@ -1,5 +1,17 @@
 #left-panel{
     height: 100%;
+    padding-top: 20px;
+}
+
+#left-panel img{
+    width: 100%;
+}
+
+#menu{
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
 }
 #main-panel{
     background-color: grey;
