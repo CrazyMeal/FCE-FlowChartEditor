@@ -13,7 +13,15 @@
     margin-right: auto;
     width: 100%;
 }
-#main-panel{
+#new-document-panel{
     background-color: grey;
+    height: 100%;
+}
+#library-panel{
+    background-color: #3b5998;
+    height: 100%;
+}
+#admin-panel{
+    background-color: #14d5cd;
     height: 100%;
 }

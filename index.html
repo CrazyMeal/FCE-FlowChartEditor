@@ -11,17 +11,28 @@
         <link rel="stylesheet" href="css/style.css">
     </head>
     <body ng-app="alubar-app">
-        <div id="left-panel" class="col-md-2">
-            <img src="img/logo-alubar.png" alt="logo alubar" />
+        <div ng-controller="MainCtrl as MainController">
+            <div id="left-panel" class="col-md-2">
+                <img src="img/logo-alubar.png" alt="logo alubar" />
 
-            <div id="menu" class="btn-group-vertical" role="group" aria-label="...">
-                <a class="btn btn-default">Nouveau document</a>
-                <a class="btn btn-default">Parcourir la bibliotheque</a>
-                <a class="btn btn-default">Administration</a>
+                <div id="menu" class="btn-group-vertical" role="group" aria-label="...">
+                    <a ng-click="MainController.selectTab(1)" class="btn btn-default">Nouveau document</a>
+                    <a ng-click="MainController.selectTab(2)" class="btn btn-default">Parcourir la bibliotheque</a>
+                    <a ng-click="MainController.selectTab(3)" class="btn btn-default">Administration</a>
+                </div>
             </div>
-        </div>
-        <div id="main-panel" ng-controller="MainCtrl" class="col-md-10">
 
+            <div id="new-document-panel" ng-show="MainController.isSelected(1)" class="col-md-10">
+
+            </div>
+
+            <div id="library-panel" ng-show="MainController.isSelected(2)" class="col-md-10">
+
+            </div>
+
+            <div id="admin-panel" ng-show="MainController.isSelected(3)" class="col-md-10">
+
+            </div>
         </div>
     </body>
     <script src="js/jquery-2.1.1.js"></script>
