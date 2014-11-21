@@ -1,7 +1,7 @@
 var app = angular.module('alubar-app', ['ui.bootstrap']);
 
 app.controller('MainCtrl', function ($scope) {
-    this.tab = 3;
+    this.tab = 1;
 
     this.selectTab = function(setTab) {
         this.tab = setTab;
@@ -11,6 +11,20 @@ app.controller('MainCtrl', function ($scope) {
         return this.tab === checkTab;
     };
 });
+
+app.controller('NewDocCtrl', function($scope){
+    $scope.init = function() {
+        jsPlumb.bind("ready", function() {
+            console.log("Set up jsPlumb listeners (should be only done once)");
+            jsPlumb.bind("connection", function (info) {
+                $scope.$apply(function () {
+                    console.log("Possibility to push connection into array");
+                });
+            });
+        });
+    };
+});
+
 
 app.controller('AdminCtrl', function($scope) {
     $scope.addUserCollapse = true;
