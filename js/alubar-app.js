@@ -1,7 +1,7 @@
 var app = angular.module('alubar-app', ['ui.bootstrap']);
 
 app.controller('MainCtrl', function ($scope) {
-    this.tab = 1;
+    this.tab = 3;
 
     this.selectTab = function(setTab) {
         this.tab = setTab;
@@ -61,6 +61,16 @@ app.controller('AdminCtrl', function($scope) {
             newRole: "Ajouter un role"
         }
     ];
+
+    this.getLastId = function(){
+        var highestId = 0;
+        angular.forEach(this.users, function(user, index){
+            if(user.id > highestId)
+                highestId = user.id;
+        });
+        
+        return highestId;
+    };
     this.selectRole = function(user, role){
         user.newRole = role;
     };
@@ -70,6 +80,8 @@ app.controller('AdminCtrl', function($scope) {
             user.roles.push(user.newRole);
     };
     this.addNewUser = function(){
+        this.tmpUser.id = this.getLastId() + 1;
+        this.tmpUser.newRole = "Ajouter un role";
         this.users.push(angular.copy(this.tmpUser));
         this.tmpUser = angular.copy(this.tmpUserOrigin);
     };
