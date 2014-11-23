@@ -1,6 +1,9 @@
 #left-panel{
     height: 100%;
+    margin-left: 20px;
     padding-top: 20px;
+    width: 200px;
+    float: left;
 }
 
 #left-panel img{

@@ -17,7 +17,7 @@
     <body ng-app="alubar-app">
         <div ng-controller="MainCtrl as MainController">
 
-            <div id="left-panel" class="col-md-2" >
+            <div id="left-panel" >
                 <img src="img/logo-alubar.png" alt="logo alubar" />
 
                 <div id="menu" class="btn-group-vertical" role="group" aria-label="...">
@@ -29,12 +29,13 @@
             </div>
 
             <div id="new-document-panel" ng-show="MainController.isSelected(1)" class="col-md-10">
-                <div class="panel panel-default" ng-controller="NewDocCtrl as controller">
+                <div class="panel panel-default">
                     <div class="panel-heading">
                         <h3 class="panel-title">Nouveau document</h3>
                     </div>
-                    <div class="panel-body">
-                        <a type="button" class="btn btn-primary" ng-click="init()">Launch jsPlumb</a>
+                    <div class="table-responsive panel-body">
+                        <div id="plumbing-zone" ng-init="init()" ng-controller="NewDocCtrl as controller" >
+                        </div>
                     </div>
                 </div>
             </div>
