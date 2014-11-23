@@ -1,13 +1,18 @@
 var app = angular.module('alubar-app');
 app.controller('NewDocCtrl', function($scope){
+	var doc = null;
+	
     $scope.init = function() {
         jsPlumb.bind("ready", function() {
-            console.log("Set up jsPlumb listeners (should be only done once)");
-            jsPlumb.bind("connection", function (info) {
-                $scope.$apply(function () {
-                    console.log("Possibility to push connection into array");
-                });
-            });
+        	doc = jsplumb.getInstance();
+        	
+        	doc.connect({
+        		  source:"element1", 
+        		  target:"element2", 
+        		  scope:"someScope" 
+        		});
         });
     };
+    
+    
 });
