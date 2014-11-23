@@ -42,16 +42,15 @@ jsPlumb.ready(function() {
       $(this).remove();
       e.stopPropagation();
     });
-    $('#plumbing-zone').append(newState);
 
-    jsPlumb.makeTarget(newState, {
-      anchor: 'Continuous'
+    jsPlumb.makeTarget(connect, {
+        anchor: 'Continuous'
     });
     
     jsPlumb.makeSource(connect, {
-      parent: newState,
       anchor: 'Continuous'
     });
+    $('#plumbing-zone').append(newState);
     
     i++;    
   });  
