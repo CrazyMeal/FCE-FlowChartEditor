@@ -39,17 +39,22 @@ jsPlumb.ready(function() {
     });
     newState.dblclick(function(e) {
       jsPlumb.detachAllConnections($(this));
+      jsPlumb.detachAllConnections($(this).children()[1]);
+      
+
       $(this).remove();
+      console.log($(this).children()[1]);
       e.stopPropagation();
     });
     $('#plumbing-zone').append(newState);
 
-    jsPlumb.makeTarget(newState, {
-      anchor: 'Continuous'
+    jsPlumb.makeTarget(connect, {
+        parent: connect,
+        anchor: 'Continuous'
     });
     
     jsPlumb.makeSource(connect, {
-      parent: newState,
+      parent: connect,
       anchor: 'Continuous'
     });
     
