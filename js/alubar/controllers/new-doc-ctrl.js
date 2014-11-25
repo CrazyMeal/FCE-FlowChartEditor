@@ -13,6 +13,10 @@ app.controller('NewDocCtrl', function($scope){
               alert('New connection!\nFrom: ' + info.sourceId + '\nTo: ' + info.targetId);
             });
             */
+            jsPlumb.importDefaults({
+                Endpoints : [ [ "Dot", { radius:1 } ], [ "Dot", { radius:1 } ] ],
+            });
+
             $('#plumbing-zone').dblclick(function(e) {
                 var newState = $('<div>').attr('id', 'state' + i).addClass('state');
             
@@ -40,11 +44,15 @@ app.controller('NewDocCtrl', function($scope){
                 jsPlumb.makeTarget(connect, {
                     parent: connect,
                     anchor: 'Continuous'
+                    
                 });
                 
                 jsPlumb.makeSource(connect, {
                     parent: connect,
-                    anchor: 'Continuous'
+                    anchor: 'Continuous',
+                    connectorOverlays:[ 
+                        [ "Arrow", { width:20, length:30, location:1, id:"arrow" } ]
+                    ]
                 });
                 $('#plumbing-zone').append(newState);
                 $scope.states.push(newState);
