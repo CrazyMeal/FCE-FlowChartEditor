@@ -32,15 +32,18 @@ app.controller('NewDocCtrl', function($scope){
                 });
                 newState.dblclick(function(e) {
                     jsPlumb.detachAllConnections($(this));
+                    jsPlumb.detachAllConnections($(this).children()[1]);
                     $(this).remove();
                     e.stopPropagation();
                 });
 
                 jsPlumb.makeTarget(connect, {
+                    parent: connect,
                     anchor: 'Continuous'
                 });
                 
                 jsPlumb.makeSource(connect, {
+                    parent: connect,
                     anchor: 'Continuous'
                 });
                 $('#plumbing-zone').append(newState);
