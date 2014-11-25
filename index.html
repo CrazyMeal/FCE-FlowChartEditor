@@ -28,16 +28,13 @@
 
             </div>
 
-            <div id="new-document-panel" ng-show="MainController.isSelected(1)" ng-controller="NewDocCtrl as controller" class="col-md-10">
+            <div id="new-document-panel" ng-show="MainController.isSelected(1)" class="col-md-10">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title">{{documentName}}</h3>
-                        <a type="button" class="btn btn-primary" ng-click=""> clear </a>
-                        <a type="button" class="btn btn-primary" ng-click=""> refill </a>
+                        <h3 class="panel-title">Nouveau document</h3>
                     </div>
                     <div class="table-responsive panel-body">
-                        <div id="plumbing-zone" ng-init="init()">
-                        <div id="trash"></div>
+                        <div id="plumbing-zone" ng-init="init()" ng-controller="NewDocCtrl as controller" >
                         </div>
                     </div>
                 </div>
