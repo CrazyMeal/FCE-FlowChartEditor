@@ -43,12 +43,13 @@ app.controller('NewDocCtrl', function($scope){
 
                 jsPlumb.makeTarget(connect, {
                     parent: connect,
-                    anchor: 'Continuous'
-                    
+                    connector:[ "Flowchart" ],
+                    anchor: 'Continuous',
                 });
                 
                 jsPlumb.makeSource(connect, {
                     parent: connect,
+                    connector:[ "Flowchart" ],
                     anchor: 'Continuous',
                     connectorOverlays:[ 
                         [ "Arrow", { width:20, length:30, location:1, id:"arrow" } ]
