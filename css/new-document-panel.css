@@ -6,29 +6,27 @@
 .state {
 	position: absolute;
   display: block;
+  height: 60px;
+  width: 100px;
 	border: 1px solid black;
   background-color: #ddddff;
 }
-.title {
-  padding: 10px;
-  cursor: move;
-}
+
 .connectIn {
-  width: 50%;
-  height: 20px;
-  background-color: white;
+  width: 20%;
+  height: 100%;
+  background-color: #B3B3FF;
   cursor: pointer;
   float: left;
 }
 
 .connectOut{
-  width: 50%;
-  height: 20px;
-  background-color: black;
+  width: 20%;
+  height: 100%;
+  background-color: #B3B3FF;
   cursor: pointer;
   float: right;
 }
- 
 #plumbing-zone {
     width: 100%;
     height: 500px;

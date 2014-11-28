@@ -12,19 +12,15 @@ app.controller('NewDocCtrl', function($scope){
 
     $scope.createNewState = function(){
         var mainContainer = $('<div>').attr('id', 'state' + $scope.states.length).addClass('state');
-            
-        var titleDiv = $('<div>').addClass('title').text('State ' + $scope.states.length);
+        
         var connectInDiv = $('<div>').addClass('connectIn');
         var connectOutDiv = $('<div>').addClass('connectOut');
-        mainContainer.append(titleDiv);
         mainContainer.append(connectInDiv);
         mainContainer.append(connectOutDiv);
-
         var state = {
             container: mainContainer,
-            title: titleDiv,
             input: connectInDiv,
-            outPut: connectOutDiv
+            output: connectOutDiv
         };
 
         $scope.states.push(state);
@@ -34,20 +30,17 @@ app.controller('NewDocCtrl', function($scope){
     $scope.init = function() {
         jsPlumb.ready(function() {
             jsPlumb.setContainer($('#plumbing-zone'));
-            /*
-            jsPlumb.bind('connection', function(info) {
-              alert('New connection!\nFrom: ' + info.sourceId + '\nTo: ' + info.targetId);
-            });
-            */
+            
             jsPlumb.importDefaults({
                 Endpoints : [ [ "Dot", { radius:1 } ], [ "Dot", { radius:1 } ] ],
             });
-
+            
             $('#plumbing-zone').dblclick(function(e) {
+                jsPlumb.setSuspendDrawing(true);
                 var newState = $scope.createNewState();
                 
                 jsPlumb.draggable(newState.container, {
-                    containment: $('#plumbing-zone')
+                    containment: $('#plumbing-zone'),
                 });
                 
                 setStateCss(newState, e);
@@ -64,67 +57,43 @@ app.controller('NewDocCtrl', function($scope){
                     e.stopPropagation();
                 });
 
-                jsPlumb.makeTarget(newState.input, {
-                    //parent: newState.container,
-                    connector:[ "Flowchart" ,{ stub:[40, 60], cornerRadius:5, alwaysRespectStubs:true }],
-                    anchor: ['Continuous',{ faces:[ "left" ] }]
-                });
+                var exampleGreyEndpointOptions = {
+                  endpoint:"Rectangle",
+                  paintStyle:{ width:25, height:21, fillStyle:'#666' },
+                  isSource:true,
+                  connectorStyle : { strokeStyle:"#666" },
+                  isTarget:true
+                };
+
                 
-                jsPlumb.makeSource(newState.outPut, {
-                    //parent: newState.container,
-                    connector:[ "Flowchart" ,{ stub:[40, 60], cornerRadius:5, alwaysRespectStubs:true }],
-                    anchor: ['Continuous',{ faces:["right"] }],
-                    connectorOverlays:[ 
-                        [ "Arrow", { width:20, length:30, location:1, id:"arrow" } ]
-                    ]
+                jsPlumb.makeTarget(newState.input, {
+                    anchor: ['Continuous',{ faces:[ "left" ] }],
+                    endpoint:"Dot",
+                    paintStyle:{ 
+                        strokeStyle:"#7AB02C",
+                        fillStyle:"transparent",
+                        radius:7,
+                        lineWidth:3 
+                    },              
+                    isSource:true,
+                    connector:[ "Flowchart", { stub:[40, 60], gap:10, cornerRadius:5, alwaysRespectStubs:true } ],                                              
+                    dragOptions:{}
+                    });
+                
+                jsPlumb.makeSource(newState.output, {
+                    anchor: ['Continuous',{ faces:[ "right" ] }],
+                    endpoint:"Dot",                 
+                    paintStyle:{ fillStyle:"#7AB02C",radius:11 },
+                    maxConnections:-1,
+                    connector:[ "Flowchart", { stub:[40, 60], gap:10, midpoint: 0.7, cornerRadius:5, alwaysRespectStubs:true } ],
+                    dropOptions:{ hoverClass:"hover", activeClass:"active" },
+                    isTarget:true
                 });
-                $('#plumbing-zone').append(newState.container);  
+
+
+                $('#plumbing-zone').append(newState.container);
+                jsPlumb.setSuspendDrawing(false, true);  
             });  
         });
     };
 });
-
-/*
-jsPlumb.ready(function() {
-            jsPlumb.setContainer($('#plumbing-zone'));
-
-            var i = 0;
-            $('#plumbing-zone').dblclick(function(e) {
-                var newState = $('<div>').attr('id', 'state' + i).addClass('sampleElement');
-            
-                var title = $('<div>').addClass('title').text('State ' + i);
-                var connect = $('<div>').addClass('connect');
-            
-                newState.css({
-                    'top': e.pageY,
-                    'left': e.pageX - $('#plumbing-zone').offset().left
-                });
-                newState.append(title);
-                newState.append(connect);
-                
-                jsPlumb.draggable(newState, {
-                    containment: 'parent'
-                });
-                 
-                newState.dblclick(function(e) {
-                    jsPlumb.detachAllConnections($(this));
-                    $(this).remove();
-                    e.stopPropagation();
-                });
-                
-                $('#plumbing-zone').append(newState);
- 
-                jsPlumb.makeTarget(newState, {
-                    anchor: 'Continuous'
-                });
-                
-                jsPlumb.makeSource(connect, {
-                    parent: newState,
-                    anchor: 'Continuous'
-                });
-                
-                i++; 
-            });
-        });
-    };
-*/
