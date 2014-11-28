@@ -87,7 +87,8 @@ app.controller('NewDocCtrl', function($scope){
                     maxConnections:-1,
                     connector:[ "Flowchart", { stub:[40, 60], gap:10, midpoint: 0.7, cornerRadius:5, alwaysRespectStubs:true } ],
                     dropOptions:{ hoverClass:"hover", activeClass:"active" },
-                    isTarget:true
+                    isTarget:true,
+                    connectorOverlays:[ [ "Arrow", { width:20, length:30, location:1, id:"arrow" } ] ]
                 });
 
 
