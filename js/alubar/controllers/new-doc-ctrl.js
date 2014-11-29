@@ -53,7 +53,7 @@ app.controller('NewDocCtrl', function($scope){
     };
     $scope.makeTarget = function(input){
         jsPlumb.makeTarget(input, {
-            anchor: ['Continuous',{ faces:[ "left" ] }],
+            anchor: ['Continuous',{ faces:[ "left","top","bottom" ] }],
             endpoint:"Dot",
             paintStyle:{ 
                 strokeStyle:"#7AB02C",
@@ -62,7 +62,7 @@ app.controller('NewDocCtrl', function($scope){
                 lineWidth:3 
             },              
             isSource:true,
-            connector:[ "Flowchart", { stub:[40, 60], gap:10, cornerRadius:5, alwaysRespectStubs:true } ],                                              
+            connector:[ "Flowchart", { stub:[20, 40], gap:10, cornerRadius:5, alwaysRespectStubs:true } ],                                              
             dragOptions:{}
         });
     };
