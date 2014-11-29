@@ -19,13 +19,19 @@ app.controller('NewDocCtrl', function($scope){
     $scope.documentName = "Nouveau Document";
     $scope.documentSaved = true;
     $scope.states = [];
-    $scope.lastDeleted;
+    $scope.documentSaveState = "btn-success";
 
     setStateCss = function(state, e){
         state.container.css({
             'top': e.pageY- $('#plumbing-zone').offset().top,
             'left': e.pageX - $('#plumbing-zone').offset().left
         });
+    };
+
+    $scope.saveDocument = function(){
+        $scope.documentSaved = true;
+        $scope.documentName = $scope.documentName.substring(0, $scope.documentName.length - 1);;
+        $scope.documentSaveState = "btn-success";
     };
 
     $scope.createNewState = function(){
@@ -67,7 +73,7 @@ app.controller('NewDocCtrl', function($scope){
             endpoint:"Dot",                 
             paintStyle:{ fillStyle:"#7AB02C",radius:11 },
             maxConnections:-1,
-            connector:[ "Flowchart", { stub:[40, 60], gap:10, midpoint: 0.7, cornerRadius:5, alwaysRespectStubs:true } ],
+            connector:[ "Flowchart", { stub:[20, 40], gap:10, midpoint: 0.7, cornerRadius:5, alwaysRespectStubs:true } ],
             dropOptions:{ hoverClass:"hover", activeClass:"active" },
             isTarget:true,
             connectorOverlays:[ [ "Arrow", { width:20, length:30, location:1, id:"arrow" } ] ]
@@ -102,6 +108,7 @@ app.controller('NewDocCtrl', function($scope){
                 if($scope.documentSaved){
                     $scope.documentSaved = false;
                     $scope.documentName = $scope.documentName + "*";
+                    $scope.documentSaveState = "btn-warning";
                     console.log($scope.documentName);
                 }
                 var newState = $scope.createNewState();
