@@ -1,6 +1,7 @@
 var app = angular.module('alubar-app');
 app.controller('NewDocCtrl', function($scope){
     $scope.documentName = "Nouveau Document";
+    $scope.documentSaved = true;
     $scope.states = [];
 
     setStateCss = function(state, e){
@@ -17,6 +18,7 @@ app.controller('NewDocCtrl', function($scope){
         var connectOutDiv = $('<div>').addClass('connectOut');
         mainContainer.append(connectInDiv);
         mainContainer.append(connectOutDiv);
+        
         var state = {
             container: mainContainer,
             input: connectInDiv,
@@ -25,6 +27,34 @@ app.controller('NewDocCtrl', function($scope){
 
         $scope.states.push(state);
         return state;
+    };
+    $scope.makeTarget = function(input){
+        jsPlumb.makeTarget(input, {
+            anchor: ['Continuous',{ faces:[ "left" ] }],
+            endpoint:"Dot",
+            paintStyle:{ 
+                strokeStyle:"#7AB02C",
+                fillStyle:"transparent",
+                radius:7,
+                lineWidth:3 
+            },              
+            isSource:true,
+            connector:[ "Flowchart", { stub:[40, 60], gap:10, cornerRadius:5, alwaysRespectStubs:true } ],                                              
+            dragOptions:{}
+        });
+    };
+
+    $scope.makeSource = function(output){
+        jsPlumb.makeSource(output, {
+            anchor: ['Continuous',{ faces:[ "right" ] }],
+            endpoint:"Dot",                 
+            paintStyle:{ fillStyle:"#7AB02C",radius:11 },
+            maxConnections:-1,
+            connector:[ "Flowchart", { stub:[40, 60], gap:10, midpoint: 0.7, cornerRadius:5, alwaysRespectStubs:true } ],
+            dropOptions:{ hoverClass:"hover", activeClass:"active" },
+            isTarget:true,
+            connectorOverlays:[ [ "Arrow", { width:20, length:30, location:1, id:"arrow" } ] ]
+        });
     };
 
     $scope.init = function() {
@@ -37,6 +67,12 @@ app.controller('NewDocCtrl', function($scope){
             
             $('#plumbing-zone').dblclick(function(e) {
                 jsPlumb.setSuspendDrawing(true);
+
+                if($scope.documentSaved){
+                    $scope.documentSaved = false;
+                    $scope.documentName = $scope.documentName + "*";
+                    console.log($scope.documentName);
+                }
                 var newState = $scope.createNewState();
                 
                 jsPlumb.draggable(newState.container, {
@@ -56,44 +92,14 @@ app.controller('NewDocCtrl', function($scope){
                     $(this).remove();
                     e.stopPropagation();
                 });
-
-                var exampleGreyEndpointOptions = {
-                  endpoint:"Rectangle",
-                  paintStyle:{ width:25, height:21, fillStyle:'#666' },
-                  isSource:true,
-                  connectorStyle : { strokeStyle:"#666" },
-                  isTarget:true
-                };
-
                 
-                jsPlumb.makeTarget(newState.input, {
-                    anchor: ['Continuous',{ faces:[ "left" ] }],
-                    endpoint:"Dot",
-                    paintStyle:{ 
-                        strokeStyle:"#7AB02C",
-                        fillStyle:"transparent",
-                        radius:7,
-                        lineWidth:3 
-                    },              
-                    isSource:true,
-                    connector:[ "Flowchart", { stub:[40, 60], gap:10, cornerRadius:5, alwaysRespectStubs:true } ],                                              
-                    dragOptions:{}
-                    });
                 
-                jsPlumb.makeSource(newState.output, {
-                    anchor: ['Continuous',{ faces:[ "right" ] }],
-                    endpoint:"Dot",                 
-                    paintStyle:{ fillStyle:"#7AB02C",radius:11 },
-                    maxConnections:-1,
-                    connector:[ "Flowchart", { stub:[40, 60], gap:10, midpoint: 0.7, cornerRadius:5, alwaysRespectStubs:true } ],
-                    dropOptions:{ hoverClass:"hover", activeClass:"active" },
-                    isTarget:true,
-                    connectorOverlays:[ [ "Arrow", { width:20, length:30, location:1, id:"arrow" } ] ]
-                });
-
+                $scope.makeTarget(newState.input);
+                $scope.makeSource(newState.output);
 
                 $('#plumbing-zone').append(newState.container);
-                jsPlumb.setSuspendDrawing(false, true);  
+                jsPlumb.setSuspendDrawing(false, true);
+                $scope.$apply();
             });  
         });
     };
