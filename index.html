@@ -32,8 +32,11 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h3 class="panel-title">{{documentName}}</h3>
-                        <a type="button" class="btn btn-primary" ng-click=""> clear </a>
-                        <a type="button" class="btn btn-primary" ng-click=""> refill </a>
+                        <a type="button" class="btn btn-primary" ng-click="">Annuler supression</a>
+                        <a type="button" class="btn btn-primary" ng-click="">Importer</a>
+                        <a type="button" class="btn btn-primary" ng-click="">Exporter</a>
+                        <a type="button" class="btn btn-primary" ng-click="">Sauvegarder</a>
+                        <a type="button" class="btn btn-danger" ng-confirm-click="Êtes-vous sûr de vouloir tout supprimer ?" confirmed-click="deleteAll()">Supprimer tout</a>
                     </div>
                     <div class="table-responsive panel-body">
                         <div id="plumbing-zone" ng-init="init()">

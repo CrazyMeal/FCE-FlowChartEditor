@@ -1,8 +1,25 @@
 var app = angular.module('alubar-app');
+
+app.directive('ngConfirmClick', [
+    function(){
+        return {
+            link: function (scope, element, attr) {
+                var msg = attr.ngConfirmClick || "Are you sure?";
+                var clickAction = attr.confirmedClick;
+                element.bind('click',function (event) {
+                    if ( window.confirm(msg) ) {
+                        scope.$eval(clickAction)
+                    }
+                });
+            }
+        };
+}]);
+
 app.controller('NewDocCtrl', function($scope){
     $scope.documentName = "Nouveau Document";
     $scope.documentSaved = true;
     $scope.states = [];
+    $scope.lastDeleted;
 
     setStateCss = function(state, e){
         state.container.css({
@@ -54,6 +71,20 @@ app.controller('NewDocCtrl', function($scope){
             dropOptions:{ hoverClass:"hover", activeClass:"active" },
             isTarget:true,
             connectorOverlays:[ [ "Arrow", { width:20, length:30, location:1, id:"arrow" } ] ]
+        });
+    };
+    
+    $scope.deleteAll = function(){
+        angular.forEach($scope.states, function(state, index){
+            jsPlumb.detachAllConnections(state.container);
+
+            angular.forEach(state.container.children(), function(child){
+                jsPlumb.detachAllConnections(child);
+                child.remove();
+            });
+
+            state.container.remove();
+            delete $scope.states[index];
         });
     };
 
