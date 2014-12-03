@@ -37,8 +37,8 @@ app.controller('NewDocCtrl', function($scope){
     $scope.createNewState = function(){
         var mainContainer = $('<div>').attr('id', 'state' + $scope.states.length).addClass('state');
         
-        var connectInDiv = $('<div>').addClass('connectIn');
-        var connectOutDiv = $('<div>').addClass('connectOut');
+        var connectInDiv = $('<div>').addClass('connectIn').attr('id', 'connectIn-' + $scope.states.length);
+        var connectOutDiv = $('<div>').addClass('connectOut').attr('id', 'connectOut-' + $scope.states.length);
         mainContainer.append(connectInDiv);
         mainContainer.append(connectOutDiv);
         
@@ -53,27 +53,18 @@ app.controller('NewDocCtrl', function($scope){
     };
     $scope.makeTarget = function(input){
         jsPlumb.makeTarget(input, {
-            anchor: ['Continuous',{ faces:[ "left","top","bottom" ] }],
-            endpoint:"Dot",
-            paintStyle:{ 
-                strokeStyle:"#7AB02C",
-                fillStyle:"transparent",
-                radius:7,
-                lineWidth:3 
-            },              
+            anchor: ['Continuous',{ faces:[ "left","top","bottom" ] }],           
             isSource:true,
-            connector:[ "Flowchart", { stub:[20, 40], gap:10, cornerRadius:5, alwaysRespectStubs:true } ],                                              
+            connector:[ "Flowchart", { stub:[20, 40], cornerRadius:5, alwaysRespectStubs:true } ],                                              
             dragOptions:{}
         });
     };
 
     $scope.makeSource = function(output){
         jsPlumb.makeSource(output, {
-            anchor: ['Continuous',{ faces:[ "right" ] }],
-            endpoint:"Dot",                 
-            paintStyle:{ fillStyle:"#7AB02C",radius:11 },
+            anchor: ['Continuous',{ faces:[ "right" ] }],                
             maxConnections:-1,
-            connector:[ "Flowchart", { stub:[20, 40], gap:10, midpoint: 0.7, cornerRadius:5, alwaysRespectStubs:true } ],
+            connector:[ "Flowchart", { stub:[20, 40], midpoint: 0.7, cornerRadius:5, alwaysRespectStubs:true } ],
             dropOptions:{ hoverClass:"hover", activeClass:"active" },
             isTarget:true,
             connectorOverlays:[ [ "Arrow", { width:20, length:30, location:1, id:"arrow" } ] ]
@@ -97,7 +88,14 @@ app.controller('NewDocCtrl', function($scope){
     $scope.init = function() {
         jsPlumb.ready(function() {
             jsPlumb.setContainer($('#plumbing-zone'));
-            
+            jsPlumb.bind('beforeDrop', function(info) {
+                console.log(info.targetId);
+                console.log($('#'+info.targetId));
+                if($('#'+info.targetId).hasClass('connectIn'))
+                    return true;
+                else
+                    return false;
+            });
             jsPlumb.importDefaults({
                 Endpoints : [ [ "Dot", { radius:1 } ], [ "Dot", { radius:1 } ] ],
             });
