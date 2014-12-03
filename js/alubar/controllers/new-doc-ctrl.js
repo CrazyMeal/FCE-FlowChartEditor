@@ -29,9 +29,11 @@ app.controller('NewDocCtrl', function($scope){
     };
 
     $scope.saveDocument = function(){
-        $scope.documentSaved = true;
-        $scope.documentName = $scope.documentName.substring(0, $scope.documentName.length - 1);;
-        $scope.documentSaveState = "btn-success";
+        if(!$scope.documentSaved){
+            $scope.documentSaved = true;
+            $scope.documentName = $scope.documentName.substring(0, $scope.documentName.length - 1);
+            $scope.documentSaveState = "btn-success";
+        }
     };
 
     $scope.createNewState = function(){
