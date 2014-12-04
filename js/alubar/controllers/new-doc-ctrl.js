@@ -57,7 +57,7 @@ app.controller('NewDocCtrl', function($scope){
         jsPlumb.makeTarget(input, {
             anchor: ['Continuous',{ faces:[ "left","top","bottom" ] }],           
             isSource:true,
-            connector:[ "Flowchart", { stub:[20, 40], cornerRadius:5, alwaysRespectStubs:true } ],                                              
+            connector:[ "Flowchart", { stub:[20, 30], cornerRadius:5, alwaysRespectStubs:true } ],                                              
             dragOptions:{}
         });
     };
@@ -66,10 +66,10 @@ app.controller('NewDocCtrl', function($scope){
         jsPlumb.makeSource(output, {
             anchor: ['Continuous',{ faces:[ "right" ] }],                
             maxConnections:-1,
-            connector:[ "Flowchart", { stub:[20, 40], midpoint: 0.7, cornerRadius:5, alwaysRespectStubs:true } ],
+            connector:[ "Flowchart", { stub:[20, 30], midpoint: 0.7, cornerRadius:5, alwaysRespectStubs:true } ],
+            connectorStyle:{ strokeStyle:"#5c96bc", lineWidth:2, outlineColor:"transparent", outlineWidth:4 },
             dropOptions:{ hoverClass:"hover", activeClass:"active" },
-            isTarget:true,
-            connectorOverlays:[ [ "Arrow", { width:20, length:30, location:1, id:"arrow" } ] ]
+            isTarget:true
         });
     };
     
@@ -99,7 +99,16 @@ app.controller('NewDocCtrl', function($scope){
                     return false;
             });
             jsPlumb.importDefaults({
-                Endpoints : [ [ "Dot", { radius:1 } ], [ "Dot", { radius:1 } ] ],
+                Endpoint : ["Dot", {radius:2}],
+                HoverPaintStyle : {strokeStyle:"#1e8151", lineWidth:2 },
+                ConnectionOverlays : [
+                    [ "Arrow", {
+                        location:1,
+                        id:"arrow",
+                        length:14,
+                        foldback:0.8
+                    } ]
+                ]
             });
             
             $('#plumbing-zone').dblclick(function(e) {
