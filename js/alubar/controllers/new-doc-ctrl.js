@@ -15,7 +15,9 @@ app.directive('ngConfirmClick', [
         };
 }]);
 
-app.controller('NewDocCtrl', function($scope){
+app.controller('NewDocCtrl', function($scope,$compile){
+    $scope.ids = 0;
+    $scope.stateEditionMode = true;
     $scope.documentName = "Nouveau Document";
     $scope.documentSaved = true;
     $scope.states = [];
@@ -36,20 +38,36 @@ app.controller('NewDocCtrl', function($scope){
         }
     };
 
+    $scope.editState = function(stateDiv){
+        var stateId = stateDiv.attr('id');
+        angular.forEach($scope.states, function(state, index){
+            if(state.id == stateId){
+                $scope.stateEditionMode = false;
+                $scope.$apply();
+                state.name ="prout";
+                console.log($scope.stateEditionMode);
+            }
+        });
+    };
+
     $scope.createNewState = function(){
-        var mainContainer = $('<div>').attr('id', 'state' + $scope.states.length).addClass('state');
+        var mainContainer = $('<div>').attr('id', $scope.ids).addClass('state');
         
-        var connectInDiv = $('<div>').addClass('connectIn').attr('id', 'connectIn-' + $scope.states.length);
-        var connectOutDiv = $('<div>').addClass('connectOut').attr('id', 'connectOut-' + $scope.states.length);
+        var connectInDiv = $('<div>').addClass('connectIn').attr('id', 'connectIn-' + $scope.ids);
+        var connectOutDiv = $('<div>').addClass('connectOut').attr('id', 'connectOut-' + $scope.ids);
         mainContainer.append(connectInDiv);
         mainContainer.append(connectOutDiv);
         
         var state = {
             container: mainContainer,
             input: connectInDiv,
-            output: connectOutDiv
+            output: connectOutDiv,
+            id: $scope.ids,
+            name : 'Default'
         };
 
+        //mainContainer.append($compile("<p state.name></p>")($scope));
+        $scope.ids++;
         $scope.states.push(state);
         return state;
     };
@@ -129,6 +147,7 @@ app.controller('NewDocCtrl', function($scope){
                 setStateCss(newState, e);
 
                 newState.container.dblclick(function(e) {
+                    /*
                     jsPlumb.detachAllConnections($(this));
 
                     angular.forEach($(this).children(), function(child){
@@ -137,10 +156,16 @@ app.controller('NewDocCtrl', function($scope){
                     });
 
                     $(this).remove();
+                    */
+                    $scope.editState($(this));
                     e.stopPropagation();
                 });
                 
-                
+                $('#plumbing-zone').scroll(
+                    function(){
+                        jsPlumb.repaintEverything();
+                    }
+                );
                 $scope.makeTarget(newState.input);
                 $scope.makeSource(newState.output);
 
@@ -150,4 +175,12 @@ app.controller('NewDocCtrl', function($scope){
             });  
         });
     };
+});
+
+app.directive('state-name', function() {
+    return {
+        replace: true,
+        controller: 'NewDocCtrl',
+        template: '{{state.name}}'
+  };
 });
