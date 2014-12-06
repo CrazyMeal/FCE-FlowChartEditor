@@ -44,15 +44,16 @@ app.controller('NewDocCtrl', function($scope,$compile){
             if(state.id == stateId){
                 $scope.stateEditionMode = false;
                 $scope.$apply();
-                state.name ="prout";
+                state.name ="Super nom d'etape de la mort qui tue";
                 console.log($scope.stateEditionMode);
             }
         });
     };
 
     $scope.createNewState = function(){
-        var mainContainer = $('<div>').attr('id', $scope.ids).addClass('state');
-        
+        //var mainContainer = $('<div name-state>').attr('id', $scope.ids).addClass('state');
+        var newIndex = $scope.ids;
+        var mainContainer = $($compile('<etape test="states['+newIndex+'].name" id="'+$scope.ids+'">')($scope));
         var connectInDiv = $('<div>').addClass('connectIn').attr('id', 'connectIn-' + $scope.ids);
         var connectOutDiv = $('<div>').addClass('connectOut').attr('id', 'connectOut-' + $scope.ids);
         mainContainer.append(connectInDiv);
@@ -66,7 +67,7 @@ app.controller('NewDocCtrl', function($scope,$compile){
             name : 'Default'
         };
 
-        //mainContainer.append($compile("<p state.name></p>")($scope));
+        //mainContainer.append($compile("name-state")($scope));
         $scope.ids++;
         $scope.states.push(state);
         return state;
@@ -176,11 +177,19 @@ app.controller('NewDocCtrl', function($scope,$compile){
         });
     };
 });
-
-app.directive('state-name', function() {
+app.directive('etape', function($compile){
     return {
+        restrict: 'E',
         replace: true,
-        controller: 'NewDocCtrl',
-        template: '{{state.name}}'
-  };
+        scope: {
+            test: '='
+        },
+        template: '<div class="state">{{test}}</div>',
+        link: function(scope, element, attrs){
+            jsPlumb.draggable(element, {
+                containment: $('#plumbing-zone'),
+            });
+            console.log("replace");
+        }
+    };
 });
