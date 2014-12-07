@@ -15,12 +15,13 @@ app.directive('ngConfirmClick', [
         };
 }]);
 
-app.controller('NewDocCtrl', function($scope,$compile){
+app.controller('NewDocCtrl', function($scope,$compile, localStorageService){
     $scope.ids = 0;
     $scope.stateEditionMode = true;
     $scope.documentName = "Nouveau Document";
     $scope.documentSaved = true;
     $scope.states = [];
+    $scope.connections = [];
     $scope.documentSaveState = "btn-success";
 
     setStateCss = function(state, e){
@@ -35,13 +36,62 @@ app.controller('NewDocCtrl', function($scope,$compile){
             $scope.documentSaved = true;
             $scope.documentName = $scope.documentName.substring(0, $scope.documentName.length - 1);
             $scope.documentSaveState = "btn-success";
+
+            localStorageService.clearAll();
+            var lightStates = [];
+            angular.forEach(jsPlumb.getSelector(".state"), function(stateDiv){
+                var tmpState = {};
+                tmpState.id = $(stateDiv).attr('id');
+                tmpState.top = $(stateDiv).position().top;
+                tmpState.left = $(stateDiv).position().left;
+                tmpState.name = $(stateDiv).text();
+
+                lightStates.push(tmpState);
+            });
+            localStorageService.set('savedStates', angular.copy(lightStates));
+            localStorageService.set('savedConnections', angular.copy($scope.connections));
+
+            console.log('Saved states:');
+            console.log(lightStates);
+            console.log('Saved connections:');
+            console.log($scope.connections);
         }
     };
 
+    $scope.importLastDocument = function(){
+        $scope.deleteAll();
+        var states = localStorageService.get('savedStates');
+        var connections = localStorageService.get('savedConnections');
+        console.log(states);
+        // On importe tous les state
+        angular.forEach(states, function(state, index){
+            var mainContainer = $($compile('<etape test="states['+state.id+'].name" id="'+state.id+'">')($scope));
+            
+            var connectInDiv = $('<div>').addClass('connectIn').attr('id', 'connectIn-' + state.id);
+            var connectOutDiv = $('<div>').addClass('connectOut').attr('id', 'connectOut-' + state.id);
+
+            mainContainer.append(connectInDiv);
+            mainContainer.append(connectOutDiv);
+            
+            mainContainer.css({
+                'top': state.top,
+                'left': state.left
+            });
+
+            $('#plumbing-zone').append(mainContainer);
+        });
+
+        // On relis tous les states entre eux selon les connections
+        angular.forEach(connections, function(connection, index){
+
+        });
+    };
 
     $scope.validateNameEdition = function(){
         $scope.nameInEdition = {};
         stateEditionMode = true;
+        jsPlumb.recalculateOffsets(".connectOut");
+        jsPlumb.repaintEverything();
     };
     $scope.editState = function(stateDiv){
         var stateId = stateDiv.attr('id');
@@ -50,14 +100,12 @@ app.controller('NewDocCtrl', function($scope,$compile){
                 $scope.nameInEdition = state;
                 $scope.stateEditionMode = false;
                 $scope.$apply();
-                //state.name ="Super nom d'etape de la mort qui tue";
                 console.log($scope.stateEditionMode);
             }
         });
     };
 
     $scope.createNewState = function(){
-        //var mainContainer = $('<div name-state>').attr('id', $scope.ids).addClass('state');
         var newIndex = $scope.ids;
         var mainContainer = $($compile('<etape test="states['+newIndex+'].name" id="'+$scope.ids+'">')($scope));
         var connectInDiv = $('<div>').addClass('connectIn').attr('id', 'connectIn-' + $scope.ids);
@@ -73,7 +121,6 @@ app.controller('NewDocCtrl', function($scope,$compile){
             name : 'Default'
         };
 
-        //mainContainer.append($compile("name-state")($scope));
         $scope.ids++;
         $scope.states.push(state);
         return state;
@@ -110,19 +157,27 @@ app.controller('NewDocCtrl', function($scope,$compile){
             state.container.remove();
             delete $scope.states[index];
         });
+        $scope.connections = [];
+        $scope.ids = 0;
     };
 
     $scope.init = function() {
         jsPlumb.ready(function() {
             jsPlumb.setContainer($('#plumbing-zone'));
+            
             jsPlumb.bind('beforeDrop', function(info) {
-                console.log(info.targetId);
-                console.log($('#'+info.targetId));
+                //console.log(info.targetId);
+                //console.log($('#'+info.targetId));
                 if($('#'+info.targetId).hasClass('connectIn'))
                     return true;
                 else
                     return false;
             });
+
+            jsPlumb.bind('connection', function(info) {
+              $scope.connections.push({ from: info.sourceId, to: info.targetId });
+            });
+
             jsPlumb.importDefaults({
                 Endpoint : ["Dot", {radius:2}],
                 HoverPaintStyle : {strokeStyle:"#1e8151", lineWidth:2 },
@@ -190,12 +245,11 @@ app.directive('etape', function($compile){
         scope: {
             test: '='
         },
-        template: '<div class="state"><span class="noselect">{{test}}</span></div>',
+        template: '<div class="state">{{test}}</div>',
         link: function(scope, element, attrs){
             jsPlumb.draggable(element, {
                 containment: $('#plumbing-zone'),
             });
-            console.log("replace");
         }
     };
 });

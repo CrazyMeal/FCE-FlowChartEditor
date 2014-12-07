@@ -32,8 +32,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h3 class="panel-title">{{documentName}}</h3>
-                        <a type="button" class="btn btn-info" ng-click="">Importer</a>
-                        <a type="button" class="btn btn-info" ng-click="">Exporter</a>
+                        <a type="button" class="btn btn-info" ng-click="importLastDocument()">Charger le dernier document</a>
                         <a type="button" class="btn" ng-class="documentSaveState" ng-click="saveDocument()">Sauvegarder</a>
                         <a type="button" class="btn btn-danger" ng-confirm-click="Êtes-vous sûr de vouloir tout supprimer ?" confirmed-click="deleteAll()">Supprimer tout</a>
                         <div id="editMenu" collapse="stateEditionMode">
@@ -132,6 +131,7 @@
     <script src="js/ui-bootstrap-0.12.0.min.js"></script>
     <script src="js/ui-bootstrap-tpls-0.12.0.js"></script>
 
+    <script src="js/angular-local-storage.js"></script>
     <script src="js/alubar/alubar-app.js"></script>
     <script src="js/alubar/controllers/admin-ctrl.js"></script>
     <script src="js/alubar/controllers/new-doc-ctrl.js"></script>
