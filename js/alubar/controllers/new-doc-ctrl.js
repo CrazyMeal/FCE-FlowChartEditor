@@ -111,7 +111,7 @@ app.controller('NewDocCtrl', function($scope,$compile, localStorageService){
 
         // On relis tous les states entre eux selon les connections
         angular.forEach(connections, function(connection, index){
-
+            jsPlumb.connect({source:connection.from, target:connection.to});
         });
     };
 
