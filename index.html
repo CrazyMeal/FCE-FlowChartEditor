@@ -37,7 +37,7 @@
                         <a type="button" class="btn" ng-class="documentSaveState" ng-click="saveDocument()">Sauvegarder</a>
                         <a type="button" class="btn btn-danger" ng-confirm-click="Êtes-vous sûr de vouloir tout supprimer ?" confirmed-click="deleteAll()">Supprimer tout</a>
                         <div id="editMenu" collapse="stateEditionMode">
-                            <a type="button" class="btn btn-info">Editer</a>
+                            <input type="text"  ng-model="nameInEdition.name">
                             <a type="button" class="btn btn-success" ng-click="stateEditionMode = true">Valider</a>
                         </div>
                     </div>

@@ -38,13 +38,19 @@ app.controller('NewDocCtrl', function($scope,$compile){
         }
     };
 
+
+    $scope.validateNameEdition = function(){
+        $scope.nameInEdition = {};
+        stateEditionMode = true;
+    };
     $scope.editState = function(stateDiv){
         var stateId = stateDiv.attr('id');
         angular.forEach($scope.states, function(state, index){
             if(state.id == stateId){
+                $scope.nameInEdition = state;
                 $scope.stateEditionMode = false;
                 $scope.$apply();
-                state.name ="Super nom d'etape de la mort qui tue";
+                //state.name ="Super nom d'etape de la mort qui tue";
                 console.log($scope.stateEditionMode);
             }
         });
@@ -184,7 +190,7 @@ app.directive('etape', function($compile){
         scope: {
             test: '='
         },
-        template: '<div class="state">{{test}}</div>',
+        template: '<div class="state"><span class="noselect">{{test}}</span></div>',
         link: function(scope, element, attrs){
             jsPlumb.draggable(element, {
                 containment: $('#plumbing-zone'),
