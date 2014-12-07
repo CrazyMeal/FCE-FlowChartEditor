@@ -30,7 +30,16 @@ app.controller('NewDocCtrl', function($scope,$compile, localStorageService){
             'left': e.pageX - $('#plumbing-zone').offset().left
         });
     };
-
+    
+    $scope.indexOfState = function(id){
+        var value = 0;
+        console.log($scope.states);
+        
+        for(var i = 0; i < $scope.states.length+1; i++){
+            console.log($scope.states[i]);
+        }
+        return value;
+    };
     $scope.saveDocument = function(){
         if(!$scope.documentSaved){
             $scope.documentSaved = true;
@@ -65,9 +74,9 @@ app.controller('NewDocCtrl', function($scope,$compile, localStorageService){
         
         // On importe tous les state
         angular.forEach(states, function(state, index){
-            var newIndex = $scope.ids;
+            //var newIndex = $scope.ids;
 
-            var mainContainer = $($compile('<etape test="states['+newIndex+'].name" id="'+state.id+'">')($scope));
+            var mainContainer = $($compile('<etape test="states['+state.id+'].name" id="'+state.id+'">')($scope));
             
             var connectInDiv = $('<div>').addClass('connectIn').attr('id', 'connectIn-' + state.id);
             var connectOutDiv = $('<div>').addClass('connectOut').attr('id', 'connectOut-' + state.id);
@@ -89,8 +98,9 @@ app.controller('NewDocCtrl', function($scope,$compile, localStorageService){
                 id: state.id,
                 name : state.name
             };
-            $scope.states.push(newstate);
-            $scope.ids++;
+            $scope.states[state.id] = newstate;
+            if($scope.ids < state.id)
+                $scope.ids = state.id;
 
             $('#plumbing-zone').append(mainContainer);
         });
@@ -120,7 +130,7 @@ app.controller('NewDocCtrl', function($scope,$compile, localStorageService){
     };
 
     $scope.createNewState = function(){
-        var newIndex = $scope.ids;
+        var newIndex = $scope.ids++;
         var mainContainer = $($compile('<etape test="states['+newIndex+'].name" id="'+$scope.ids+'">')($scope));
         var connectInDiv = $('<div>').addClass('connectIn').attr('id', 'connectIn-' + $scope.ids);
         var connectOutDiv = $('<div>').addClass('connectOut').attr('id', 'connectOut-' + $scope.ids);
@@ -135,7 +145,7 @@ app.controller('NewDocCtrl', function($scope,$compile, localStorageService){
             name : 'Default'
         };
 
-        $scope.ids++;
+        //$scope.ids++;
         $scope.states.push(state);
         return state;
     };
