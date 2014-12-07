@@ -62,21 +62,35 @@ app.controller('NewDocCtrl', function($scope,$compile, localStorageService){
         $scope.deleteAll();
         var states = localStorageService.get('savedStates');
         var connections = localStorageService.get('savedConnections');
-        console.log(states);
+        
         // On importe tous les state
         angular.forEach(states, function(state, index){
-            var mainContainer = $($compile('<etape test="states['+state.id+'].name" id="'+state.id+'">')($scope));
+            var newIndex = $scope.ids;
+
+            var mainContainer = $($compile('<etape test="states['+newIndex+'].name" id="'+state.id+'">')($scope));
             
             var connectInDiv = $('<div>').addClass('connectIn').attr('id', 'connectIn-' + state.id);
             var connectOutDiv = $('<div>').addClass('connectOut').attr('id', 'connectOut-' + state.id);
 
             mainContainer.append(connectInDiv);
             mainContainer.append(connectOutDiv);
-            
+
             mainContainer.css({
                 'top': state.top,
                 'left': state.left
             });
+            $scope.makeTarget(connectInDiv);
+            $scope.makeSource(connectOutDiv);
+
+            var newstate = {
+                container: mainContainer,
+                input: connectInDiv,
+                output: connectOutDiv,
+                id: state.id,
+                name : state.name
+            };
+            $scope.states.push(newstate);
+            $scope.ids++;
 
             $('#plumbing-zone').append(mainContainer);
         });
@@ -112,7 +126,7 @@ app.controller('NewDocCtrl', function($scope,$compile, localStorageService){
         var connectOutDiv = $('<div>').addClass('connectOut').attr('id', 'connectOut-' + $scope.ids);
         mainContainer.append(connectInDiv);
         mainContainer.append(connectOutDiv);
-        
+
         var state = {
             container: mainContainer,
             input: connectInDiv,
