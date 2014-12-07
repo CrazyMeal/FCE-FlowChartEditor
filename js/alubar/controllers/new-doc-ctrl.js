@@ -90,6 +90,10 @@ app.controller('NewDocCtrl', function($scope,$compile, localStorageService){
             });
             $scope.makeTarget(connectInDiv);
             $scope.makeSource(connectOutDiv);
+            mainContainer.dblclick(function(e) {
+                $scope.editState($(this));
+                e.stopPropagation();
+            });
 
             var newstate = {
                 container: mainContainer,
@@ -118,15 +122,26 @@ app.controller('NewDocCtrl', function($scope,$compile, localStorageService){
         jsPlumb.repaintEverything();
     };
     $scope.editState = function(stateDiv){
+        if($scope.documentSaved){
+            $scope.documentSaved = false;
+            $scope.documentName = $scope.documentName + "*";
+            $scope.documentSaveState = "btn-warning";
+        }
+
         var stateId = stateDiv.attr('id');
+        console.log($scope.states);
+        
         angular.forEach($scope.states, function(state, index){
-            if(state.id == stateId){
-                $scope.nameInEdition = state;
-                $scope.stateEditionMode = false;
-                $scope.$apply();
-                console.log($scope.stateEditionMode);
+            if(state != undefined){
+                if(state.id == stateId){
+                    $scope.nameInEdition = state;
+                    $scope.stateEditionMode = false;
+                    $scope.$apply();
+                    console.log($scope.stateEditionMode);
+                }
             }
         });
+
     };
 
     $scope.createNewState = function(){
@@ -144,8 +159,6 @@ app.controller('NewDocCtrl', function($scope,$compile, localStorageService){
             id: $scope.ids,
             name : 'Default'
         };
-
-        //$scope.ids++;
         $scope.states.push(state);
         return state;
     };
@@ -222,7 +235,6 @@ app.controller('NewDocCtrl', function($scope,$compile, localStorageService){
                     $scope.documentSaved = false;
                     $scope.documentName = $scope.documentName + "*";
                     $scope.documentSaveState = "btn-warning";
-                    console.log($scope.documentName);
                 }
                 var newState = $scope.createNewState();
                 
