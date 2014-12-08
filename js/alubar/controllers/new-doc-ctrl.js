@@ -221,18 +221,6 @@ app.controller('NewDocCtrl', function($scope,$compile, localStorageService){
                 }
                 var newState = $scope.createNewState();
                 
-                jsPlumb.draggable(newState.container, {
-                    containment: $('#plumbing-zone'),
-                    stop: function(event) {
-                        if($scope.documentSaved){
-                            $scope.documentSaved = false;
-                            $scope.documentName = $scope.documentName + "*";
-                            $scope.documentSaveState = "btn-warning";
-                            $scope.$apply();
-                        }
-                    }
-                });
-                
                 setStateCss(newState, e);
 
                 newState.container.dblclick(function(e) {
@@ -249,12 +237,13 @@ app.controller('NewDocCtrl', function($scope,$compile, localStorageService){
                     $scope.editState($(this));
                     e.stopPropagation();
                 });
-                
+                /*
                 $('#plumbing-zone').scroll(
                     function(){
                         jsPlumb.repaintEverything();
                     }
                 );
+                */
                 $scope.makeTarget(newState.input);
                 $scope.makeSource(newState.output);
 
@@ -276,6 +265,15 @@ app.directive('etape', function($compile){
         link: function(scope, element, attrs){
             jsPlumb.draggable(element, {
                 containment: $('#plumbing-zone'),
+                stop: function(event) {
+                    if(scope.$parent.documentSaved){
+                        scope.$parent.documentSaved = false;
+                        scope.$parent.documentName = scope.$parent.documentName + "*";
+                        scope.$parent.documentSaveState = "btn-warning";
+                        scope.$parent.$apply();
+                    }
+                    
+                }
             });
         }
     };
