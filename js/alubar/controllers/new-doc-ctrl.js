@@ -1,20 +1,5 @@
 var app = angular.module('alubar-app');
 
-app.directive('ngConfirmClick', [
-    function(){
-        return {
-            link: function (scope, element, attr) {
-                var msg = attr.ngConfirmClick || "Are you sure?";
-                var clickAction = attr.confirmedClick;
-                element.bind('click',function (event) {
-                    if ( window.confirm(msg) ) {
-                        scope.$eval(clickAction)
-                    }
-                });
-            }
-        };
-}]);
-
 app.controller('NewDocCtrl', function($scope,$compile, localStorageService){
     $scope.ids = 0;
     $scope.stateEditionMode = true;
@@ -30,16 +15,7 @@ app.controller('NewDocCtrl', function($scope,$compile, localStorageService){
             'left': e.pageX - $('#plumbing-zone').offset().left
         });
     };
-    
-    $scope.indexOfState = function(id){
-        var value = 0;
-        console.log($scope.states);
-        
-        for(var i = 0; i < $scope.states.length+1; i++){
-            console.log($scope.states[i]);
-        }
-        return value;
-    };
+
     $scope.saveDocument = function(){
         if(!$scope.documentSaved){
             $scope.documentSaved = true;
@@ -68,16 +44,16 @@ app.controller('NewDocCtrl', function($scope,$compile, localStorageService){
     };
 
     $scope.importLastDocument = function(){
+        jsPlumb.setSuspendDrawing(true);
         $scope.deleteAll();
         var states = localStorageService.get('savedStates');
         var connections = localStorageService.get('savedConnections');
         
         // On importe tous les state
         angular.forEach(states, function(state, index){
-            //var newIndex = $scope.ids;
-
-            var mainContainer = $($compile('<etape test="states['+state.id+'].name" id="'+state.id+'">')($scope));
+            var newIndex = $scope.states.length;
             
+            var mainContainer = $($compile('<etape test="states['+newIndex+'].name" id="'+state.id+'">')($scope));
             var connectInDiv = $('<div>').addClass('connectIn').attr('id', 'connectIn-' + state.id);
             var connectOutDiv = $('<div>').addClass('connectOut').attr('id', 'connectOut-' + state.id);
 
@@ -102,10 +78,7 @@ app.controller('NewDocCtrl', function($scope,$compile, localStorageService){
                 id: state.id,
                 name : state.name
             };
-            $scope.states[state.id] = newstate;
-            if($scope.ids < state.id)
-                $scope.ids = state.id;
-
+            $scope.states.push(newstate);
             $('#plumbing-zone').append(mainContainer);
         });
 
@@ -113,6 +86,7 @@ app.controller('NewDocCtrl', function($scope,$compile, localStorageService){
         angular.forEach(connections, function(connection, index){
             jsPlumb.connect({source:connection.from, target:connection.to});
         });
+        jsPlumb.setSuspendDrawing(false, true);
     };
 
     $scope.validateNameEdition = function(){
@@ -145,10 +119,11 @@ app.controller('NewDocCtrl', function($scope,$compile, localStorageService){
     };
 
     $scope.createNewState = function(){
-        var newIndex = $scope.ids++;
-        var mainContainer = $($compile('<etape test="states['+newIndex+'].name" id="'+$scope.ids+'">')($scope));
-        var connectInDiv = $('<div>').addClass('connectIn').attr('id', 'connectIn-' + $scope.ids);
-        var connectOutDiv = $('<div>').addClass('connectOut').attr('id', 'connectOut-' + $scope.ids);
+        var newIndex = $scope.states.length;
+        
+        var mainContainer = $($compile('<etape test="states['+newIndex+'].name" id="'+$scope.states.length+'">')($scope));
+        var connectInDiv = $('<div>').addClass('connectIn').attr('id', 'connectIn-' + $scope.states.length);
+        var connectOutDiv = $('<div>').addClass('connectOut').attr('id', 'connectOut-' + $scope.states.length);
         mainContainer.append(connectInDiv);
         mainContainer.append(connectOutDiv);
 
@@ -156,7 +131,7 @@ app.controller('NewDocCtrl', function($scope,$compile, localStorageService){
             container: mainContainer,
             input: connectInDiv,
             output: connectOutDiv,
-            id: $scope.ids,
+            id: $scope.states.length,
             name : 'Default'
         };
         $scope.states.push(state);
@@ -194,6 +169,7 @@ app.controller('NewDocCtrl', function($scope,$compile, localStorageService){
             state.container.remove();
             delete $scope.states[index];
         });
+        $scope.states = [];
         $scope.connections = [];
         $scope.ids = 0;
     };
@@ -289,3 +265,18 @@ app.directive('etape', function($compile){
         }
     };
 });
+
+app.directive('ngConfirmClick', [
+    function(){
+        return {
+            link: function (scope, element, attr) {
+                var msg = attr.ngConfirmClick || "Are you sure?";
+                var clickAction = attr.confirmedClick;
+                element.bind('click',function (event) {
+                    if ( window.confirm(msg) ) {
+                        scope.$eval(clickAction)
+                    }
+                });
+            }
+        };
+}]);
