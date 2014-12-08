@@ -181,14 +181,21 @@ app.controller('NewDocCtrl', function($scope,$compile, localStorageService){
             jsPlumb.bind('beforeDrop', function(info) {
                 //console.log(info.targetId);
                 //console.log($('#'+info.targetId));
-                if($('#'+info.targetId).hasClass('connectIn'))
+                if($('#'+info.targetId).hasClass('connectIn')){
+                    if($scope.documentSaved){
+                    $scope.documentSaved = false;
+                    $scope.documentName = $scope.documentName + "*";
+                    $scope.documentSaveState = "btn-warning";
+                    $scope.$apply();
+                }
                     return true;
+                }
                 else
                     return false;
             });
 
             jsPlumb.bind('connection', function(info) {
-              $scope.connections.push({ from: info.sourceId, to: info.targetId });
+                $scope.connections.push({ from: info.sourceId, to: info.targetId });
             });
 
             jsPlumb.importDefaults({
@@ -216,6 +223,14 @@ app.controller('NewDocCtrl', function($scope,$compile, localStorageService){
                 
                 jsPlumb.draggable(newState.container, {
                     containment: $('#plumbing-zone'),
+                    stop: function(event) {
+                        if($scope.documentSaved){
+                            $scope.documentSaved = false;
+                            $scope.documentName = $scope.documentName + "*";
+                            $scope.documentSaveState = "btn-warning";
+                            $scope.$apply();
+                        }
+                    }
                 });
                 
                 setStateCss(newState, e);
