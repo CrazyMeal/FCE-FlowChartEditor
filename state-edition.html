@@ -17,9 +17,9 @@
 	<body ng-app="alubar-app">
 		<div id="container" ng-controller="StateEditionCtrl">
 			<div id="components" class="col-md-2">
-				<div id="png-component" x-lvl-draggable='true' class="component"></div>
-				<div id="video-component" x-lvl-draggable='true' class="component"></div>
-				<div id="tchat-component" x-lvl-draggable='true' class="component"></div>
+				<div x-lvl-draggable='true' class="component pdf-component"></div>
+				<div x-lvl-draggable='true' class="component video-component"></div>
+				<div x-lvl-draggable='true' class="component tchat-component"></div>
 			</div>
 			<div id="working-zone" class="col-md-10" x-lvl-drop-target='true' x-on-drop='dropped(dragEl, dropEl, posX, posY)'>
 				
