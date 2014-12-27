@@ -1,0 +1,33 @@
+#components{
+	height: 100%;
+	background-color: grey;
+}
+
+#working-zone{
+	height: 100%;
+}
+.component{
+	width: 70px;
+	height: 70px;
+	margin-bottom: 5px;
+	border: 3px solid;
+	border-radius: 10px;
+	background-size: contain;
+}
+
+.dropped-component{
+	position: absolute;
+	display: block;
+	width: 50px;
+	height: 50px;
+	background-color: red;
+}
+#png-component{
+	background-image: url(../img/pdf.png);
+}
+#video-component{
+	background-image: url(../img/video.png);
+}
+#tchat-component{
+	background-image: url(../img/tchat.png);
+}

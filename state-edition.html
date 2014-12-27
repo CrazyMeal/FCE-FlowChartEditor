@@ -1,0 +1,50 @@
+<html>
+	<head>
+		<title>Alubar - State edition</title>
+
+        <meta charset="utf-8" />
+	    <meta name="description" content="This is a Alubar webapp">
+	    <meta name="author" content="Paquet Kevin">
+	    <meta name="author" content="Denaux Robin">
+
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/admin-panel.css">
+        <link rel="stylesheet" href="css/library-panel.css">
+        <link rel="stylesheet" href="css/new-document-panel.css">
+        <link rel="stylesheet" href="css/state-edition.css">
+        <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+	</head>
+	<body ng-app="alubar-app">
+		<div id="container" ng-controller="StateEditionCtrl">
+			<div id="components" class="col-md-2">
+				<div id="png-component" x-lvl-draggable='true' class="component"></div>
+				<div id="video-component" x-lvl-draggable='true' class="component"></div>
+				<div id="tchat-component" x-lvl-draggable='true' class="component"></div>
+			</div>
+			<div id="working-zone" class="col-md-10" x-lvl-drop-target='true' x-on-drop='dropped(dragEl, dropEl, posX, posY)'>
+				
+			</div>
+		</div>
+	</body>
+
+	<script src="js/jquery-1.11.1.js"></script>
+	<script src="js/dom.jsPlumb-1.7.2-min.js"></script>
+    <script src="js/angular.js"></script>
+    
+	<script src="js/lvl-uuid.js"></script>
+    <script src="js/lvl-drag-drop.js"></script>
+
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/ui-bootstrap-0.12.0.min.js"></script>
+    <script src="js/ui-bootstrap-tpls-0.12.0.js"></script>
+
+    <script src="js/angular-local-storage.js"></script>
+    
+
+    <script src="js/alubar/alubar-app.js"></script>
+    <script src="js/alubar/controllers/admin-ctrl.js"></script>
+    <script src="js/alubar/controllers/new-doc-ctrl.js"></script>
+    <script src="js/alubar/controllers/state-edition-ctrl.js"></script>
+
+    
+</html>

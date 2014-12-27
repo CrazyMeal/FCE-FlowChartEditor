@@ -169,6 +169,9 @@ app.controller('NewDocCtrl', function($scope,$compile, localStorageService){
             state.container.remove();
             delete $scope.states[index];
         });
+        jsPlumb.deleteEveryEndpoint();
+        jsPlumb.detachEveryConnection();
+        jsPlumb.repaintEverything();
         $scope.states = [];
         $scope.connections = [];
         $scope.ids = 0;
