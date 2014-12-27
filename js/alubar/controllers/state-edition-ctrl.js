@@ -1,18 +1,21 @@
 var app = angular.module('alubar-app');
 
 app.controller('StateEditionCtrl', function($scope) {
+  $scope.stateContent = [];
+  $scope.uuid = 0;
+
   assignClass = function(droppedElement, newComponent){
     if(droppedElement.hasClass("pdf-component")){
       newComponent.addClass("pdf-component");
-      return true;
+      return "pdf";
     }
     if(droppedElement.hasClass("video-component")){
       newComponent.addClass("video-component");
-      return true;
+      return "video";
     }
     if(droppedElement.hasClass("tchat-component")){
       newComponent.addClass("tchat-component");
-      return true;
+      return "tchat";
     }
   };
 
@@ -31,12 +34,19 @@ app.controller('StateEditionCtrl', function($scope) {
         'top': posY - $('#working-zone').offset().top - 25,
         'left': posX - $('#working-zone').offset().left - 25
       });
-
-      assignClass(drag, component);
+      jsPlumb.draggable(component, {
+        containment: $('#working-zone')
+      });
+      var componentKind = assignClass(drag, component);
       
+      $scope.stateContent.push({
+        id: $scope.uuid,
+        kind: componentKind
+      });
+
+      $scope.uuid++;
+      console.log($scope.stateContent);
       drop.append(component);
     }
-    
-
-    };
+  };
 });
