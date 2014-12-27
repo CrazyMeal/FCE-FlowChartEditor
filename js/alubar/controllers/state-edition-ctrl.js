@@ -1,8 +1,18 @@
 var app = angular.module('alubar-app');
 
-app.controller('StateEditionCtrl', function($scope) {
-  $scope.stateContent = [];
-  $scope.uuid = 0;
+app.controller('StateEditionCtrl', function($scope, StateFactory) {
+  $scope.init = function(){
+    $scope.stateContent = StateFactory.getStateContent();
+    $scope.uuid = 0;
+    
+    $scope.$watch($scope.stateContent, function (newValue) {
+        if (newValue) StateFactory.setStateContent(newValue);
+    });
+
+    $scope.$watch(function () { return StateFactory.getStateContent(); }, function (newValue) {
+        if (newValue) $scope.stateContent = newValue;
+    });
+  };
 
   assignClass = function(droppedElement, newComponent){
     if(droppedElement.hasClass("pdf-component")){
@@ -27,6 +37,11 @@ app.controller('StateEditionCtrl', function($scope) {
       }
     });
   };
+
+  $scope.console = function(){
+    console.log(StateFactory.getStateContent());
+  };
+
   $scope.dropped = function(dragEl, dropEl, posX, posY) {
  	  var dragEl = document.getElementById(dragEl);
   	var dropEl = document.getElementById(dropEl);
