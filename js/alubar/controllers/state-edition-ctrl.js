@@ -19,6 +19,14 @@ app.controller('StateEditionCtrl', function($scope) {
     }
   };
 
+  updatePosition = function(uuid, newTop, newLeft){
+    angular.forEach($scope.stateContent, function(component){
+      if(component.uuid == uuid){
+        component.top = newTop;
+        component.left = newLeft;
+      }
+    });
+  };
   $scope.dropped = function(dragEl, dropEl, posX, posY) {
  	  var dragEl = document.getElementById(dragEl);
   	var dropEl = document.getElementById(dropEl);
@@ -30,22 +38,34 @@ app.controller('StateEditionCtrl', function($scope) {
       console.log("X: "+ posX + " Y: " + posY);
       
       var component = $('<div>').addClass('dropped-component');
+      component.attr('uuid', $scope.uuid);
       component.css({
         'top': posY - $('#working-zone').offset().top - 25,
         'left': posX - $('#working-zone').offset().left - 25
       });
-      jsPlumb.draggable(component, {
-        containment: $('#working-zone')
-      });
+
       var componentKind = assignClass(drag, component);
       
       $scope.stateContent.push({
-        id: $scope.uuid,
-        kind: componentKind
+        uuid: $scope.uuid,
+        kind: componentKind,
+        top: posY,
+        left: posX
       });
 
       $scope.uuid++;
-      console.log($scope.stateContent);
+      //console.log($scope.stateContent);
+
+      jsPlumb.draggable(component, {
+        containment: $('#working-zone'),
+        stop: function(event) {
+          var newLeft = event.el.offsetLeft;
+          var newTop = event.el.offsetTop;
+          var uuid = $(event.el).attr('uuid');
+
+          updatePosition(uuid, newTop, newLeft);    
+        }
+      });
       drop.append(component);
     }
   };
