@@ -198,6 +198,7 @@ app.controller('NewDocCtrl', function($scope,$compile, localStorageService){
             });
 
             jsPlumb.bind('connection', function(info) {
+                info.connection.addOverlay([ "Label", { label:"Default", id:"label", cssClass:"aLabel" }]);
                 $scope.connections.push({ from: info.sourceId, to: info.targetId });
             });
 
