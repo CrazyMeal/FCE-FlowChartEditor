@@ -38,12 +38,10 @@ app.controller('NewDocCtrl', function($scope,$compile, localStorageService, libr
     };
     
     $scope.$on('load', function(){
-        /*
         console.log(libraryService.scenario);
         var scenario = libraryService.scenario;
         $scope.loadDocument(scenario.name, scenario.state, scenario.transition);
-        */
-        $scope.importLastDocumentFromLocalStorage();
+        //$scope.importLastDocumentFromLocalStorage();
     });
 
     $scope.loadDocument = function(name, states, connections){
