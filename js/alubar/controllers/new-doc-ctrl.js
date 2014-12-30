@@ -36,14 +36,20 @@ app.controller('NewDocCtrl', function($scope,$compile, localStorageService, libr
             console.log($scope.connections);
         }
     };
+    
     $scope.$on('load', function(){
+        /*
         console.log(libraryService.scenario);
         var scenario = libraryService.scenario;
         $scope.loadDocument(scenario.name, scenario.state, scenario.transition);
+        */
+        $scope.importLastDocumentFromLocalStorage();
     });
+
     $scope.loadDocument = function(name, states, connections){
         jsPlumb.setSuspendDrawing(true);
         $scope.deleteAll();
+
         $scope.documentName = name;
         // On importe tous les state
         angular.forEach(states, function(state, index){
@@ -73,10 +79,12 @@ app.controller('NewDocCtrl', function($scope,$compile, localStorageService, libr
             $scope.states.push(newstate);
             $('#plumbing-zone').append(mainContainer);
         });
+    
         // On relis tous les states entre eux selon les connections
         angular.forEach(connections, function(connection, index){
             jsPlumb.connect({source:connection.from, target:connection.to});
         });
+
         jsPlumb.setSuspendDrawing(false, true);
     };
     $scope.saveDocumentToLocalStorage = function(){

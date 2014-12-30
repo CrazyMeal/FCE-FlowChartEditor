@@ -32,8 +32,8 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h3 class="panel-title">{{documentName}}</h3>
-                        <a type="button" class="btn btn-info" ng-click="importLastDocument()">Charger le dernier document</a>
-                        <a type="button" class="btn" ng-class="documentSaveState" ng-click="saveDocument()">Sauvegarder</a>
+                        <a type="button" class="btn btn-info" ng-click="importLastDocumentFromLocalStorage()">Charger le dernier document</a>
+                        <a type="button" class="btn" ng-class="documentSaveState" ng-click="saveDocumentToLocalStorage()">Sauvegarder</a>
                         <a type="button" class="btn btn-danger" ng-confirm-click="Êtes-vous sûr de vouloir tout supprimer ?" confirmed-click="deleteAll()">Supprimer tout</a>
                         <div id="editMenu" collapse="stateEditionMode">
                             <input type="text"  ng-model="nameInEdition.name">
@@ -57,7 +57,7 @@
                         <div class="table-responsive panel-body">
                             <a type="button" class="btn btn-primary" ng-class="(selected==null||selected.edit==false)?'enabled':'disabled'" ng-click="newScenario()">Nouveau Scénario</a>
                             <a type="button" class="btn btn-primary" ng-class="selected!=null?'enabled':'disabled'" ng-click="editName()">Renommer</a>
-                            <a type="button" class="btn btn-primary" ng-class="(selected!=null&&selected.edit==false)?'enabled':'disabled'" ng-click="load();MainController.selectTab(1)">Charger</a>
+                            <a type="button" class="btn btn-primary" ng-class="(selected!=null&&selected.edit==false)?'enabled':'disabled'" ng-click="MainController.selectTab(1);load()">Charger</a>
                             <a type="button" class="btn btn-primary" ng-class="selected!=null?'enabled':'disabled'" ng-click="delete()">Supprimer</a>
                             <table class="table">
                                 <thead>
