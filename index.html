@@ -48,12 +48,37 @@
                 </div>
             </div>
 
-            <div id="library-panel" ng-show="MainController.isSelected(2)" class="col-md-10">
+            <div id="library-panel" ng-show="MainController.isSelected(2)" ng-controller="LibraryController" class="col-md-10">
                 <div class="panel panel-default" >
                     <div class="panel-heading">
                         <h3 class="panel-title">Bibliotheque</h3>
                     </div>
                     <div class="panel-body">
+                        <div class="table-responsive panel-body">
+                            <a type="button" class="btn btn-primary" ng-class="(selected==null||selected.edit==false)?'enabled':'disabled'" ng-click="newScenario()">Nouveau Scénario</a>
+                            <a type="button" class="btn btn-primary" ng-class="selected!=null?'enabled':'disabled'" ng-click="editName()">Renommer</a>
+                            <a type="button" class="btn btn-primary" ng-class="(selected!=null&&selected.edit==false)?'enabled':'disabled'" ng-click="load();MainController.selectTab(1)">Charger</a>
+                            <a type="button" class="btn btn-primary" ng-class="selected!=null?'enabled':'disabled'" ng-click="delete()">Supprimer</a>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                    <th>Nom</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="scenario in scenarios" ng-class="{true: 'info'}[scenario.selected]">
+                                    <td ng-click="select(scenario)">
+                                    <div ng-dblclick="editName()">
+                                    <p ng-hide="scenario.edit">{{scenario.name}}</p>
+                                    <input ng-show="scenario.edit" ng-model="scenario.tmpName"></input>
+                                    <a type="button" class="btn btn-primary" ng-show="scenario.edit" ng-click="editName()">OK</a>
+                                    <a type="button" class="btn btn-primary" ng-show="scenario.edit" ng-click="scenario.edit=!scenario.edit" ng-class="selected.name!=null?'enabled':'disabled'">Annuler</a>
+                                    </div>
+                                    </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -138,4 +163,5 @@
     <script src="js/alubar/alubar-app.js"></script>
     <script src="js/alubar/controllers/admin-ctrl.js"></script>
     <script src="js/alubar/controllers/new-doc-ctrl.js"></script>
+    <script src="js/alubar/controllers/library-ctrl.js"></script>
 </html>
