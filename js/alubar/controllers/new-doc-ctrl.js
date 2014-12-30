@@ -1,6 +1,6 @@
 var app = angular.module('alubar-app');
 
-app.controller('NewDocCtrl', function($scope,$compile, localStorageService){
+app.controller('NewDocCtrl', function($scope,$compile,$timeout, localStorageService, libraryService){
     $scope.ids = 0;
     $scope.stateEditionMode = true;
     $scope.documentName = "Nouveau Document";
@@ -15,7 +15,74 @@ app.controller('NewDocCtrl', function($scope,$compile, localStorageService){
             'left': e.pageX - $('#plumbing-zone').offset().left
         });
     };
+    $scope.saveDocument = function(){
+        if(!$scope.documentSaved){
+            $scope.documentSaved = true;
+            $scope.documentName = $scope.documentName.substring(0, $scope.documentName.length - 1);
+            $scope.documentSaveState = "btn-success";
+            var lightStates = [];
+            angular.forEach(jsPlumb.getSelector(".state"), function(stateDiv){
+                var tmpState = {};
+                tmpState.id = $(stateDiv).attr('id');
+                tmpState.top = $(stateDiv).position().top;
+                tmpState.left = $(stateDiv).position().left;
+                tmpState.name = $(stateDiv).text();
+                lightStates.push(tmpState);
+            });
+            libraryService.saveScenario($scope.documentName, angular.copy(lightStates), angular.copy($scope.connections));
+            console.log('Saved states:');
+            console.log(lightStates);
+            console.log('Saved connections:');
+            console.log($scope.connections);
+        }
+    };
+    
+    $scope.$on('load', function(){
+		var scenario = libraryService.scenario;
+		$timeout(function(){$scope.loadDocument(scenario.name, scenario.state, scenario.transition)}, 1);
+    });
 
+    $scope.loadDocument = function(name, states, connections){
+        jsPlumb.setSuspendDrawing(true);
+        $scope.deleteAll();
+
+        $scope.documentName = name;
+        // On importe tous les state
+        angular.forEach(states, function(state, index){
+            var newIndex = $scope.states.length;
+            var mainContainer = $($compile('<etape test="states['+newIndex+'].name" id="'+state.id+'">')($scope));
+            var connectInDiv = $('<div>').addClass('connectIn').attr('id', 'connectIn-' + state.id);
+            var connectOutDiv = $('<div>').addClass('connectOut').attr('id', 'connectOut-' + state.id);
+            mainContainer.append(connectInDiv);
+            mainContainer.append(connectOutDiv);
+            mainContainer.css({
+                'top': state.top,
+                'left': state.left
+            });
+            $scope.makeTarget(connectInDiv);
+            $scope.makeSource(connectOutDiv);
+            mainContainer.dblclick(function(e) {
+                $scope.editState($(this));
+                e.stopPropagation();
+            });
+            var newstate = {
+                container: mainContainer,
+                input: connectInDiv,
+                output: connectOutDiv,
+                id: state.id,
+                name : state.name
+            };
+            $scope.states.push(newstate);
+            $('#plumbing-zone').append(mainContainer);
+        });
+    
+        // On relis tous les states entre eux selon les connections
+        angular.forEach(connections, function(connection, index){
+            jsPlumb.connect({source:connection.from, target:connection.to});
+        });
+
+        jsPlumb.setSuspendDrawing(false, true);
+    };
     $scope.saveDocumentToLocalStorage = function(){
         if(!$scope.documentSaved){
             $scope.documentSaved = true;
