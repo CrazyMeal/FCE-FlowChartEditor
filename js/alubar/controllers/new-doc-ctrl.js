@@ -1,6 +1,6 @@
 var app = angular.module('alubar-app');
 
-app.controller('NewDocCtrl', function($scope,$compile, localStorageService, libraryService){
+app.controller('NewDocCtrl', function($scope,$compile,$timeout, localStorageService, libraryService){
     $scope.ids = 0;
     $scope.stateEditionMode = true;
     $scope.documentName = "Nouveau Document";
@@ -38,10 +38,8 @@ app.controller('NewDocCtrl', function($scope,$compile, localStorageService, libr
     };
     
     $scope.$on('load', function(){
-        console.log(libraryService.scenario);
-        var scenario = libraryService.scenario;
-        $scope.loadDocument(scenario.name, scenario.state, scenario.transition);
-        //$scope.importLastDocumentFromLocalStorage();
+		var scenario = libraryService.scenario;
+		$timeout(function(){$scope.loadDocument(scenario.name, scenario.state, scenario.transition)}, 1);
     });
 
     $scope.loadDocument = function(name, states, connections){
