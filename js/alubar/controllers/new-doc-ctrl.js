@@ -16,7 +16,7 @@ app.controller('NewDocCtrl', function($scope,$compile, localStorageService){
         });
     };
 
-    $scope.saveDocument = function(){
+    $scope.saveDocumentToLocalStorage = function(){
         if(!$scope.documentSaved){
             $scope.documentSaved = true;
             $scope.documentName = $scope.documentName.substring(0, $scope.documentName.length - 1);
@@ -43,7 +43,7 @@ app.controller('NewDocCtrl', function($scope,$compile, localStorageService){
         }
     };
 
-    $scope.importLastDocument = function(){
+    $scope.importLastDocumentFromLocalStorage = function(){
         jsPlumb.setSuspendDrawing(true);
         $scope.deleteAll();
         var states = localStorageService.get('savedStates');
