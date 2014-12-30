@@ -11,7 +11,7 @@
         <link rel="stylesheet" href="css/admin-panel.css">
         <link rel="stylesheet" href="css/library-panel.css">
         <link rel="stylesheet" href="css/new-document-panel.css">
-        <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
 
     </head>
     <body ng-app="alubar-app">
@@ -32,23 +32,55 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h3 class="panel-title">{{documentName}}</h3>
-                        <a type="button" class="btn btn-primary" ng-click=""> clear </a>
-                        <a type="button" class="btn btn-primary" ng-click=""> refill </a>
+                        <a type="button" class="btn btn-info" ng-click="importLastDocument()">Charger le dernier document</a>
+                        <a type="button" class="btn" ng-class="documentSaveState" ng-click="saveDocument()">Sauvegarder</a>
+                        <a type="button" class="btn btn-danger" ng-confirm-click="Êtes-vous sûr de vouloir tout supprimer ?" confirmed-click="deleteAll()">Supprimer tout</a>
+                        <div id="editMenu" collapse="stateEditionMode">
+                            <input type="text"  ng-model="nameInEdition.name">
+                            <a type="button" class="btn btn-success" ng-click="stateEditionMode = true">Valider</a>
+                        </div>
                     </div>
                     <div class="table-responsive panel-body">
                         <div id="plumbing-zone" ng-init="init()">
-                        <div id="trash"></div>
+                            <div id="trash"></div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div id="library-panel" ng-show="MainController.isSelected(2)" class="col-md-10">
+            <div id="library-panel" ng-show="MainController.isSelected(2)" ng-controller="LibraryController" class="col-md-10">
                 <div class="panel panel-default" >
                     <div class="panel-heading">
                         <h3 class="panel-title">Bibliotheque</h3>
                     </div>
                     <div class="panel-body">
+	                    <div class="table-responsive panel-body">
+	                        <a type="button" class="btn btn-primary" ng-class="(selected==null||selected.edit==false)?'enabled':'disabled'" ng-click="newScenario()">Nouveau Scénario</a>
+	                        <a type="button" class="btn btn-primary" ng-class="selected!=null?'enabled':'disabled'" ng-click="editName()">Renommer</a>
+	                        <a type="button" class="btn btn-primary" ng-class="(selected!=null&&selected.edit==false)?'enabled':'disabled'" ng-click="load();MainController.selectTab(1)">Charger</a>
+	                        <a type="button" class="btn btn-primary" ng-class="selected!=null?'enabled':'disabled'" ng-click="delete()">Supprimer</a>
+	
+	                        <table class="table">
+	                            <thead>
+	                                <tr>
+	                                    <th>Nom</th>
+	                                </tr>
+	                            </thead>
+	                            <tbody>
+	                                <tr ng-repeat="scenario in scenarios" ng-class="{true: 'info'}[scenario.selected]">
+	                                    <td ng-click="select(scenario)">
+	                                    	<div ng-dblclick="editName()">
+	                                    		<p ng-hide="scenario.edit">{{scenario.name}}</p>
+	                                    		<input ng-show="scenario.edit" ng-model="scenario.tmpName"></input>
+												<a type="button" class="btn btn-primary" ng-show="scenario.edit" ng-click="editName()">OK</a>
+												<a type="button" class="btn btn-primary" ng-show="scenario.edit" ng-click="scenario.edit=!scenario.edit" ng-class="selected.name!=null?'enabled':'disabled'">Annuler</a>
+	                                    	</div>
+	                                    </td>
+	                                    
+	                                </tr>
+	                            </tbody>
+	                        </table>
+	                    </div>
                     </div>
                 </div>
             </div>
@@ -126,7 +158,9 @@
     <script src="js/ui-bootstrap-0.12.0.min.js"></script>
     <script src="js/ui-bootstrap-tpls-0.12.0.js"></script>
 
+    <script src="js/angular-local-storage.js"></script>
     <script src="js/alubar/alubar-app.js"></script>
     <script src="js/alubar/controllers/admin-ctrl.js"></script>
     <script src="js/alubar/controllers/new-doc-ctrl.js"></script>
+    <script src="js/alubar/controllers/library-ctrl.js"></script>
 </html>

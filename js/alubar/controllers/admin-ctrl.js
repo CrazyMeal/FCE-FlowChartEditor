@@ -49,7 +49,7 @@ app.controller('AdminCtrl', function($scope) {
     };
 
     this.addNewRole = function(user){
-        if($.inArray(user.newRole, user.roles) == -1)
+        if($.inArray(user.newRole, user.roles) == -1 && $.inArray(user.newRole, this.possibleRoles) != -1)
             user.roles.push(user.newRole);
     };
     this.addNewUser = function(){

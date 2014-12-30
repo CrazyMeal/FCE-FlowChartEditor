@@ -1,4 +1,4 @@
-var app = angular.module('alubar-app', ['ui.bootstrap']);
+var app = angular.module('alubar-app', ['ui.bootstrap','LocalStorageModule']);
 
 app.controller('MainCtrl', function ($scope) {
     this.tab = 1;
