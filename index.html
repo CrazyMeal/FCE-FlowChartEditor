@@ -32,8 +32,11 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h3 class="panel-title">{{documentName}}</h3>
-                        <a type="button" class="btn" ng-class="documentSaveState" ng-click="saveDocument()">Save to library</a>
-                        <a type="button" class="btn btn-danger" ng-confirm-click="Are you sure to delete everything ?" confirmed-click="deleteAll()">Delete all</a>
+                        <a type="button" class="btn" ng-class="documentSaveState" ng-click="saveDocument()"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Save to library</a>
+                        <a type="button" class="btn btn-info" ng-click=""><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> Export</a>
+                        <a type="button" class="btn btn-info" ng-click=""> <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> Import</a>
+                        <a type="button" class="btn btn-danger" ng-confirm-click="Are you sure to delete everything ?" confirmed-click="deleteAll()"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete all</a>
+                        
                         <div id="editMenu" collapse="stateEditionMode">
                             <input type="text"  ng-model="nameInEdition.name">
                             <a type="button" class="btn btn-success" ng-click="stateEditionMode = true">Validate</a>
