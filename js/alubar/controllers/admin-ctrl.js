@@ -4,34 +4,34 @@ app.controller('AdminCtrl', function($scope) {
 
     this.possibleRoles = [
         "admin",
-        "createur",
-        "traducteur"
+        "creator",
+        "traductor"
     ];
     this.tmpUser = {
         id: 0,
         username: "",
         roles: [],
-        newRole: "Ajouter un role"
+        newRole: "Add a role"
     };
     this.tmpUserOrigin = {
         id: 0,
         username: "",
         roles: [],
-        newRole: "Ajouter un role"
+        newRole: "Add a role"
     };
 
     this.users = [
         {
             id: 1,
             username: "Alice",
-            roles: ["admin", "createur"],
-            newRole: "Ajouter un role"
+            roles: ["admin", "creator"],
+            newRole: "Add a role"
         },
         {
             id: 2,
             username: "Bob",
-            roles: ["admin", "traducteur"],
-            newRole: "Ajouter un role"
+            roles: ["admin", "traductor"],
+            newRole: "Add a role"
         }
     ];
 

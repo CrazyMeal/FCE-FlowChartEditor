@@ -3,7 +3,7 @@ var app = angular.module('alubar-app');
 app.controller('NewDocCtrl', function($scope,$compile,$timeout, localStorageService, libraryService){
     $scope.ids = 0;
     $scope.stateEditionMode = true;
-    $scope.documentName = "Nouveau Document";
+    $scope.documentName = "New Document";
     $scope.documentSaved = true;
     $scope.states = [];
     $scope.connections = [];

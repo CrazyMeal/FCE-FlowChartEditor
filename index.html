@@ -21,8 +21,8 @@
                 <img src="img/logo-alubar.png" alt="logo alubar" />
 
                 <div id="menu" class="btn-group-vertical" role="group" aria-label="...">
-                    <a ng-click="MainController.selectTab(1)" class="btn btn-default">Nouveau document</a>
-                    <a ng-click="MainController.selectTab(2)" class="btn btn-default">Parcourir la bibliotheque</a>
+                    <a ng-click="MainController.selectTab(1)" class="btn btn-default">Scenario builder</a>
+                    <a ng-click="MainController.selectTab(2)" class="btn btn-default">Library</a>
                     <a ng-click="MainController.selectTab(3)" class="btn btn-default">Administration</a>
                 </div>
 
@@ -32,17 +32,15 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h3 class="panel-title">{{documentName}}</h3>
-                        <a type="button" class="btn btn-info" ng-click="importLastDocument()">Charger le dernier document</a>
-                        <a type="button" class="btn" ng-class="documentSaveState" ng-click="saveDocument()">Sauvegarder</a>
-                        <a type="button" class="btn btn-danger" ng-confirm-click="Êtes-vous sûr de vouloir tout supprimer ?" confirmed-click="deleteAll()">Supprimer tout</a>
+                        <a type="button" class="btn" ng-class="documentSaveState" ng-click="saveDocument()">Save to library</a>
+                        <a type="button" class="btn btn-danger" ng-confirm-click="Are you sure to delete everything ?" confirmed-click="deleteAll()">Delete all</a>
                         <div id="editMenu" collapse="stateEditionMode">
                             <input type="text"  ng-model="nameInEdition.name">
-                            <a type="button" class="btn btn-success" ng-click="stateEditionMode = true">Valider</a>
+                            <a type="button" class="btn btn-success" ng-click="stateEditionMode = true">Validate</a>
                         </div>
                     </div>
                     <div class="table-responsive panel-body">
                         <div id="plumbing-zone" ng-init="init()">
-                            <div id="trash"></div>
                         </div>
                     </div>
                 </div>
@@ -51,28 +49,28 @@
             <div id="library-panel" ng-show="MainController.isSelected(2)" ng-controller="LibraryController" class="col-md-10">
                 <div class="panel panel-default" >
                     <div class="panel-heading">
-                        <h3 class="panel-title">Bibliotheque</h3>
+                        <h3 class="panel-title">Library</h3>
                     </div>
                     <div class="panel-body">
                         <div class="table-responsive panel-body">
-                            <a type="button" class="btn btn-primary" ng-class="(selected==null||selected.edit==false)?'enabled':'disabled'" ng-click="newScenario()">Nouveau Scénario</a>
-                            <a type="button" class="btn btn-primary" ng-class="selected!=null?'enabled':'disabled'" ng-click="editName()">Renommer</a>
-                            <a type="button" class="btn btn-primary" ng-class="(selected!=null&&selected.edit==false)?'enabled':'disabled'" ng-click="load();MainController.selectTab(1)">Charger</a>
-                            <a type="button" class="btn btn-primary" ng-class="selected!=null?'enabled':'disabled'" ng-click="delete()">Supprimer</a>
+                            <a type="button" class="btn btn-primary" ng-class="(selected==null||selected.edit==false)?'enabled':'disabled'" ng-click="newScenario()">New scenario</a>
+                            <a type="button" class="btn btn-primary" ng-class="selected!=null?'enabled':'disabled'" ng-click="editName()">Rename</a>
+                            <a type="button" class="btn btn-primary" ng-class="(selected!=null&&selected.edit==false)?'enabled':'disabled'" ng-click="load();MainController.selectTab(1)">Load</a>
+                            <a type="button" class="btn btn-primary" ng-class="selected!=null?'enabled':'disabled'" ng-click="delete()">Delete</a>
                             <table class="table">
                                 <thead>
                                     <tr>
-                                    <th>Nom</th>
+                                    <th>Name</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr ng-repeat="scenario in scenarios" ng-class="{true: 'info'}[scenario.selected]">
                                     <td ng-click="select(scenario)">
                                     <div ng-dblclick="editName()">
-                                    <p ng-hide="scenario.edit">{{scenario.name}}</p>
-                                    <input ng-show="scenario.edit" ng-model="scenario.tmpName"></input>
-                                    <a type="button" class="btn btn-primary" ng-show="scenario.edit" ng-click="editName()">OK</a>
-                                    <a type="button" class="btn btn-primary" ng-show="scenario.edit" ng-click="scenario.edit=!scenario.edit" ng-class="selected.name!=null?'enabled':'disabled'">Annuler</a>
+                                        <p ng-hide="scenario.edit">{{scenario.name}}</p>
+                                        <input ng-show="scenario.edit" ng-model="scenario.tmpName"></input>
+                                        <a type="button" class="btn btn-primary" ng-show="scenario.edit" ng-click="editName()">OK</a>
+                                        <a type="button" class="btn btn-primary" ng-show="scenario.edit" ng-click="scenario.edit=!scenario.edit" ng-class="selected.name!=null?'enabled':'disabled'">Cancel</a>
                                     </div>
                                     </td>
                                     </tr>
@@ -87,14 +85,14 @@
                 
                 <div class="panel panel-default" ng-controller="AdminCtrl as admin">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Gestion des utilisateurs</h3>
+                        <h3 class="panel-title">User management</h3>
                     </div>
                     <div class="table-responsive panel-body">
-                        <a type="button" class="btn btn-primary" ng-click="addUserCollapse = !addUserCollapse"> Ajouter utilisateur </a>
-                        <a type="button" class="btn btn-primary" ng-click=""> Supprimer utilisateur </a>
+                        <a type="button" class="btn btn-primary" ng-click="addUserCollapse = !addUserCollapse">Add user</a>
+                        <a type="button" class="btn btn-primary" ng-click="">Delete user </a>
 
                         <div id="add-form" class="form-group" collapse="addUserCollapse">
-                            <label>Nom:</label>
+                            <label>Name:</label>
                             <input type="text" ng-model="admin.tmpUser.username" class="form-control">
                             <label>Roles:</label>
                             <div class="btn-group drop-button" dropdown is-open="isopen2" >
@@ -118,7 +116,7 @@
                             <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Nom</th>
+                                    <th>Name</th>
                                     <th>Roles</th>
                                 </tr>
                             </thead>
