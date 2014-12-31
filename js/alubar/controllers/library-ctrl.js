@@ -1,21 +1,5 @@
 var app = angular.module('alubar-app');
 
-app.factory('libraryService', function($rootScope){
-	return {
-		scenario: {},
-		saveScenario: function(name, state, transition){
-			this.scenario = {name: name,
-				state: state,
-				transition: transition};
-			$rootScope.$broadcast('save');
-		},
-		loadScenario: function(scenario){
-			this.scenario = scenario;
-			$rootScope.$broadcast('load');
-		}
-	};
-});
-
 app.controller('LibraryController', function($scope,$compile, libraryService, localStorageService){
 	$scope.scenarios = localStorageService.get('scenarios');
 	if($scope.scenarios == null)
@@ -103,10 +87,4 @@ app.controller('LibraryController', function($scope,$compile, libraryService, lo
 		$scope.saveAll();
 	})
 	
-})
-
-.directive('file', function() {
-	  return {
-	    templateUrl: 'js/alubar/templates/file.html'
-	  };
 });

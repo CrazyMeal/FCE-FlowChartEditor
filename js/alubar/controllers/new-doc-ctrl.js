@@ -312,13 +312,6 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, localStorageServ
                     $scope.editState($(this));
                     e.stopPropagation();
                 });
-                /*
-                $('#plumbing-zone').scroll(
-                    function(){
-                        jsPlumb.repaintEverything();
-                    }
-                );
-                */
                 $scope.makeTarget(newState.input);
                 $scope.makeSource(newState.output);
 
@@ -329,42 +322,3 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, localStorageServ
         });
     };
 });
-app.directive('etape', function($compile){
-    return {
-        restrict: 'E',
-        replace: true,
-        scope: {
-            test: '='
-        },
-        template: '<div class="state">{{test}}</div>',
-        link: function(scope, element, attrs){
-            jsPlumb.draggable(element, {
-                containment: $('#plumbing-zone'),
-                stop: function(event) {
-                    if(scope.$parent.documentSaved){
-                        scope.$parent.documentSaved = false;
-                        scope.$parent.documentName = scope.$parent.documentName + "*";
-                        scope.$parent.documentSaveState = "btn-warning";
-                        scope.$parent.$apply();
-                    }
-                    
-                }
-            });
-        }
-    };
-});
-
-app.directive('ngConfirmClick', [
-    function(){
-        return {
-            link: function (scope, element, attr) {
-                var msg = attr.ngConfirmClick || "Are you sure?";
-                var clickAction = attr.confirmedClick;
-                element.bind('click',function (event) {
-                    if ( window.confirm(msg) ) {
-                        scope.$eval(clickAction)
-                    }
-                });
-            }
-        };
-}]);
