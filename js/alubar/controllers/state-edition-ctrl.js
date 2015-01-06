@@ -50,39 +50,49 @@ app.controller('StateEditionCtrl', function($scope, StateFactory) {
     var drop = angular.element(dropEl);
 
     if(drag.hasClass("component")){
-      console.log("The element " + drag.attr('id') + " has been dropped on " + drop.attr("id") + "!");
-      console.log("X: "+ posX + " Y: " + posY);
-      
-      var component = $('<div>').addClass('dropped-component');
-      component.attr('uuid', $scope.uuid);
-      component.css({
-        'top': posY - $('#working-zone').offset().top - 25,
-        'left': posX - $('#working-zone').offset().left - 25
-      });
+      if(!drag.hasClass('tchat-component')){
+        console.log("The element " + drag.attr('id') + " has been dropped on " + drop.attr("id") + "!");
+        console.log("X: "+ posX + " Y: " + posY);
+        
+        var component = $('<div>').addClass('dropped-component');
+        component.attr('uuid', $scope.uuid);
+        component.css({
+          'top': posY - $('#working-zone').offset().top - 25,
+          'left': posX - $('#working-zone').offset().left - 25
+        });
 
-      var componentKind = assignClass(drag, component);
-      
-      $scope.stateContent.push({
-        uuid: $scope.uuid,
-        kind: componentKind,
-        top: posY,
-        left: posX
-      });
+        var componentKind = assignClass(drag, component);
+        
+        $scope.stateContent.push({
+          uuid: $scope.uuid,
+          kind: componentKind,
+          top: posY,
+          left: posX
+        });
 
-      $scope.uuid++;
-      //console.log($scope.stateContent);
+        $scope.uuid++;
+        //console.log($scope.stateContent);
 
-      jsPlumb.draggable(component, {
-        containment: $('#working-zone'),
-        stop: function(event) {
-          var newLeft = event.el.offsetLeft;
-          var newTop = event.el.offsetTop;
-          var uuid = $(event.el).attr('uuid');
+        jsPlumb.draggable(component, {
+          containment: $('#working-zone'),
+          stop: function(event) {
+            var newLeft = event.el.offsetLeft;
+            var newTop = event.el.offsetTop;
+            var uuid = $(event.el).attr('uuid');
 
-          updatePosition(uuid, newTop, newLeft);    
-        }
-      });
-      drop.append(component);
+            updatePosition(uuid, newTop, newLeft);    
+          }
+        });
+        drop.append(component);
+      }
     }
+  };
+  $scope.droppedInteraction = function(dragEl, dropEl, posX, posY) {
+    var dragEl = document.getElementById(dragEl);
+    var dropEl = document.getElementById(dropEl);
+    var drag = angular.element(dragEl);
+    var drop = angular.element(dropEl);
+
+    console.log("Dropped in interaction zone");
   };
 });

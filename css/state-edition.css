@@ -65,6 +65,7 @@
 }
 .tchat-component{
 	background-image: url(../img/tchat.png);
+	z-index: 4;
 }
 
 [draggable] {
