@@ -1,10 +1,11 @@
 var app = angular.module('alubar-app');
 
 app.controller('StateEditionCtrl', function($scope, StateFactory) {
+  
   $scope.init = function(){
     $scope.stateContent = StateFactory.getStateContent();
     $scope.uuid = 0;
-    
+    $scope.interactions = false;
     $scope.$watch($scope.stateContent, function (newValue) {
         if (newValue) StateFactory.setStateContent(newValue);
     });

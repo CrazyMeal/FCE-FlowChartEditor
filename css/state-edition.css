@@ -1,11 +1,35 @@
 #components{
 	height: 100%;
 	text-align: center;
-	background-color: #BDBDBD;
+	background-color: #FFFFFF;
+	color: #1A2530;
+	border-right: 5px solid #1A2530;
 }
 
 #working-zone{
 	height: 100%;
+	background-color: #FFFFFF;
+}
+
+#interaction-panel{
+	height: 25px;
+	width: 100%;
+	background-color: #34495E;
+	border-bottom-right-radius: 10px;
+	border-bottom-left-radius: 10px;
+	text-align: center;
+}
+#interaction-panel-opener{
+	font-size: 25px;
+	color: #FFFFFF;
+}
+#interaction-panel-opener:hover{
+	color: #E74C3C;
+}
+#interaction-zone{
+	height: 60px;
+	width: 100%;
+	background-color: #34495E;
 }
 .component{
 	width: 60px;
@@ -16,6 +40,9 @@
 	border: 2px solid;
 	border-radius: 10px;
 	background-size: contain;
+}
+.component:hover{
+	color: #E74C3C;
 }
 
 .dropped-component{
