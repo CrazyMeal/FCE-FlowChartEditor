@@ -159,10 +159,12 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, localStorageServ
     $scope.validateNameEdition = function(){
         $scope.nameInEdition = {};
         stateEditionMode = true;
-        jsPlumb.recalculateOffsets(".connectOut");
-        jsPlumb.repaintEverything();
+        //jsPlumb.recalculateOffsets(".connectOut");
+        //jsPlumb.repaintEverything();
+        //jsPlumb.setSuspendDrawing(false, true);
     };
     $scope.editState = function(stateDiv){
+        //jsPlumb.setSuspendDrawing(true);
         if($scope.documentSaved){
             $scope.documentSaved = false;
             $scope.documentName = $scope.documentName + "*";
@@ -170,7 +172,6 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, localStorageServ
         }
 
         var stateId = stateDiv.attr('id');
-        console.log($scope.states);
         
         angular.forEach($scope.states, function(state, index){
             if(state != undefined){
@@ -178,11 +179,9 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, localStorageServ
                     $scope.nameInEdition = state;
                     $scope.stateEditionMode = false;
                     $scope.$apply();
-                    console.log($scope.stateEditionMode);
                 }
             }
         });
-
     };
 
     $scope.createNewState = function(){
