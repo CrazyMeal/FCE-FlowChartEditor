@@ -5,7 +5,9 @@ app.controller('StateEditionCtrl', function($scope, StateFactory) {
   $scope.init = function(){
     $scope.stateContent = StateFactory.getStateContent();
     $scope.uuid = 0;
-    $scope.interactions = false;
+    $scope.interactionZone = false;
+    $scope.interactions = [];
+
     $scope.$watch($scope.stateContent, function (newValue) {
         if (newValue) StateFactory.setStateContent(newValue);
     });
@@ -94,5 +96,14 @@ app.controller('StateEditionCtrl', function($scope, StateFactory) {
     var drop = angular.element(dropEl);
 
     console.log("Dropped in interaction zone");
+    if(drag.hasClass("tchat-component")){
+      /*
+      var component = $('<div>').addClass('dropped-component');
+      assignClass(drag, component);
+      drop.append(component);
+      */
+      $scope.interactions.push($scope.interactions.length);
+      $scope.$apply();
+    }
   };
 });

@@ -24,13 +24,13 @@
 				<div x-lvl-draggable='true' class="component tchat-component"></div>
 			</div>
 			<div id="working-zone" class="col-md-10" x-lvl-drop-target='true' x-on-drop='dropped(dragEl, dropEl, posX, posY)'>
-				<div collapse="!interactions">
+				<div collapse="!interactionZone">
 					<div id="interaction-zone" x-lvl-drop-target='true' x-on-drop='droppedInteraction(dragEl, dropEl, posX, posY)'>
-						
+						<div ng-repeat="interaction in interactions">EEE</div>
 					</div>
 				</div>
 				<div id="interaction-panel">
-					<a href="" id="interaction-panel-opener" ng-click="interactions = !interactions"><span class="glyphicon" ng-class="{'glyphicon-chevron-down': !interactions, 'glyphicon-chevron-up': interactions}"></span></a>
+					<a href="" id="interaction-panel-opener" ng-click="interactionZone = !interactionZone"><span class="glyphicon" ng-class="{'glyphicon-chevron-down': !interactionZone, 'glyphicon-chevron-up': interactionZone}"></span></a>
 
 				</div>
 			</div>
