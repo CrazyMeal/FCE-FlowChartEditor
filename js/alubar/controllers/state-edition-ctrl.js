@@ -97,12 +97,12 @@ app.controller('StateEditionCtrl', function($scope, StateFactory) {
 
     console.log("Dropped in interaction zone");
     if(drag.hasClass("tchat-component")){
-      /*
-      var component = $('<div>').addClass('dropped-component');
-      assignClass(drag, component);
-      drop.append(component);
-      */
-      $scope.interactions.push($scope.interactions.length);
+      var newInterraction = {
+        uuid: $scope.uuid,
+        kind: ['interaction', 'tchat-component-white'] 
+      };
+      $scope.uuid++;
+      $scope.interactions.push(newInterraction);
       $scope.$apply();
     }
   };

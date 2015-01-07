@@ -26,7 +26,7 @@
 			<div id="working-zone" class="col-md-10" x-lvl-drop-target='true' x-on-drop='dropped(dragEl, dropEl, posX, posY)'>
 				<div collapse="!interactionZone">
 					<div id="interaction-zone" x-lvl-drop-target='true' x-on-drop='droppedInteraction(dragEl, dropEl, posX, posY)'>
-						<div ng-repeat="interaction in interactions">EEE</div>
+						<div ng-repeat="interaction in interactions" ng-class="interaction.kind"></div>
 					</div>
 				</div>
 				<div id="interaction-panel">
