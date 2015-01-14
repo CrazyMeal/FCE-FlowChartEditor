@@ -1,6 +1,6 @@
 var app = angular.module('alubar-app');
 
-app.controller('NewDocCtrl', function($scope,$compile,$timeout, localStorageService, libraryService){
+app.controller('NewDocCtrl', function($scope,$compile,$timeout, localStorageService, libraryService, tabService){
     $scope.ids = 0;
     $scope.stateEditionMode = true;
     $scope.documentName = "New Document";
@@ -320,4 +320,18 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, localStorageServ
             });  
         });
     };
+    
+    $scope.$on('tabChangeRequested', function(){
+    	console.log('got a request for '+tabService.getRequestedTab());
+    	if(tabService.getRequestedTab() !== undefined && tabService.getRequestedTab() !== 1 && $scope.documentSaved)
+    		tabService.accept();
+    	else if(window.confirm('Quit without saving?')){
+    		tabService.accept();
+    	}
+    	else{
+    		$scope.saveDocument();
+    		tabService.accept();
+    	}
+    		
+    })
 });
