@@ -109,12 +109,18 @@ app.controller('StateEditionCtrl', function($scope, StateFactory) {
 
         jsPlumb.draggable(component, {
           containment: $('#working-zone'),
+          start: function(){
+            if(component.hasClass('selected'))
+              component.removeClass('selected');
+            else
+              component.addClass('selected');
+          },
           stop: function(event) {
             var newLeft = event.el.offsetLeft;
             var newTop = event.el.offsetTop;
             var uuid = $(event.el).attr('uuid');
-
-            updatePosition(uuid, newTop, newLeft);    
+            
+            updatePosition(uuid, newTop, newLeft);
           }
         });
 
