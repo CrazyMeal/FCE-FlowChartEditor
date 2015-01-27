@@ -11,6 +11,7 @@
         <link rel="stylesheet" href="css/admin-panel.css">
         <link rel="stylesheet" href="css/library-panel.css">
         <link rel="stylesheet" href="css/new-document-panel.css">
+        <link rel="stylesheet" href="css/state-edition.css">
         <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
 
     </head>
@@ -42,9 +43,43 @@
                             <a type="button" class="btn btn-success" ng-click="stateEditionMode = true">Validate</a>
                         </div>
                     </div>
-                    <div class="table-responsive panel-body">
+                    
+                    <!-- PARTIE JSPLUMP -->
+                    <div class=" table-responsive panel-body body-panel" ng-show="!inStateEditionMode">
                         <div id="plumbing-zone" ng-init="init()">
                         </div>
+                    </div>
+                    
+                    <!-- PARTIE ETAPE -->
+                    <div class="table-responsive panel-body body-panel" ng-show="inStateEditionMode">
+                        
+
+
+                        <div id="container" ng-controller="StateEditionCtrl" ng-init="init()">
+                            <div id="components" class="col-md-3">
+                                <a type="button" class="btn btn-default" ng-click="$parent.inStateEditionMode = !$parent.inStateEditionMode"><span class="glyphicon glyphicon-arrow-left"></span> Back to scenario edition</a>
+                                <h4>Components list</h4>
+                                <!-- <a href="" ng-click="console()">Console</a> -->
+                                <div x-lvl-draggable='true' class="component pdf-component"></div>
+                                <div x-lvl-draggable='true' class="component video-component"></div>
+                                <div x-lvl-draggable='true' class="component tchat-component"></div>
+                            </div>
+                            <div id="working-zone" class="col-md-9" x-lvl-drop-target='true' x-on-drop='dropped(dragEl, dropEl, posX, posY)'>
+                                <div collapse="!interactionZone">
+                                    <div id="interaction-zone" x-lvl-drop-target='true' x-on-drop='droppedInteraction(dragEl, dropEl, posX, posY)'>
+                                        <div ng-repeat="interaction in interactions" ng-class="interaction.kind"></div>
+                                    </div>
+                                </div>
+                                <div id="interaction-panel">
+                                    <a href="" title="Open interaction panel" id="interaction-panel-opener" ng-click="interactionZone = !interactionZone"><span class="glyphicon" ng-class="{'glyphicon-chevron-down': !interactionZone, 'glyphicon-chevron-up': interactionZone}"></span></a>
+
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
                     </div>
                 </div>
             </div>
@@ -150,6 +185,7 @@
         </div>
     </body>
     <script src="js/libs/jquery-1.11.1.js"></script>
+    <script src="js/libs/mousetrap.min.js"></script>
     <script src="js/libs/dom.jsPlumb-1.7.2-min.js"></script>
     <script src="js/libs/angular.min.js"></script>
     <script src="js/libs/bootstrap.min.js"></script>
@@ -164,6 +200,7 @@
     
     <script src="js/alubar/services/library-service.js"></script>
     <script src="js/alubar/services/tab-service.js"></script>
+    <script src="js/alubar/services/state-edition-service.js"></script>
     
     <script src="js/alubar/directives/file-directive.js"></script>
     <script src="js/alubar/directives/confirmation-directive.js"></script>
@@ -172,4 +209,5 @@
     <script src="js/alubar/controllers/admin-ctrl.js"></script>
     <script src="js/alubar/controllers/new-doc-ctrl.js"></script>
     <script src="js/alubar/controllers/library-ctrl.js"></script>
+    <script src="js/alubar/controllers/state-edition-ctrl.js"></script>
 </html>

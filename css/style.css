@@ -16,3 +16,6 @@
     width: 100%;
 }
 
+.panel-body.body-panel{
+	padding: 0px;
+}
