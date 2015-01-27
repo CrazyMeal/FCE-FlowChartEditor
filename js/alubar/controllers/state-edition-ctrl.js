@@ -6,14 +6,24 @@ app.controller('StateEditionCtrl', function($scope, StateFactory) {
     $scope.stateContent = StateFactory.getStateContent();
     $scope.uuid = 0;
     $scope.interactionZone = false;
-    $scope.interactions = [];
+    $scope.interactions = StateFactory.getInteractions();
 
+    // Watching content to link to factory
     $scope.$watch($scope.stateContent, function (newValue) {
         if (newValue) StateFactory.setStateContent(newValue);
     });
 
     $scope.$watch(function () { return StateFactory.getStateContent(); }, function (newValue) {
         if (newValue) $scope.stateContent = newValue;
+    });
+
+    // Watching interactions to link to factory
+    $scope.$watch($scope.interactions, function (newValue) {
+        if (newValue) StateFactory.setInteractions(newValue);
+    });
+
+    $scope.$watch(function () { return StateFactory.getInteractions(); }, function (newValue) {
+        if (newValue) $scope.interactions = newValue;
     });
   };
 
@@ -43,6 +53,19 @@ app.controller('StateEditionCtrl', function($scope, StateFactory) {
 
   $scope.console = function(){
     console.log(StateFactory.getStateContent());
+    console.log($scope.stateContent);
+    $scope.removeContent(0);
+  };
+
+  $scope.removeContent = function(uuid){
+    StateFactory.removeContent(uuid);
+    $("div").find("[uuid='" + uuid + "']").remove();
+    console.log("Removed content with id: " + uuid);
+  };
+  
+  $scope.removeInteraction = function(uuid){
+    StateFactory.removeInteraction(uuid);
+    console.log("Removed interaction with id: " + uuid);
   };
 
   $scope.dropped = function(dragEl, dropEl, posX, posY) {
