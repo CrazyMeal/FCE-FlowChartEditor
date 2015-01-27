@@ -3,6 +3,10 @@ var app = angular.module('alubar-app');
 app.controller('StateEditionCtrl', function($scope, StateFactory) {
   
   $scope.init = function(){
+    Mousetrap.bind('del', function(){
+      $scope.removeSelectedContent();
+    });
+    
     $scope.stateContent = StateFactory.getStateContent();
     $scope.uuid = 0;
     $scope.interactionZone = false;
@@ -52,20 +56,25 @@ app.controller('StateEditionCtrl', function($scope, StateFactory) {
   };
 
   $scope.console = function(){
-    console.log(StateFactory.getStateContent());
-    console.log($scope.stateContent);
-    $scope.removeContent(0);
+    $scope.removeInteraction(0);
   };
 
   $scope.removeContent = function(uuid){
-    StateFactory.removeContent(uuid);
-    $("div").find("[uuid='" + uuid + "']").remove();
-    console.log("Removed content with id: " + uuid);
+    if(StateFactory.removeContent(uuid)){
+      $("div").find("[uuid='" + uuid + "']").remove();
+      console.log("Removed content with id: " + uuid);
+    }
   };
   
+  $scope.removeSelectedContent = function(){
+    angular.forEach($('.selected'), function(divElement, index){
+      $scope.removeContent($(divElement).attr('uuid'));
+    });
+  };
+
   $scope.removeInteraction = function(uuid){
-    StateFactory.removeInteraction(uuid);
-    console.log("Removed interaction with id: " + uuid);
+    if(StateFactory.removeInteraction(uuid))
+      console.log("Removed interaction with id: " + uuid);
   };
 
   $scope.dropped = function(dragEl, dropEl, posX, posY) {
@@ -108,6 +117,15 @@ app.controller('StateEditionCtrl', function($scope, StateFactory) {
             updatePosition(uuid, newTop, newLeft);    
           }
         });
+
+        component.click(function(e){
+          console.log(component.attr('uuid'));
+          if(component.hasClass('selected'))
+            component.removeClass('selected');
+          else
+            component.addClass('selected');
+        });
+
         drop.append(component);
       }
     }

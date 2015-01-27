@@ -87,6 +87,9 @@
 	background-repeat: no-repeat;
 	background-position: center;
 }
+.selected{
+	background-color: #8EE7E1;
+}
 [draggable] {
 	cursor: move;
 }

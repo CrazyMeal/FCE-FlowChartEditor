@@ -15,13 +15,14 @@ app.factory('StateFactory', function(){
 			stateContent = [];
 		},
 		removeContent : function(uuid){
+			var del = false;
 			angular.forEach(stateContent, function(content, index){
 				if(content.uuid == uuid){
 					stateContent.splice(index, 1);
-					return true;
+					del = true;
 				}
 			});
-			return false;
+			return del;
 		},
 
 
@@ -35,13 +36,14 @@ app.factory('StateFactory', function(){
 			interactions = [];
 		},
 		removeInteraction : function(uuid){
+			var del = false;
 			angular.forEach(interactions, function(interaction, index){
 				if(interaction.uuid == uuid){
 					interactions.splice(index, 1);
-					return true;
+					del = true;
 				}
 			});
-			return false;
+			return del;
 		}
 
 		
