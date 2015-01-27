@@ -47,6 +47,8 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, localStorageServ
         $scope.deleteAll();
 
         $scope.documentName = name;
+        $scope.documentSaved = true;
+        $scope.documentSaveState = "btn-success";
         // On importe tous les state
         angular.forEach(states, function(state, index){
             var newIndex = $scope.states.length;
