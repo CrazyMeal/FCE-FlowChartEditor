@@ -8,7 +8,7 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, localStorageServ
     $scope.states = [];
     $scope.connections = [];
     $scope.documentSaveState = "btn-success";
-    $scope.inStateEditionMode = true;
+    $scope.inStateEditionMode = false;
 
     setStateCss = function(state, e){
         state.container.css({
