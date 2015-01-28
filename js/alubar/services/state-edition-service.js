@@ -1,7 +1,17 @@
 var app = angular.module('alubar-app');
 
 app.factory('StateFactory', function(){
-	var stateContent = [];
+	var stateContent = [{
+          uuid: 0,
+          kind: "pdf",
+          top: 161,
+          left: 691
+        },{
+          uuid: 1,
+          kind: "video",
+          top: 108,
+          left: 539
+        }];
 	var interactions = [{
         uuid: 2,
         kind: ['interaction', 'tchat-component-white'] 

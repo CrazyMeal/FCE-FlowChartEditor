@@ -3,7 +3,8 @@ var app = angular.module('alubar-app');
 app.controller('StateEditionCtrl', function($scope, StateFactory) {
   
   $scope.init = function(){
-    jsPlumb.setContainer($('#working-zone'));
+    $scope.plumbInstance = jsPlumb.getInstance();
+    $scope.plumbInstance.setContainer($('#working-zone'));
 
     Mousetrap.bind('del', function(){
       $scope.removeSelectedContent();
@@ -13,10 +14,7 @@ app.controller('StateEditionCtrl', function($scope, StateFactory) {
     $scope.uuid = 0;
     $scope.interactionZone = false;
     $scope.interactions = StateFactory.getInteractions();
-
-    if($scope.stateContent.length != 0 || $scope.interactions.length != 0)
-      $scope.initView($scope.stateContent, $scope.interactions);
-
+    
     // Watching content to link to factory
     $scope.$watch($scope.stateContent, function (newValue) {
         if (newValue) StateFactory.setStateContent(newValue);
@@ -34,6 +32,9 @@ app.controller('StateEditionCtrl', function($scope, StateFactory) {
     $scope.$watch(function () { return StateFactory.getInteractions(); }, function (newValue) {
         if (newValue) $scope.interactions = newValue;
     });
+
+    if($scope.stateContent.length != 0 || $scope.interactions.length != 0)
+      $scope.initView($scope.stateContent, $scope.interactions);
   };
 
   $scope.initView = function(stateContent, interactions){
@@ -48,7 +49,9 @@ app.controller('StateEditionCtrl', function($scope, StateFactory) {
   };
 
   $scope.console = function(){
-    console.log(StateFactory.getInteractions());
+    console.log(StateFactory.getStateContent());
+    console.log($scope.stateContent);
+    $scope.initView($scope.stateContent, $scope.interactions);
   };
 
   $scope.removeContent = function(uuid){
@@ -127,7 +130,8 @@ app.controller('StateEditionCtrl', function($scope, StateFactory) {
         $scope.uuid++;
         //console.log($scope.stateContent);
 
-        jsPlumb.draggable(component, {
+        
+        $scope.plumbInstance.draggable(component, {
           containment: $('#working-zone'),
           start: function(){
             if(component.hasClass('selected'))
