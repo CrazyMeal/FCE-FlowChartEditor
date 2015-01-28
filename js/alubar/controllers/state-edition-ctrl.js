@@ -3,6 +3,8 @@ var app = angular.module('alubar-app');
 app.controller('StateEditionCtrl', function($scope, StateFactory) {
   
   $scope.init = function(){
+    jsPlumb.setContainer($('#working-zone'));
+
     Mousetrap.bind('del', function(){
       $scope.removeSelectedContent();
     });
