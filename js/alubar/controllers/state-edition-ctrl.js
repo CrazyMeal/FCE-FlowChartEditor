@@ -12,7 +12,9 @@ app.controller('StateEditionCtrl', function($scope, StateFactory) {
     $scope.interactionZone = false;
     $scope.interactions = StateFactory.getInteractions();
 
-    $scope.initView($scope.stateContent, $scope.interactions);
+    if($scope.stateContent.length != 0 || $scope.interactions.length != 0)
+      $scope.initView($scope.stateContent, $scope.interactions);
+
     // Watching content to link to factory
     $scope.$watch($scope.stateContent, function (newValue) {
         if (newValue) StateFactory.setStateContent(newValue);
@@ -39,12 +41,12 @@ app.controller('StateEditionCtrl', function($scope, StateFactory) {
     });
 
     angular.forEach(interactions, function(interaction, index){
-
+      $scope.addInteraction(true);
     });
   };
 
   $scope.console = function(){
-    console.log(StateFactory.getStateContent());
+    console.log(StateFactory.getInteractions());
   };
 
   $scope.removeContent = function(uuid){
@@ -87,14 +89,20 @@ app.controller('StateEditionCtrl', function($scope, StateFactory) {
 
     console.log("Dropped in interaction zone");
     if(drag.hasClass("tchat-component")){
-      var newInterraction = {
+      $scope.addInteraction(false);
+      $scope.$apply();
+    }
+  };
+
+  $scope.addInteraction = function(initiate){
+    var newInterraction = {
         uuid: $scope.uuid,
         kind: ['interaction', 'tchat-component-white'] 
       };
       $scope.uuid++;
-      $scope.interactions.push(newInterraction);
-      $scope.$apply();
-    }
+      //$scope.interactions.push(newInterraction);
+      if(!initiate)
+        StateFactory.insertInteraction(newInterraction);
   };
 
   $scope.addContent = function(posX, posY, classToAssign, initiate){

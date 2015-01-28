@@ -12,7 +12,13 @@ app.factory('StateFactory', function(){
           top: 108,
           left: 1000
         }];
-	var interactions = [];
+	var interactions = [{
+        uuid: 2,
+        kind: ['interaction', 'tchat-component-white'] 
+      },{
+        uuid: 3,
+        kind: ['interaction', 'tchat-component-white'] 
+      }];
 
 	return {
 		getStateContent : function(){
@@ -23,6 +29,9 @@ app.factory('StateFactory', function(){
 		},
 		clearStateContent : function(){
 			stateContent = [];
+		},
+		insertContent : function(content){
+			stateContent.push(content);
 		},
 		removeContent : function(uuid){
 			var del = false;
@@ -44,6 +53,9 @@ app.factory('StateFactory', function(){
 		},
 		clearInteractions : function(){
 			interactions = [];
+		},
+		insertInteraction : function(interaction){
+			interactions.push(interaction);
 		},
 		removeInteraction : function(uuid){
 			var del = false;
