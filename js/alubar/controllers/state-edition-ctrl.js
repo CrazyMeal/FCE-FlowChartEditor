@@ -1,6 +1,6 @@
 var app = angular.module('alubar-app');
 
-app.controller('StateEditionCtrl', function($scope, StateFactory) {
+app.controller('StateEditionCtrl', function($scope, $timeout, $rootScope, StateFactory) {
   
   $scope.init = function(){
     $scope.plumbInstance = jsPlumb.getInstance();
@@ -14,7 +14,7 @@ app.controller('StateEditionCtrl', function($scope, StateFactory) {
     $scope.uuid = 0;
     $scope.interactionZone = false;
     $scope.interactions = StateFactory.getInteractions();
-    
+
     // Watching content to link to factory
     $scope.$watch($scope.stateContent, function (newValue) {
         if (newValue) StateFactory.setStateContent(newValue);
@@ -32,26 +32,20 @@ app.controller('StateEditionCtrl', function($scope, StateFactory) {
     $scope.$watch(function () { return StateFactory.getInteractions(); }, function (newValue) {
         if (newValue) $scope.interactions = newValue;
     });
-
-    if($scope.stateContent.length != 0 || $scope.interactions.length != 0)
-      $scope.initView($scope.stateContent, $scope.interactions);
+    
+    if($scope.stateContent.length != 0)
+      $timeout(function(){$scope.initView($scope.stateContent);}, 1);
   };
 
-  $scope.initView = function(stateContent, interactions){
-    
+  $scope.initView = function(stateContent){
     angular.forEach(stateContent, function(content, index){
       $scope.addContent(content.left, content.top, content.kind, true);
-    });
-
-    angular.forEach(interactions, function(interaction, index){
-      $scope.addInteraction(true);
     });
   };
 
   $scope.console = function(){
     console.log(StateFactory.getStateContent());
-    console.log($scope.stateContent);
-    $scope.initView($scope.stateContent, $scope.interactions);
+    //$scope.initView($scope.stateContent);
   };
 
   $scope.removeContent = function(uuid){
@@ -157,6 +151,20 @@ app.controller('StateEditionCtrl', function($scope, StateFactory) {
         });
 
         $('#working-zone').append(component);
+  };
+
+  $scope.$on('beginEdition', function(){
+    $scope.init();
+  });
+
+  $scope.finishEdition = function(){
+    $rootScope.$broadcast('finishEdition');
+    
+    angular.forEach($(".dropped-component"), function(divElement, index){
+      divElement.remove();
+    });
+
+    //$scope.$parent.inStateEditionMode = !$scope.$parent.inStateEditionMode
   };
 
   getdroppedClass = function(droppedElement){

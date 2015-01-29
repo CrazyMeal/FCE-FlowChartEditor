@@ -1,6 +1,6 @@
 var app = angular.module('alubar-app');
 
-app.controller('NewDocCtrl', function($scope,$compile,$timeout, localStorageService, libraryService, tabService){
+app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, localStorageService, libraryService, tabService, StateFactory){
     $scope.ids = 0;
     $scope.stateEditionMode = true;
     $scope.documentName = "New Document";
@@ -175,7 +175,8 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, localStorageServ
         }
 
         var stateId = stateDiv.attr('id');
-        
+        $scope.idInEdition = stateId;
+
         angular.forEach($scope.states, function(state, index){
             if(state != undefined){
                 if(state.id == stateId){
@@ -336,5 +337,36 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, localStorageServ
     		tabService.accept();
     	}
     		
-    })
+    });
+
+    $scope.editContent = function(){
+        StateFactory.reset();
+        console.log("will edit> " + $scope.idInEdition);
+        StateFactory.setWorkingStateId($scope.idInEdition);
+        
+        angular.forEach($scope.states, function(state, index){
+            if(state.id == $scope.idInEdition){
+                if(state.content != undefined)
+                    StateFactory.setStateContent(state.content);
+                if(state.interactions != undefined)
+                    StateFactory.setInteractions(state.interactions);
+            }
+        });
+        $rootScope.$broadcast('beginEdition');
+        $scope.stateEditionMode = true;
+        $scope.inStateEditionMode = true;
+    };
+
+    $scope.$on('finishEdition', function(){
+        var editedId = StateFactory.getWorkingStateId();
+        console.log("Edited content of id> " + editedId);
+        angular.forEach($scope.states, function(state, index){
+            if(state.id == editedId){
+                state.content = angular.copy(StateFactory.getStateContent());
+                state.interactions = angular.copy(StateFactory.getInteractions());
+            }
+        });
+
+        $scope.inStateEditionMode = false;
+    });
 });
