@@ -107,18 +107,26 @@ app.controller('StateEditionCtrl', function($scope, $timeout, $rootScope, StateF
   $scope.addContent = function(posX, posY, classToAssign, initiate){
     var component = $('<div>').addClass('dropped-component');
         component.attr('uuid', $scope.uuid);
-        component.css({
-          'top': posY - $('#working-zone').offset().top - 25,
-          'left': posX - $('#working-zone').offset().left - 25
-        });
+        if(!initiate){
+          component.css({
+            'top': posY - $('#working-zone').offset().top - 25,
+            'left': posX - $('#working-zone').offset().left - 25
+          });
+        } else {
+          component.css({
+            'top': posY,
+            'left': posX
+          });
+        }
+        
         
         assignClass(classToAssign, component);
         if(!initiate){
           $scope.stateContent.push({
             uuid: $scope.uuid,
             kind: classToAssign,
-            top: posY,
-            left: posX
+            top: posY - $('#working-zone').offset().top - 25,
+            left: posX - $('#working-zone').offset().left - 25
           });
         }
         $scope.uuid++;
@@ -134,6 +142,7 @@ app.controller('StateEditionCtrl', function($scope, $timeout, $rootScope, StateF
               component.addClass('selected');
           },
           stop: function(event) {
+            console.log(event);
             var newLeft = event.el.offsetLeft;
             var newTop = event.el.offsetTop;
             var uuid = $(event.el).attr('uuid');
