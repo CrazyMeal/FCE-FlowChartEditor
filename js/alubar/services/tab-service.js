@@ -25,10 +25,10 @@ app.factory('tabService', function($rootScope){
 			return accepted;
 		},
 		
-		getActualTab(){
+		getActualTab : function(){
 			return actualTab;
 		},
-		getRequestedTab(){
+		getRequestedTab : function(){
 			return requestedTab;
 		}
 	}
