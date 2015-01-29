@@ -41,7 +41,7 @@
                         <div id="editMenu" collapse="stateEditionMode">
                             <input type="text"  ng-model="nameInEdition.name">
                             <a type="button" class="btn btn-success" ng-click="stateEditionMode = true">Validate</a>
-                            <a type="button" class="btn btn-success" ng-click="inStateEditionMode = true; stateEditionMode = true">Editer le contenu</a>
+                            <a type="button" class="btn btn-success" ng-click="editContent()">Editer le contenu</a>
                         </div>
                     </div>
                     
@@ -55,8 +55,8 @@
                     <div class="table-responsive panel-body body-panel" ng-show="inStateEditionMode">
                         <div id="container" ng-controller="StateEditionCtrl" ng-init="init()">
                             <div id="components" class="col-md-3">
-                                <a type="button" class="btn btn-default" ng-click="$parent.inStateEditionMode = !$parent.inStateEditionMode"><span class="glyphicon glyphicon-arrow-left"></span> Back to scenario edition</a>
-                                <a type="button" class="btn btn-default" ng-click="console()">Console</a>
+                                <a type="button" class="btn btn-default" ng-click="finishEdition()"><span class="glyphicon glyphicon-arrow-left"></span> Back to scenario edition</a>
+                                <!-- <a type="button" class="btn btn-default" ng-click="console()">Console</a> -->
                                 <h4>Components list</h4>
                                 <!-- <a href="" ng-click="console()">Console</a> -->
                                 <div x-lvl-draggable='true' class="component pdf-component"></div>
