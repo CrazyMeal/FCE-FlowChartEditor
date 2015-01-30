@@ -14,8 +14,6 @@ app.controller('MainCtrl', function ($scope, tabService) {
 
 	$scope.$on('tabChangeAccepted',function(){
 		if(tabService.isAccepted()){
-			console.log(tabService.getRequestedTab());
-			console.log($scope.tab);
 			$scope.tab = tabService.getRequestedTab();
 		}
 	});

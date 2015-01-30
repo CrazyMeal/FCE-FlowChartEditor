@@ -7,7 +7,6 @@ app.factory('tabService', function($rootScope){
 	
 	return {
 		newRequest: function(req, act){
-			console.log('new request');
 			actualTab = act;
 			requestedTab = req;
 			accepted = undefined;
@@ -15,13 +14,11 @@ app.factory('tabService', function($rootScope){
 		},
 		
 		accept: function(){
-			console.log('accepted');
 			accepted = true;
 			$rootScope.$broadcast('tabChangeAccepted');
 		},
 	
 		isAccepted: function(){
-			console.log('accepted checked');
 			return accepted;
 		},
 		

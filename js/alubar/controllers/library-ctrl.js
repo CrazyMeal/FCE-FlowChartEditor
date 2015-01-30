@@ -49,6 +49,7 @@ app.controller('LibraryController', function($scope,$compile, libraryService, lo
 				return;
 			else{
 				$scope.selected.name = $scope.selected.tmpName;
+				$scope.saveAll();
 			}
 		}
 		else{
@@ -59,9 +60,15 @@ app.controller('LibraryController', function($scope,$compile, libraryService, lo
 	}
 	
 	$scope.saveAll = function(){
-		if($scope.selected!=null) $scope.selected.selected = false;
+		if($scope.selected!=null){ 
+			$scope.selected.edit = false;
+			$scope.selected.selected = false;
+		}
 		localStorageService.set('scenarios', angular.copy($scope.scenarios));
-		if($scope.selected!=null) $scope.selected.selected = true;
+		if($scope.selected!=null){ 
+			$scope.selected.selected = true;
+			$scope.selected.edit = true;
+		}
 	}
 	
 	
@@ -73,7 +80,12 @@ app.controller('LibraryController', function($scope,$compile, libraryService, lo
 		var found = false;
 		var s = libraryService.scenario;
 		s.edit = false;
-		s.selected = false;
+		if($scope.selected != null && $scope.selected.name === libraryService.scenario.name){
+			s.selected = true;
+			$scope.selected = s;
+		}
+		else
+			s.selected = false;
 		
 		for(var i = $scope.scenarios.length - 1; i >= 0; i--) {
 			if($scope.scenarios[i].name === libraryService.scenario.name) {

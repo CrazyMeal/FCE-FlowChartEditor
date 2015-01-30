@@ -29,7 +29,6 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, loca
 	            angular.forEach(jsPlumb.getSelector(".state"), function(stateDiv){
 	                var tmpState = {};
 	                tmpState.id = $(stateDiv).attr('id');
-	                console.log($(stateDiv).position());
 	                tmpState.top = $(stateDiv).position().top;
 	                tmpState.left = $(stateDiv).position().left;
 	                tmpState.name = $(stateDiv).text();
@@ -339,7 +338,6 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, loca
     };
     
     $scope.$on('tabChangeRequested', function(){
-    	console.log('got a request for '+tabService.getRequestedTab());
     	if(tabService.getRequestedTab() !== undefined && tabService.getRequestedTab() !== 1 && $scope.documentSaved)
     		tabService.accept();
     	else if(window.confirm('Quit without saving?')){
