@@ -18,6 +18,8 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, loca
     };
     $scope.saveDocument = function(){
         if(!$scope.documentSaved){
+        	if($scope.inStateEditionMode == true)
+        		$rootScope.$broadcast('finishEdition');
             $scope.documentSaved = true;
             $scope.documentName = $scope.documentName.substring(0, $scope.documentName.length - 1);
             $scope.documentSaveState = "btn-success";
@@ -49,6 +51,8 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, loca
     $scope.loadDocument = function(name, states, connections){
         jsPlumb.setSuspendDrawing(true);
         $scope.deleteAll();
+    	if($scope.inStateEditionMode == true)
+    		$rootScope.$broadcast('finishEdition');
 
         $scope.documentName = name;
         $scope.documentSaved = true;
