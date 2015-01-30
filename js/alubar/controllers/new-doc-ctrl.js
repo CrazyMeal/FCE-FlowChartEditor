@@ -28,13 +28,16 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, loca
                 tmpState.top = $(stateDiv).position().top;
                 tmpState.left = $(stateDiv).position().left;
                 tmpState.name = $(stateDiv).text();
+                angular.forEach($scope.states, function(state){
+                	if(state.id == tmpState.id){
+                		tmpState.content = state.content;
+                		tmpState.interactions = state.interactions;
+                	}
+                });
+                
                 lightStates.push(tmpState);
             });
             libraryService.saveScenario($scope.documentName, angular.copy(lightStates), angular.copy($scope.connections));
-            console.log('Saved states:');
-            console.log(lightStates);
-            console.log('Saved connections:');
-            console.log($scope.connections);
         }
     };
     
@@ -73,7 +76,9 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, loca
                 input: connectInDiv,
                 output: connectOutDiv,
                 id: state.id,
-                name : state.name
+                name : state.name,
+                content : state.content,
+                interactions : state.interactions
             };
             $scope.states.push(newstate);
             $('#plumbing-zone').append(mainContainer);
