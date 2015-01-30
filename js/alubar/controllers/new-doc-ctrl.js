@@ -340,6 +340,8 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, loca
     $scope.$on('tabChangeRequested', function(){
     	if(tabService.getRequestedTab() !== undefined && tabService.getRequestedTab() !== 1 && $scope.documentSaved)
     		tabService.accept();
+    	else if(tabService.getRequestedTab() === 1)
+    		return;
     	else if(window.confirm('Quit without saving?')){
     		tabService.accept();
     	}

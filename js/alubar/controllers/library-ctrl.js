@@ -50,13 +50,14 @@ app.controller('LibraryController', function($scope,$compile, libraryService, lo
 			else{
 				$scope.selected.name = $scope.selected.tmpName;
 				$scope.saveAll();
+				$scope.selected.edit = false;
 			}
 		}
 		else{
 			$scope.selected.tmpName = $scope.selected.name;
+			$scope.selected.edit = true;
 		}
 		
-		$scope.selected.edit = !$scope.selected.edit;
 	}
 	
 	$scope.saveAll = function(){
@@ -67,7 +68,6 @@ app.controller('LibraryController', function($scope,$compile, libraryService, lo
 		localStorageService.set('scenarios', angular.copy($scope.scenarios));
 		if($scope.selected!=null){ 
 			$scope.selected.selected = true;
-			$scope.selected.edit = true;
 		}
 	}
 	
