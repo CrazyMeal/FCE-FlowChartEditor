@@ -19,27 +19,31 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, loca
     $scope.saveDocument = function(){
         if(!$scope.documentSaved){
         	if($scope.inStateEditionMode == true)
-        		$rootScope.$broadcast('finishEdition');
-            $scope.documentSaved = true;
-            $scope.documentName = $scope.documentName.substring(0, $scope.documentName.length - 1);
-            $scope.documentSaveState = "btn-success";
-            var lightStates = [];
-            angular.forEach(jsPlumb.getSelector(".state"), function(stateDiv){
-                var tmpState = {};
-                tmpState.id = $(stateDiv).attr('id');
-                tmpState.top = $(stateDiv).position().top;
-                tmpState.left = $(stateDiv).position().left;
-                tmpState.name = $(stateDiv).text();
-                angular.forEach($scope.states, function(state){
-                	if(state.id == tmpState.id){
-                		tmpState.content = state.content;
-                		tmpState.interactions = state.interactions;
-                	}
-                });
-                
-                lightStates.push(tmpState);
-            });
-            libraryService.saveScenario($scope.documentName, angular.copy(lightStates), angular.copy($scope.connections));
+        		$scope.finishEdition();
+        	
+        	$timeout(function(){
+	            $scope.documentSaved = true;
+	            $scope.documentName = $scope.documentName.substring(0, $scope.documentName.length - 1);
+	            $scope.documentSaveState = "btn-success";
+	            var lightStates = [];
+	            angular.forEach(jsPlumb.getSelector(".state"), function(stateDiv){
+	                var tmpState = {};
+	                tmpState.id = $(stateDiv).attr('id');
+	                console.log($(stateDiv).position());
+	                tmpState.top = $(stateDiv).position().top;
+	                tmpState.left = $(stateDiv).position().left;
+	                tmpState.name = $(stateDiv).text();
+	                angular.forEach($scope.states, function(state){
+	                	if(state.id == tmpState.id){
+	                		tmpState.content = state.content;
+	                		tmpState.interactions = state.interactions;
+	                	}
+	                });
+	                
+	                lightStates.push(tmpState);
+	            });
+	            libraryService.saveScenario($scope.documentName, angular.copy(lightStates), angular.copy($scope.connections));
+        	}, 1);
         }
     };
     
@@ -366,8 +370,10 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, loca
         $scope.inStateEditionMode = true;
     };
 
-    $scope.$on('finishEdition', function(){
-        var editedId = StateFactory.getWorkingStateId();
+    $scope.$on('finishEdition', function(){$scope.finishEdition()});
+    
+    $scope.finishEdition = function(){
+    	var editedId = StateFactory.getWorkingStateId();
         console.log("Edited content of id> " + editedId);
         angular.forEach($scope.states, function(state, index){
             if(state.id == editedId){
@@ -377,5 +383,5 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, loca
         });
 
         $scope.inStateEditionMode = false;
-    });
+    };
 });
