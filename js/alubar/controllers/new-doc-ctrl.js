@@ -1,6 +1,6 @@
 var app = angular.module('alubar-app');
 
-app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, localStorageService, libraryService, tabService, StateFactory){
+app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, uuid, localStorageService, libraryService, tabService, StateFactory){
     $scope.ids = 0;
     $scope.stateEditionMode = true;
     $scope.documentName = "New Document";
@@ -117,11 +117,6 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, loca
             });
             localStorageService.set('savedStates', angular.copy(lightStates));
             localStorageService.set('savedConnections', angular.copy($scope.connections));
-
-            console.log('Saved states:');
-            console.log(lightStates);
-            console.log('Saved connections:');
-            console.log($scope.connections);
         }
     };
 
@@ -202,10 +197,11 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, loca
 
     $scope.createNewState = function(){
         var newIndex = $scope.states.length;
+        var id = uuid.new();
         
-        var mainContainer = $($compile('<etape test="states['+newIndex+'].name" id="'+$scope.states.length+'">')($scope));
-        var connectInDiv = $('<div>').addClass('connectIn').attr('id', 'connectIn-' + $scope.states.length);
-        var connectOutDiv = $('<div>').addClass('connectOut').attr('id', 'connectOut-' + $scope.states.length);
+        var mainContainer = $($compile('<etape test="states['+newIndex+'].name" id="'+id+'">')($scope));
+        var connectInDiv = $('<div>').addClass('connectIn').attr('id', 'connectIn-' + id);
+        var connectOutDiv = $('<div>').addClass('connectOut').attr('id', 'connectOut-' + id);
         mainContainer.append(connectInDiv);
         mainContainer.append(connectOutDiv);
 
@@ -213,7 +209,7 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, loca
             container: mainContainer,
             input: connectInDiv,
             output: connectOutDiv,
-            id: $scope.states.length,
+            id: id,
             name : 'Default'
         };
         $scope.states.push(state);
@@ -280,7 +276,8 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, loca
             });
 
             jsPlumb.bind('connection', function(info) {
-                info.connection.addOverlay([ "Label", { label:"Co-Label", id:"label", cssClass:"aLabel" }]);
+            	var label = { label:"Co-Label", id:"label", cssClass:"aLabel" };
+                info.connection.addOverlay([ "Label", label]);
                 $scope.connections.push({ 
                     from: info.sourceId, 
                     to: info.targetId,
