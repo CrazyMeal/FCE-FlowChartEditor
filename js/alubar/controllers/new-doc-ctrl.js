@@ -20,6 +20,9 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, uuid
         if(!$scope.documentSaved){
         	if($scope.inStateEditionMode == true)
         		$scope.finishEdition();
+        	if($scope.stateEditionMode == false)
+        		$scope.stateEditionMode = true;
+        		
         	
         	$timeout(function(){
 	            $scope.documentSaved = true;
@@ -60,6 +63,7 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, uuid
         $scope.documentName = name;
         $scope.documentSaved = true;
         $scope.documentSaveState = "btn-success";
+        $scope.stateEditionMode = true;
         // On importe tous les state
         angular.forEach(states, function(state, index){
             var newIndex = $scope.states.length;
