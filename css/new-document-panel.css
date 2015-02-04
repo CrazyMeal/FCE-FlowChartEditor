@@ -1,65 +1,72 @@
-#new-document-panel{
-    height: 100%;
-    padding-top: 20px;
+#new-document-panel {
+	height: 100%;
+	padding-top: 20px;
 }
 
 .state {
 	position: absolute;
-  display: block;
-  height: 60px;
-  min-width: 100px;
+	display: block;
+	height: 60px;
+	min-width: 100px;
 	border: 1px solid black;
-  border-radius: 8px;
-  background-color: #ddddff;
+	border-radius: 8px;
+	background-color: #ddddff;
 }
 
 .connectIn {
-  width: 20px;
-  height: 100%;
-  background-color: #B3B3FF;
-  border-top-left-radius: 8px;
-  border-bottom-left-radius: 8px;
-  cursor: pointer;
-  float: left;
+	width: 20px;
+	height: 100%;
+	background-color: #B3B3FF;
+	border-top-left-radius: 8px;
+	border-bottom-left-radius: 8px;
+	cursor: pointer;
+	float: left;
 }
 
-.connectOut{
-  width: 20px;
-  height: 100%;
-  background-color: #B3B3FF;
-  border-top-right-radius: 8px;
-  border-bottom-right-radius: 8px;
-  cursor: pointer;
-  float: right;
+.connectOut {
+	width: 20px;
+	height: 100%;
+	background-color: #B3B3FF;
+	border-top-right-radius: 8px;
+	border-bottom-right-radius: 8px;
+	cursor: pointer;
+	float: right;
 }
+
 #plumbing-zone {
-    width: 100%;
-    height: 500px;
-    position: relative;
-    overflow: auto;
+	width: 100%;
+	height: 500px;
+	position: relative;
+	overflow: auto;
 }
+
 .aLabel {
-    background-color: #FFF;
-    opacity: 0.9;
-    padding: 0.3em;
-    border-radius: 0.5em;
-    border: 1px solid #346789;
-    cursor: pointer;
+	background-color: #FFF;
+	opacity: 0.9;
+	padding: 0.3em;
+	border-radius: 0.5em;
+	border: 1px solid #346789;
+	cursor: pointer;
 }
-#editMenu{
-  width: 100%;
-  height: 50px;
-  margin-top: 10px;
+
+#editMenu {
+	width: 100%;
+	height: 50px;
+	margin-top: 10px;
 }
- #trash {
- 	width: 50px;
- 	height: 50px;
- 	float: right;
- 	border: 2px solid grey;
- 	border-radius: 10px;
- 	background-image: url(../img/trash.png);
- 	background-position:center center;
- 	background-repeat:no-repeat;
- 	background-size: 75%;
- }
- 
+
+#trash {
+	width: 50px;
+	height: 50px;
+	float: right;
+	border: 2px solid grey;
+	border-radius: 10px;
+	background-image: url(../img/trash.png);
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-size: 75%;
+}
+
+.stateSelected {
+	border: 1px coral solid;
+}
