@@ -142,7 +142,7 @@ app.controller('StateEditionCtrl', function($scope, $timeout, $rootScope, StateF
               component.addClass('selected');
           },
           stop: function(event) {
-            console.log(event);
+            //console.log(event);
             var newLeft = event.el.offsetLeft;
             var newTop = event.el.offsetTop;
             var uuid = $(event.el).attr('uuid');
@@ -151,18 +151,42 @@ app.controller('StateEditionCtrl', function($scope, $timeout, $rootScope, StateF
           }
         });
 
+        
         component.click(function(e){
           console.log(component.attr('uuid'));
-          if(component.hasClass('selected'))
-            component.removeClass('selected');
-          else {
-            angular.forEach($('.selected'), function(divElement){
-              $(divElement).removeClass('selected');
-            });
-            component.addClass('selected');
-          }
+            if(component.hasClass('selected')){
+              component.removeClass('selected');
+            }
+            else {
+              angular.forEach($('.selected'), function(divElement){
+                $(divElement).removeClass('selected');
+              });
+              component.addClass('selected');
+              //$scope.plumbInstance.toggleDraggable(component);
+            }
+            e.stopPropagation();
         });
 
+        var resizing = false;
+        component.dblclick(function(e){
+          resizing = !resizing;
+          if(resizing){
+            $scope.plumbInstance.setDraggable(component, false);
+            component.resizable({
+              disabled: false,
+              stop: function(event, ui) {
+                jsPlumb.repaintEverything();
+                console.log("stop resize");
+              }
+            });
+          } else {
+            $scope.plumbInstance.setDraggable(component, true);
+            component.resizable({
+              disabled: true
+            });
+          }
+        });
+        
         $('#working-zone').append(component);
   };
 

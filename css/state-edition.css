@@ -59,6 +59,8 @@
 	border: 2px solid;
 	border-radius: 10px;
 	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
 }
 .pdf-component{
 	background-image: url(../img/pdf.png);
@@ -92,4 +94,8 @@
 }
 [draggable] {
 	cursor: move;
+}
+
+.ui-resizable{
+	position: absolute !important;
 }

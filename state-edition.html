@@ -12,6 +12,9 @@
         <link rel="stylesheet" href="css/library-panel.css">
         <link rel="stylesheet" href="css/new-document-panel.css">
         <link rel="stylesheet" href="css/state-edition.css">
+        <link rel="stylesheet" href="css/jquery-ui.min.css">
+        <link rel="stylesheet" href="css/jquery-ui.structure.min.css">
+        <link rel="stylesheet" href="css/jquery-ui.theme.min.css">
         <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
 	</head>
 	<body ng-app="alubar-app">
@@ -33,13 +36,14 @@
 				</div>
 				<div id="interaction-panel">
 					<a href="" title="Open interaction panel" id="interaction-panel-opener" ng-click="interactionZone = !interactionZone"><span class="glyphicon" ng-class="{'glyphicon-chevron-down': !interactionZone, 'glyphicon-chevron-up': interactionZone}"></span></a>
-
 				</div>
+				<div id="test1" class="test"></div>
 			</div>
 		</div>
 	</body>
 
 	<script src="js/libs/jquery-1.11.1.js"></script>
+	<script src="js/libs/jquery-ui.min.js"></script>
 	<script src="js/libs/mousetrap.min.js"></script>
 	<script src="js/libs/dom.jsPlumb-1.7.3-min.js"></script>
     <script src="js/libs/angular.js"></script>
