@@ -210,10 +210,13 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, uuid
 		mainContainer.append(connectOutDiv);
 
 		mainContainer.dblclick(function(e){
-			if(mainContainer.hasClass('stateSelected'))
-				mainContainer.removeClass('stateSelected');
-			else
+			if(!mainContainer.hasClass('stateSelected')){			
+				angular.forEach($('.state'), function(state){
+					if($(state).hasClass('stateSelected'))
+						$(state).removeClass('stateSelected');
+				});
 				mainContainer.addClass('stateSelected');
+			}
 		});
 
 		var state = {
