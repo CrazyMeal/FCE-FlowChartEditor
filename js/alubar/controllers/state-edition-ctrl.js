@@ -155,8 +155,12 @@ app.controller('StateEditionCtrl', function($scope, $timeout, $rootScope, StateF
           console.log(component.attr('uuid'));
           if(component.hasClass('selected'))
             component.removeClass('selected');
-          else
+          else {
+            angular.forEach($('.selected'), function(divElement){
+              $(divElement).removeClass('selected');
+            });
             component.addClass('selected');
+          }
         });
 
         $('#working-zone').append(component);
