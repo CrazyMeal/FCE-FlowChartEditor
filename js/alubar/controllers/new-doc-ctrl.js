@@ -411,6 +411,10 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, uuid
 			}
 		});
 
+	    angular.forEach($(".dropped-component"), function(divElement, index){
+	      divElement.remove();
+	    });
+
 		$scope.inStateEditionMode = false;
 	};
 });
