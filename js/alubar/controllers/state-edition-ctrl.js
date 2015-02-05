@@ -39,7 +39,10 @@ app.controller('StateEditionCtrl', function($scope, $timeout, $rootScope, StateF
 
   $scope.initView = function(stateContent){
     angular.forEach(stateContent, function(content, index){
-      $scope.addContent(content.left, content.top, content.kind, true);
+      if(content.size == undefined)
+        $scope.addContent(content.left, content.top, content.kind, true);
+      else
+        $scope.addContent(content.left, content.top, content.kind, true, content.size);
     });
   };
 
@@ -104,90 +107,96 @@ app.controller('StateEditionCtrl', function($scope, $timeout, $rootScope, StateF
         StateFactory.insertInteraction(newInterraction);
   };
 
-  $scope.addContent = function(posX, posY, classToAssign, initiate){
+  $scope.addContent = function(posX, posY, classToAssign, initiate, componentSize){
     var component = $('<div>').addClass('dropped-component');
-        component.attr('uuid', $scope.uuid);
-        if(!initiate){
-          component.css({
-            'top': posY - $('#working-zone').offset().top - 25,
-            'left': posX - $('#working-zone').offset().left - 25
-          });
-        } else {
-          component.css({
-            'top': posY,
-            'left': posX
-          });
-        }
-        
-        
-        assignClass(classToAssign, component);
-        if(!initiate){
-          $scope.stateContent.push({
-            uuid: $scope.uuid,
-            kind: classToAssign,
-            top: posY - $('#working-zone').offset().top - 25,
-            left: posX - $('#working-zone').offset().left - 25
-          });
-        }
-        $scope.uuid++;
-        //console.log($scope.stateContent);
+    component.attr('uuid', $scope.uuid);
+    if(!initiate){
+      component.css({
+      'top': posY - $('#working-zone').offset().top - 25,
+      'left': posX - $('#working-zone').offset().left - 25
+    });
+    } else {
+      component.css({
+        'top': posY,
+        'left': posX
+      });
+      if(componentSize != undefined){
+        component.css({
+          'height': componentSize.height,
+          'width': componentSize.width
+      });
+      }
+    }
 
+    assignClass(classToAssign, component);
+    if(!initiate){
+      $scope.stateContent.push({
+        uuid: $scope.uuid,
+        kind: classToAssign,
+        top: posY - $('#working-zone').offset().top - 25,
+        left: posX - $('#working-zone').offset().left - 25
+      });
+    }
         
-        $scope.plumbInstance.draggable(component, {
-          containment: $('#working-zone'),
-          start: function(){
-            if(component.hasClass('selected'))
-              component.removeClass('selected');
-            else
-              component.addClass('selected');
-          },
-          stop: function(event) {
+    $scope.plumbInstance.draggable(component, {
+      containment: $('#working-zone'),
+      start: function(){
+        if(component.hasClass('selected'))
+          component.removeClass('selected');
+        else
+          component.addClass('selected');
+      },
+      stop: function(event) {
             //console.log(event);
-            var newLeft = event.el.offsetLeft;
-            var newTop = event.el.offsetTop;
-            var uuid = $(event.el).attr('uuid');
+        var newLeft = event.el.offsetLeft;
+        var newTop = event.el.offsetTop;
+        var uuid = $(event.el).attr('uuid');
             
-            updatePosition(uuid, newTop, newLeft);
-          }
-        });
+        updatePosition(uuid, newTop, newLeft);
+      }
+    });
 
         
-        component.click(function(e){
-          console.log(component.attr('uuid'));
-            if(component.hasClass('selected')){
-              component.removeClass('selected');
-            }
-            else {
-              angular.forEach($('.selected'), function(divElement){
-                $(divElement).removeClass('selected');
-              });
-              component.addClass('selected');
+    component.click(function(e){
+      console.log(component.attr('uuid'));
+        if(component.hasClass('selected')){
+          component.removeClass('selected');
+        }
+        else {
+          angular.forEach($('.selected'), function(divElement){
+            $(divElement).removeClass('selected');
+          });
+          component.addClass('selected');
               //$scope.plumbInstance.toggleDraggable(component);
-            }
-            e.stopPropagation();
-        });
+        }
+        e.stopPropagation();
+    });
 
-        var resizing = false;
-        component.dblclick(function(e){
-          resizing = !resizing;
-          if(resizing){
-            $scope.plumbInstance.setDraggable(component, false);
-            component.resizable({
-              disabled: false,
-              stop: function(event, ui) {
-                jsPlumb.repaintEverything();
-                console.log("stop resize");
-              }
-            });
-          } else {
-            $scope.plumbInstance.setDraggable(component, true);
-            component.resizable({
-              disabled: true
-            });
+    var resizing = false;
+    component.dblclick(function(e){
+      resizing = !resizing;
+      if(resizing){
+        $scope.plumbInstance.setDraggable(component, false);
+        component.resizable({
+          disabled: false,
+          stop: function(event, ui) {
+            $scope.plumbInstance.repaintEverything();
+
+            updateSize($(component).attr('uuid'), ui.size.height, ui.size.width);
+            console.log("Updated size of " + $(component).attr('uuid') + " new height>" + ui.size.height + " new with>" + ui.size.width);
+            console.log($scope.stateContent);
           }
         });
+      } else {
+        $scope.plumbInstance.setDraggable(component, true);
+        component.resizable({
+          disabled: true
+        });
+      }
+    });
         
-        $('#working-zone').append(component);
+    $('#working-zone').append(component);
+    $scope.uuid++;
   };
 
   $scope.$on('beginEdition', function(){
@@ -230,6 +239,18 @@ app.controller('StateEditionCtrl', function($scope, $timeout, $rootScope, StateF
       return true;
     }
     return false;
+  };
+
+  updateSize = function(uuid, newHeight, newWidth){
+    angular.forEach($scope.stateContent, function(component){
+      if(component.uuid == uuid){
+        var size = {
+          height: newHeight,
+          width: newWidth
+        };
+        component.size = size;
+      }
+    });
   };
 
   updatePosition = function(uuid, newTop, newLeft){
