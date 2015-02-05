@@ -36,9 +36,11 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, uuid
 					tmpState.left = $(stateDiv).position().left;
 					tmpState.name = $(stateDiv).text();
 					angular.forEach($scope.states, function(state){
-						if(state.id == tmpState.id){
-							tmpState.content = state.content;
-							tmpState.interactions = state.interactions;
+						if(state != undefined){
+							if(state.id == tmpState.id){
+								tmpState.content = state.content;
+								tmpState.interactions = state.interactions;
+							}
 						}
 					});
 
@@ -267,15 +269,17 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, uuid
 		}
 
 		angular.forEach($scope.states, function(state, index){
-			jsPlumb.detachAllConnections(state.container);
+			if(state != undefined){
+				jsPlumb.detachAllConnections(state.container);
 
-			angular.forEach(state.container.children(), function(child){
-				jsPlumb.detachAllConnections(child);
-				child.remove();
-			});
+				angular.forEach(state.container.children(), function(child){
+					jsPlumb.detachAllConnections(child);
+					child.remove();
+				});
 
-			state.container.remove();
-			delete $scope.states[index];
+				state.container.remove();
+				delete $scope.states[index];
+			}
 		});
 		jsPlumb.deleteEveryEndpoint();
 		jsPlumb.detachEveryConnection();
@@ -321,13 +325,12 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, uuid
 	    					}
 	    				});
 	    			});
-
-	    			$scope.states.splice(indexOfState, 1);
+	    			delete $scope.states[indexOfState];
 	    		}
 	    	});
 		$(divElement).remove();
-		console.log($scope.states);
 	    });
+	console.log($scope.states);
 	};
 	
 	$scope.init = function() {
