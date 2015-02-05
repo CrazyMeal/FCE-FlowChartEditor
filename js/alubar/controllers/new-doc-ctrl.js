@@ -328,7 +328,9 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, uuid
 	    	});
 		$(divElement).remove();
 	    });
-	console.log($scope.states);
+	$scope.stateEditionMode = true;
+	$scope.idInEdition = -1;
+	$scope.$apply();
 	};
 	
 	$scope.init = function() {
