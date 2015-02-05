@@ -36,11 +36,9 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, uuid
 					tmpState.left = $(stateDiv).position().left;
 					tmpState.name = $(stateDiv).text();
 					angular.forEach($scope.states, function(state){
-						if(state != undefined){
-							if(state.id == tmpState.id){
-								tmpState.content = state.content;
-								tmpState.interactions = state.interactions;
-							}
+						if(state != undefined && state.id == tmpState.id){
+							tmpState.content = state.content;
+							tmpState.interactions = state.interactions;
 						}
 					});
 
@@ -443,7 +441,7 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, uuid
 		StateFactory.setWorkingStateId($scope.idInEdition);
 
 		angular.forEach($scope.states, function(state, index){
-			if(state.id == $scope.idInEdition){
+			if(state != undefined && state.id == $scope.idInEdition){
 				if(state.content != undefined)
 					StateFactory.setStateContent(state.content);
 				if(state.interactions != undefined)
@@ -461,7 +459,7 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, uuid
 		var editedId = StateFactory.getWorkingStateId();
 		console.log("Edited content of id> " + editedId);
 		angular.forEach($scope.states, function(state, index){
-			if(state.id == editedId){
+			if(state != undefined && state.id == editedId){
 				state.content = angular.copy(StateFactory.getStateContent());
 				state.interactions = angular.copy(StateFactory.getInteractions());
 			}
