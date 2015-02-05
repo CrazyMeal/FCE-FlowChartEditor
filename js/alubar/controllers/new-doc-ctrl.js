@@ -292,7 +292,7 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, uuid
 	    	var idToDelete = $(divElement).attr('id');
 	    
 	    	angular.forEach($scope.states, function(state, indexOfState){
-	    		if(state.id == idToDelete){
+	    		if(state != undefined && state.id == idToDelete){
 	    			var source = $('connectOut-'+idToDelete);
 	    			console.log("Source element is");
 	    			console.log(source);
