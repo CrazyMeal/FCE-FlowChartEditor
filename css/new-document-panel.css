@@ -68,5 +68,7 @@
 }
 
 .stateSelected {
-	border: 1px coral solid;
+	border: 2px #8EE7E1 solid;
+	background-color: #8EE7E1;
+	font-weight: bold;
 }

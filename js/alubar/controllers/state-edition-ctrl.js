@@ -6,7 +6,7 @@ app.controller('StateEditionCtrl', function($scope, $timeout, $rootScope, StateF
     $scope.plumbInstance = jsPlumb.getInstance();
     $scope.plumbInstance.setContainer($('#working-zone'));
 
-    Mousetrap.bind('del', function(){
+    Mousetrap.bind(['del', 'backspace'], function(){
       $scope.removeSelectedContent();
     });
     

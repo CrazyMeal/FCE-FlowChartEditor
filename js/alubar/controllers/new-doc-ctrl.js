@@ -78,10 +78,19 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, uuid
 			});
 			$scope.makeTarget(connectInDiv);
 			$scope.makeSource(connectOutDiv);
+			
 			mainContainer.dblclick(function(e) {
+				if(!mainContainer.hasClass('stateSelected')){			
+					angular.forEach($('.state'), function(state){
+						if($(state).hasClass('stateSelected'))
+							$(state).removeClass('stateSelected');
+					});
+					mainContainer.addClass('stateSelected');
+				}
 				$scope.editState($(this));
 				e.stopPropagation();
 			});
+			
 			var newstate = {
 					container: mainContainer,
 					input: connectInDiv,
@@ -209,6 +218,7 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, uuid
 		mainContainer.append(connectInDiv);
 		mainContainer.append(connectOutDiv);
 
+		
 		mainContainer.dblclick(function(e){
 			if(!mainContainer.hasClass('stateSelected')){			
 				angular.forEach($('.state'), function(state){
@@ -218,7 +228,7 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, uuid
 				mainContainer.addClass('stateSelected');
 			}
 		});
-
+		
 		var state = {
 				container: mainContainer,
 				input: connectInDiv,
@@ -274,8 +284,58 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, uuid
 		$scope.connections = [];
 		$scope.ids = 0;
 	};
+	
+	$scope.removeSelectedState = function(){
+		angular.forEach($('.stateSelected'), function(divElement, index){
+	    	var idToDelete = $(divElement).attr('id');
+	    
+	    	angular.forEach($scope.states, function(state, indexOfState){
+	    		if(state.id == idToDelete){
+	    			var source = $('connectOut-'+idToDelete);
+	    			console.log("Source element is");
+	    			console.log(source);
 
+	    			console.log("Connection to this source are");
+	    			var connectionsFromSource = jsPlumb.getConnections({ source:'connectOut-'+idToDelete });
+	    			console.log(connectionsFromSource);
+
+	    			console.log("Connections to this target are");
+	    			var connectionsFromTarget = jsPlumb.getConnections({ target:'connectIn-'+idToDelete });
+	    			console.log(connectionsFromTarget);
+
+	    			jsPlumb.detachAllConnections('connectOut-'+idToDelete);
+	    			jsPlumb.detachAllConnections('connectIn-'+idToDelete);
+
+	    			angular.forEach(connectionsFromSource, function(connectionToRemove){
+	    				angular.forEach($scope.connections, function(connectionInModel, index){
+	    					if(connectionToRemove.uuid == connectionInModel.uuid){
+	    						$scope.connections.splice(index, 1);
+	    					}
+	    				});
+	    			});
+
+	    			angular.forEach(connectionsFromTarget, function(connectionToRemove){
+	    				angular.forEach($scope.connections, function(connectionInModel, index){
+	    					if(connectionToRemove.uuid == connectionInModel.uuid){
+	    						$scope.connections.splice(index, 1);
+	    					}
+	    				});
+	    			});
+
+	    			$scope.states.splice(indexOfState, 1);
+	    		}
+	    	});
+		$(divElement).remove();
+		console.log($scope.states);
+	    });
+	};
+	
 	$scope.init = function() {
+
+		Mousetrap.bind(['ctrl+del', 'ctrl+backspace'], function(){
+	    	$scope.removeSelectedState();
+	    });
+
 		jsPlumb.ready(function() {
 			jsPlumb.setContainer($('#plumbing-zone'));
 
@@ -323,13 +383,13 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, uuid
 				HoverPaintStyle : {strokeStyle:"#1e8151", lineWidth:2 },
 				ReattachConnections:true,
 				ConnectionOverlays : [
-				                      [ "Arrow", {
-				                    	  location:1,
-				                    	  id:"arrow",
-				                    	  length:14,
-				                    	  foldback:0.8
-				                      } ]
-				                      ]
+					[ "Arrow", {
+				    	location:1,
+				        id:"arrow",
+				        length:14,
+				        foldback:0.8
+				    }]
+				]
 			});
 
 			$('#plumbing-zone').dblclick(function(e) {
@@ -345,16 +405,6 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, uuid
 				setStateCss(newState, e);
 
 				newState.container.dblclick(function(e) {
-					/*
-                    jsPlumb.detachAllConnections($(this));
-
-                    angular.forEach($(this).children(), function(child){
-                        jsPlumb.detachAllConnections(child);
-                        child.remove();
-                    });
-
-                    $(this).remove();
-					 */
 					$scope.editState($(this));
 					e.stopPropagation();
 				});
