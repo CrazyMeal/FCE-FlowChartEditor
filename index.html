@@ -70,6 +70,9 @@
                                 <div x-lvl-draggable='true' class="component tchat-component"></div>
                             </tab>
                             <tab heading="Templates">
+                                <ul id="templates-list">
+                                    <li ng-repeat="template in templates">{{template.name}} <a type="button" class="btn btn-info" ng-click="loadTemplate(template.id)">Charger</a></li>
+                                </ul>
                             </tab>
                             </tabset>
                             </div>
