@@ -7,9 +7,55 @@ app.factory('StateFactory', function(){
 
     var stateId = -1;
 
+    var templates = [{
+    	id: "tpl-0",
+    	name: "Instructions et video",
+    	content: [{
+    		kind: "pdf",
+    		left: 86,
+    		top: 140,
+    		uuid: 0,
+    		size: {height: 200, width: 150}
+    	},
+    	{
+    		kind: "video",
+    		left: 250,
+    		top: 140,
+    		uuid: 1,
+    		size: {height: 200, width: 300}
+    	}]
+    },
+    {
+    	id: "tpl-1",
+    	name: "Video et interactions",
+    	content: [{
+    		kind: "video",
+    		left: 200,
+    		top: 140,
+    		uuid: 0,
+    		size: {height: 200, width: 500}
+    	}],
+    	interactions: [
+    	{
+    		kind: ["interaction", "tchat-component-white"],
+    		uuid: 1
+    	},
+    	{
+    		kind: ["interaction", "tchat-component-white"],
+    		uuid: 2
+    	}
+    	]
+    }
+    ];
+
 	return {
 		reset : function(){
 			stateId = -1;
+			stateContent = [];
+			interactions = [];
+		},
+
+		softReset : function(){
 			stateContent = [];
 			interactions = [];
 		},
@@ -67,6 +113,21 @@ app.factory('StateFactory', function(){
 		},
 		setWorkingStateId : function(id){
 			stateId = id;
+		},
+
+
+
+		getTemplates : function(){
+			return templates;
+		},
+		
+		getTemplateById : function(id){
+			var templateToReturn;
+			angular.forEach(templates, function(template){
+				if(template.id == id)
+					templateToReturn = angular.copy(template);
+			});
+			return templateToReturn;
 		}
 	};
 });

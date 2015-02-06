@@ -14,6 +14,7 @@ app.controller('StateEditionCtrl', function($scope, $timeout, $rootScope, StateF
     $scope.uuid = 0;
     $scope.interactionZone = false;
     $scope.interactions = StateFactory.getInteractions();
+    $scope.templates = StateFactory.getTemplates();
 
     // Watching content to link to factory
     $scope.$watch($scope.stateContent, function (newValue) {
@@ -47,8 +48,7 @@ app.controller('StateEditionCtrl', function($scope, $timeout, $rootScope, StateF
   };
 
   $scope.console = function(){
-    console.log(StateFactory.getStateContent());
-    //$scope.initView($scope.stateContent);
+    console.log($scope.interactions);
   };
 
   $scope.removeContent = function(uuid){
@@ -211,6 +211,29 @@ app.controller('StateEditionCtrl', function($scope, $timeout, $rootScope, StateF
     });
 
     //$scope.$parent.inStateEditionMode = !$scope.$parent.inStateEditionMode
+  };
+
+  $scope.loadTemplate = function(id){
+    StateFactory.softReset();
+    angular.forEach($(".dropped-component"), function(divElement, index){
+      divElement.remove();
+    });
+
+    console.log("Loading template> " + id);
+    
+    var templateChosen = StateFactory.getTemplateById(id);
+    console.log(templateChosen);
+    $scope.initView(templateChosen.content);
+    
+    if(templateChosen.content != undefined){
+      StateFactory.setStateContent(templateChosen.content);
+      $scope.stateContent = templateChosen.content;
+    }
+    if(templateChosen.interactions != undefined){
+      StateFactory.setInteractions(templateChosen.interactions);
+      $scope.interactions = templateChosen.interactions;
+    }
+    console.log($scope.stateContent);
   };
 
   getdroppedClass = function(droppedElement){

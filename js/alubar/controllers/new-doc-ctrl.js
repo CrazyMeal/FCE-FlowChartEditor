@@ -463,6 +463,8 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, uuid
 	$scope.finishEdition = function(){
 		var editedId = StateFactory.getWorkingStateId();
 		console.log("Edited content of id> " + editedId);
+		console.log(StateFactory.getStateContent());
+		
 		angular.forEach($scope.states, function(state, index){
 			if(state != undefined && state.id == editedId){
 				state.content = angular.copy(StateFactory.getStateContent());
