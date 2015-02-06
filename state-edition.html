@@ -19,16 +19,26 @@
 	</head>
 	<body ng-app="alubar-app">
 		<div id="container" ng-controller="StateEditionCtrl" ng-init="init()">
-			<div id="components" class="col-md-2">
-				<a type="button" class="btn btn-default"><span class="glyphicon glyphicon-arrow-left"></span> Back to scenario edition</a>
-				<a type="button" class="btn btn-default" ng-click="console()">Console</a>
-				<h4>Components list</h4>
-				<!-- <a href="" ng-click="console()">Console</a> -->
-				<div x-lvl-draggable='true' class="component pdf-component"></div>
-				<div x-lvl-draggable='true' class="component video-component"></div>
-				<div x-lvl-draggable='true' class="component tchat-component"></div>
+			<div id="components" class="col-md-3">
+				<tabset>
+					<tab heading="Components">
+						<a type="button" class="btn btn-default"><span class="glyphicon glyphicon-arrow-left"></span> Back to scenario edition</a>
+						<a type="button" class="btn btn-default" ng-click="console()">Console</a>
+						<h4>Components list</h4>
+						<!-- <a href="" ng-click="console()">Console</a> -->
+						<div x-lvl-draggable='true' class="component pdf-component"></div>
+						<div x-lvl-draggable='true' class="component video-component"></div>
+						<div x-lvl-draggable='true' class="component tchat-component"></div>
+					</tab>
+
+					<tab heading="Templates">
+						<ul id="templates-list">
+							<li ng-repeat="template in templates">{{template.name}} <a type="button" class="btn btn-info" ng-click="loadTemplate(template.id)">Charger</a></li>
+						</ul>
+					</tab>
+				</tabset>
 			</div>
-			<div id="working-zone" class="col-md-10" x-lvl-drop-target='true' x-on-drop='dropped(dragEl, dropEl, posX, posY)'>
+			<div id="working-zone" class="col-md-9" x-lvl-drop-target='true' x-on-drop='dropped(dragEl, dropEl, posX, posY)'>
 				<div collapse="!interactionZone">
 					<div id="interaction-zone" x-lvl-drop-target='true' x-on-drop='droppedInteraction(dragEl, dropEl, posX, posY)'>
 						<div ng-repeat="interaction in interactions" ng-class="interaction.kind"></div>
@@ -37,7 +47,6 @@
 				<div id="interaction-panel">
 					<a href="" title="Open interaction panel" id="interaction-panel-opener" ng-click="interactionZone = !interactionZone"><span class="glyphicon" ng-class="{'glyphicon-chevron-down': !interactionZone, 'glyphicon-chevron-up': interactionZone}"></span></a>
 				</div>
-				<div id="test1" class="test"></div>
 			</div>
 		</div>
 	</body>
@@ -53,7 +62,7 @@
 
     <script src="js/libs/bootstrap.min.js"></script>
     <script src="js/libs/ui-bootstrap-0.12.0.min.js"></script>
-    <script src="js/libs/ui-bootstrap-tpls-0.12.0.js"></script>
+    <script src="js/libs/ui-bootstrap-tpls-0.12.0.min.js"></script>
 
     <script src="js/libs/angular-local-storage.js"></script>
     

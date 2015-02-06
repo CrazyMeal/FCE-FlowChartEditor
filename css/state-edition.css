@@ -99,3 +99,11 @@
 .ui-resizable{
 	position: absolute !important;
 }
+
+#templates-list{
+	text-align: justify;
+	padding-top: 10px;
+}
+#templates-list li{
+	padding-bottom: 10px;
+}

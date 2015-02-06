@@ -59,6 +59,8 @@
                     <div class="table-responsive panel-body body-panel" ng-show="inStateEditionMode">
                         <div id="container" ng-controller="StateEditionCtrl" ng-init="init()">
                             <div id="components" class="col-md-3">
+                            <tabset>
+                            <tab heading="Components">
                                 <a type="button" class="btn btn-default" ng-click="finishEdition()"><span class="glyphicon glyphicon-arrow-left"></span> Back to scenario edition</a>
                                 <!-- <a type="button" class="btn btn-default" ng-click="console()">Console</a> -->
                                 <h4>Components list</h4>
@@ -66,6 +68,10 @@
                                 <div x-lvl-draggable='true' class="component pdf-component"></div>
                                 <div x-lvl-draggable='true' class="component video-component"></div>
                                 <div x-lvl-draggable='true' class="component tchat-component"></div>
+                            </tab>
+                            <tab heading="Templates">
+                            </tab>
+                            </tabset>
                             </div>
                             <div id="working-zone" class="col-md-9" x-lvl-drop-target='true' x-on-drop='dropped(dragEl, dropEl, posX, posY)'>
                                 <div collapse="!interactionZone">
