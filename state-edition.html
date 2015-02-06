@@ -35,6 +35,7 @@
 						<ul id="templates-list">
 							<li ng-repeat="template in templates">{{template.name}} <a type="button" class="btn btn-info" ng-click="loadTemplate(template.id)">Charger</a></li>
 						</ul>
+						<input ng-model="newtemplate.templatename"></input> <a type="button" class="btn btn-success" ng-class="(newtemplate.templatename!=null && newtemplate.templatename != '')?'enabled':'disabled'" ng-click="saveAsTemplate()">Save as template</a>
 					</tab>
 				</tabset>
 			</div>

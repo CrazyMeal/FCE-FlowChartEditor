@@ -15,6 +15,8 @@ app.controller('StateEditionCtrl', function($scope, $timeout, $rootScope, StateF
     $scope.interactionZone = false;
     $scope.interactions = StateFactory.getInteractions();
     $scope.templates = StateFactory.getTemplates();
+    $scope.newtemplate ={};
+    $scope.newtemplate.templatename = "";
 
     // Watching content to link to factory
     $scope.$watch($scope.stateContent, function (newValue) {
@@ -234,6 +236,12 @@ app.controller('StateEditionCtrl', function($scope, $timeout, $rootScope, StateF
       $scope.interactions = templateChosen.interactions;
     }
     console.log($scope.stateContent);
+  };
+
+  $scope.saveAsTemplate = function(){
+    console.log("Saving as template " + $scope.newtemplate.templatename);
+    StateFactory.insertTemplate($scope.newtemplate.templatename, $scope.stateContent, $scope.interactions);
+    $scope.newtemplate.templatename = "";
   };
 
   getdroppedClass = function(droppedElement){

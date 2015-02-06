@@ -128,6 +128,17 @@ app.factory('StateFactory', function(){
 					templateToReturn = angular.copy(template);
 			});
 			return templateToReturn;
+		},
+
+		insertTemplate : function(name, content, interactions){
+			var newtemplate = {
+		    	id: "tpl-" + templates.length,
+		    	name: name,
+		    	content: content,
+		    	interactions: interactions
+		    }
+
+		    templates.push(newtemplate);
 		}
 	};
 });
