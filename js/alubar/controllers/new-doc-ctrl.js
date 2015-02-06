@@ -237,6 +237,7 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, uuid
 				name : 'Default'
 		};
 		$scope.states.push(state);
+		//$scope.$apply();
 		return state;
 	};
 	$scope.makeTarget = function(input){
@@ -357,8 +358,8 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, uuid
 			});
 
 			jsPlumb.bind('connection', function(info) {
+				console.log(info);
 				var label = { label:"Co-Label", id:"label", cssClass:"aLabel" };
-				info.connection.addOverlay([ "Label", label]);
 				var newId = uuid.new();
 				var id;
 				angular.forEach($scope.connections, function(connection, index){
@@ -367,11 +368,13 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, uuid
 					}
 				});
 				if(id != undefined){
+					console.log('test');
 					$scope.connections[id].from = info.sourceId;
 					$scope.connections[id].to = info.targetId;
 					$scope.connections[id].uuid = newId; 
 				} else {
 					info.connection.uuid = newId;
+					info.connection.addOverlay([ "Label", label]);
 					$scope.connections.push({ 
 						from: info.sourceId, 
 						to: info.targetId,
@@ -382,7 +385,7 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, uuid
 			});
 
 			jsPlumb.importDefaults({
-				Endpoint : ["Dot", {radius:2}],
+				Endpoint : ["Dot", {radius:6}],
 				HoverPaintStyle : {strokeStyle:"#1e8151", lineWidth:2 },
 				ReattachConnections:true,
 				ConnectionOverlays : [
