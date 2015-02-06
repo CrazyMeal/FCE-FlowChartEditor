@@ -237,7 +237,7 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, uuid
 				name : 'Default'
 		};
 		$scope.states.push(state);
-		//$scope.$apply();
+		$scope.$apply();
 		return state;
 	};
 	$scope.makeTarget = function(input){
@@ -344,6 +344,8 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, uuid
 			jsPlumb.setContainer($('#plumbing-zone'));
 
 			jsPlumb.bind('beforeDrop', function(info) {
+				console.log(info);
+				
 				if($('#'+info.targetId).hasClass('connectIn')){
 					if($scope.documentSaved){
 						$scope.documentSaved = false;
@@ -358,7 +360,6 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, uuid
 			});
 
 			jsPlumb.bind('connection', function(info) {
-				console.log(info);
 				var label = { label:"Co-Label", id:"label", cssClass:"aLabel" };
 				var newId = uuid.new();
 				var id;
@@ -368,7 +369,6 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, uuid
 					}
 				});
 				if(id != undefined){
-					console.log('test');
 					$scope.connections[id].from = info.sourceId;
 					$scope.connections[id].to = info.targetId;
 					$scope.connections[id].uuid = newId; 
