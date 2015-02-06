@@ -214,7 +214,7 @@ app.controller('StateEditionCtrl', function($scope, $timeout, $rootScope, StateF
   };
 
   $scope.loadTemplate = function(id){
-    StateFactory.reset();
+    StateFactory.softReset();
     angular.forEach($(".dropped-component"), function(divElement, index){
       divElement.remove();
     });

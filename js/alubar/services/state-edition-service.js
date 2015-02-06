@@ -55,6 +55,11 @@ app.factory('StateFactory', function(){
 			interactions = [];
 		},
 
+		softReset : function(){
+			stateContent = [];
+			interactions = [];
+		},
+
 
 		getStateContent : function(){
 			return stateContent
