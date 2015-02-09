@@ -385,7 +385,7 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, uuid
 			});
 
 			jsPlumb.importDefaults({
-				Endpoint : ["Dot", {radius:6}],
+				Endpoint : ["Dot", {radius:3}],
 				HoverPaintStyle : {strokeStyle:"#1e8151", lineWidth:2 },
 				ReattachConnections:true,
 				ConnectionOverlays : [
@@ -397,7 +397,10 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, uuid
 				    }]
 				]
 			});
-
+			$('#plumbing-zone').click(function(e){
+				$scope.unselectState();
+				e.stopPropagation();
+			});
 			$('#plumbing-zone').dblclick(function(e) {
 				jsPlumb.setSuspendDrawing(true);
 
@@ -423,6 +426,13 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, uuid
 				$scope.$apply();
 			});  
 		});
+	};
+	$scope.unselectState =function(){
+		angular.forEach($('.stateSelected'), function(divElement){
+			$(divElement).removeClass('stateSelected');
+		});
+		$scope.stateEditionMode = true;
+		$scope.$apply();
 	};
 
 	$scope.$on('tabChangeRequested', function(){
