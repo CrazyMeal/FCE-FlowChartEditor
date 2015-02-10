@@ -173,13 +173,8 @@ app.controller('StateEditionCtrl', function($scope, $timeout, $rootScope, StateF
         }
         e.stopPropagation();
     });
-
-    var resizing = false;
-    component.dblclick(function(e){
-      resizing = !resizing;
-      if(resizing){
-        $scope.plumbInstance.setDraggable(component, false);
-        component.resizable({
+    
+    component.resizable({
           disabled: false,
           stop: function(event, ui) {
             $scope.plumbInstance.repaintEverything();
@@ -189,14 +184,6 @@ app.controller('StateEditionCtrl', function($scope, $timeout, $rootScope, StateF
             console.log($scope.stateContent);
           }
         });
-      } else {
-        $scope.plumbInstance.setDraggable(component, true);
-        component.resizable({
-          disabled: true
-        });
-      }
-    });
-        
     $('#working-zone').append(component);
     $scope.uuid++;
   };
