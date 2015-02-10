@@ -1,6 +1,6 @@
 var app = angular.module('alubar-app');
 
-app.controller('StateEditionCtrl', function($scope, $timeout, $rootScope, StateFactory) {
+app.controller('StateEditionCtrl', function($scope, $timeout, $rootScope,$compile, StateFactory) {
   
   $scope.init = function(){
     $scope.plumbInstance = jsPlumb.getInstance();
@@ -43,9 +43,9 @@ app.controller('StateEditionCtrl', function($scope, $timeout, $rootScope, StateF
   $scope.initView = function(stateContent){
     angular.forEach(stateContent, function(content, index){
       if(content.size == undefined)
-        $scope.addContent(content.left, content.top, content.kind, true);
+        $scope.addContent(content.left, content.top, content.kind, true, undefined, index);
       else
-        $scope.addContent(content.left, content.top, content.kind, true, content.size);
+        $scope.addContent(content.left, content.top, content.kind, true, content.size, index);
     });
   };
 
@@ -81,7 +81,8 @@ app.controller('StateEditionCtrl', function($scope, $timeout, $rootScope, StateF
       if(!drag.hasClass('tchat-component')){
         console.log("The element " + drag.attr('id') + " has been dropped on " + drop.attr("id") + "!");
         console.log("X: "+ posX + " Y: " + posY);
-        $scope.addContent(posX, posY, getdroppedClass(drag), false);
+        var droppedClass = getdroppedClass(drag);
+        var newComponent = $scope.addContent(posX, posY, droppedClass, false, undefined);
       }
     }
   };
@@ -108,10 +109,37 @@ app.controller('StateEditionCtrl', function($scope, $timeout, $rootScope, StateF
       if(!initiate)
         StateFactory.insertInteraction(newInterraction);
   };
+  $scope.addTextContent = function(){
 
-  $scope.addContent = function(posX, posY, classToAssign, initiate, componentSize){
+  };
+  $scope.addContent = function(posX, posY, classToAssign, initiate, componentSize, initIndex){
+    if(!initiate){
+      $scope.stateContent.push({
+        uuid: $scope.uuid,
+        kind: classToAssign,
+        contenttext: "Default text",
+        top: posY - $('#working-zone').offset().top - 25,
+        left: posX - $('#working-zone').offset().left - 25
+      });
+    }
+
     var component = $('<div>').addClass('dropped-component');
     component.attr('uuid', $scope.uuid);
+    
+    if(classToAssign == "text-zone"){
+      console.log("this is text");
+      var uuid = $scope.uuid;
+      var indexInStateContent = $scope.stateContent.length - 1;
+      
+      console.log($scope.stateContent[indexInStateContent]);
+      
+      if(initIndex != undefined)
+        indexInStateContent = initIndex;
+
+      component = $($compile('<textcomponent text="stateContent['+indexInStateContent+'].contenttext" uuid="'+uuid+'">')($scope));
+    }
+    
+    
     if(!initiate){
       component.css({
       'top': posY - $('#working-zone').offset().top - 25,
@@ -131,14 +159,8 @@ app.controller('StateEditionCtrl', function($scope, $timeout, $rootScope, StateF
     }
 
     assignClass(classToAssign, component);
-    if(!initiate){
-      $scope.stateContent.push({
-        uuid: $scope.uuid,
-        kind: classToAssign,
-        top: posY - $('#working-zone').offset().top - 25,
-        left: posX - $('#working-zone').offset().left - 25
-      });
-    }
+    
+    
         
     $scope.plumbInstance.draggable(component, {
       containment: $('#working-zone'),
@@ -149,7 +171,6 @@ app.controller('StateEditionCtrl', function($scope, $timeout, $rootScope, StateF
           component.addClass('selected');
       },
       stop: function(event) {
-            //console.log(event);
         var newLeft = event.el.offsetLeft;
         var newTop = event.el.offsetTop;
         var uuid = $(event.el).attr('uuid');
@@ -169,23 +190,24 @@ app.controller('StateEditionCtrl', function($scope, $timeout, $rootScope, StateF
             $(divElement).removeClass('selected');
           });
           component.addClass('selected');
-              //$scope.plumbInstance.toggleDraggable(component);
         }
         e.stopPropagation();
     });
     
     component.resizable({
-          disabled: false,
-          stop: function(event, ui) {
-            $scope.plumbInstance.repaintEverything();
+      disabled: false,
+      stop: function(event, ui) {
+        $scope.plumbInstance.repaintEverything();
 
-            updateSize($(component).attr('uuid'), ui.size.height, ui.size.width);
-            console.log("Updated size of " + $(component).attr('uuid') + " new height>" + ui.size.height + " new with>" + ui.size.width);
-            console.log($scope.stateContent);
-          }
-        });
+        updateSize($(component).attr('uuid'), ui.size.height, ui.size.width);
+        console.log("Updated size of " + $(component).attr('uuid') + " new height>" + ui.size.height + " new with>" + ui.size.width);
+      }
+    });
+    
     $('#working-zone').append(component);
     $scope.uuid++;
+    $scope.$apply();
+    return component;
   };
 
   $scope.$on('beginEdition', function(){
@@ -241,6 +263,9 @@ app.controller('StateEditionCtrl', function($scope, $timeout, $rootScope, StateF
     if(droppedElement.hasClass("tchat-component")){
       return "tchat";
     }
+    if(droppedElement.hasClass("text-zone-component")){
+      return "text-zone";
+    }
   };
 
   assignClass = function(droppedClass, newComponent){
@@ -254,6 +279,10 @@ app.controller('StateEditionCtrl', function($scope, $timeout, $rootScope, StateF
     }
     if(droppedClass == "tchat"){
       newComponent.addClass("tchat-component");
+      return true;
+    }
+    if(droppedClass == "text-zone"){
+      //newComponent.addClass("text-zone-component");
       return true;
     }
     return false;

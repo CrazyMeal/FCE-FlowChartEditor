@@ -54,8 +54,8 @@
 .dropped-component{
 	position: absolute;
 	display: block;
-	width: 50px;
-	height: 50px;
+	min-width: 50px;
+	min-height: 50px;
 	border: 2px solid;
 	border-radius: 10px;
 	background-size: contain;
@@ -67,6 +67,10 @@
 }
 .video-component{
 	background-image: url(../img/video.png);
+}
+.text-zone-component{
+	background-image: url(../img/text-zone.png);
+	whitespace: nowrap;
 }
 .tchat-component{
 	background-image: url(../img/tchat.png);
