@@ -70,7 +70,6 @@
 }
 .text-zone-component{
 	background-image: url(../img/text-zone.png);
-	whitespace: nowrap;
 }
 .tchat-component{
 	background-image: url(../img/tchat.png);
