@@ -1,6 +1,6 @@
 jQuery.event.props.push('dataTransfer');
 
-var app = angular.module('alubar-app', ['ui.bootstrap','LocalStorageModule', 'lvl.directives.dragdrop']);
+var app = angular.module('alubar-app', ['ngSanitize','ui.bootstrap','LocalStorageModule', 'lvl.directives.dragdrop']);
 
 app.controller('MainCtrl', function ($scope, tabService) {
 	$scope.tab = 1;

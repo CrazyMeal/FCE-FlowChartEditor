@@ -117,7 +117,7 @@ app.controller('StateEditionCtrl', function($scope, $timeout, $rootScope,$compil
       $scope.stateContent.push({
         uuid: $scope.uuid,
         kind: classToAssign,
-        contenttext: "Default text",
+        contenttext: "Default <br /> text",
         top: posY - $('#working-zone').offset().top - 25,
         left: posX - $('#working-zone').offset().left - 25
       });
