@@ -3,12 +3,14 @@ var app = angular.module('alubar-app');
 app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, uuid, localStorageService, libraryService, tabService, StateFactory){
 	$scope.ids = 0;
 	$scope.stateEditionMode = true;
+	$scope.connectionEditionMode = false;
 	$scope.documentName = "New Document";
 	$scope.documentSaved = true;
 	$scope.states = [];
 	$scope.connections = [];
 	$scope.documentSaveState = "btn-success";
 	$scope.inStateEditionMode = false;
+	$scope.labelInEdition = {};
 
 	setStateCss = function(state, e){
 		state.container.css({
@@ -375,13 +377,26 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, uuid
 				} else {
 					info.connection.uuid = newId;
 					info.connection.addOverlay([ "Label", label]);
+					console.log(info);
 					$scope.connections.push({ 
 						from: info.sourceId, 
 						to: info.targetId,
 						uuid: newId,
-						label: "Co-Label" 
+						label: label.label
 					});
-				}
+				};
+				jsPlumb.bind('dblclick', function(conn, originalEvent){
+					originalEvent.stopPropagation();
+					angular.forEach($scope.connections, function(e, idx){
+						if(e.uuid === conn.uuid){
+							$scope.labelInEdition.label = e.label;
+							$scope.connectionEditionMode = true;
+						}
+					});
+					var label = { label:"Label", id:"label", cssClass:"aLabel" };
+					var t = conn.getOverlay("label");
+				});
+				
 			});
 
 			jsPlumb.importDefaults({
@@ -402,6 +417,9 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, uuid
 				e.stopPropagation();
 			});
 			$('#plumbing-zone').dblclick(function(e) {
+				e.stopPropagation();
+				if($(e.target).hasClass("aLabel"))
+					return;
 				jsPlumb.setSuspendDrawing(true);
 
 				if($scope.documentSaved){

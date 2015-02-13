@@ -7,6 +7,7 @@ app.factory('libraryService', function($rootScope){
 			this.scenario = {name: name,
 				state: state,
 				transition: transition};
+			console.log(this.scenario);
 			$rootScope.$broadcast('save');
 		},
 		loadScenario: function(scenario){
