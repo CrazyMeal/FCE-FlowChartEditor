@@ -110,3 +110,9 @@
 #templates-list li{
 	padding-bottom: 10px;
 }
+
+.custom{
+	min-width: 50px;
+	max-width: 100px;
+	background-color: grey;
+}

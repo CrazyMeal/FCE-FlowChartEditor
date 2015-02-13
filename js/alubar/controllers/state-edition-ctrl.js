@@ -114,31 +114,39 @@ app.controller('StateEditionCtrl', function($scope, $timeout, $rootScope,$compil
   };
   $scope.addContent = function(posX, posY, classToAssign, initiate, componentSize, initIndex){
     if(!initiate){
-      $scope.stateContent.push({
+      var newState = {
         uuid: $scope.uuid,
         kind: classToAssign,
-        contenttext: "Default <br /> text",
         top: posY - $('#working-zone').offset().top - 25,
         left: posX - $('#working-zone').offset().left - 25
-      });
+      };
+      if(classToAssign == "text-zone")
+        newState.contenttext = "Default text";
+      if(classToAssign == "video" || classToAssign == "pdf")
+        newState.path = "/my_disk/myfolder/...";
+
+      $scope.stateContent.push(newState);
     }
 
     var component = $('<div>').addClass('dropped-component');
     component.attr('uuid', $scope.uuid);
     
-    if(classToAssign == "text-zone"){
-      console.log("this is text");
-      var uuid = $scope.uuid;
-      var indexInStateContent = $scope.stateContent.length - 1;
+    var uuid = $scope.uuid;
+    var indexInStateContent = $scope.stateContent.length - 1;
       
-      console.log($scope.stateContent[indexInStateContent]);
-      
-      if(initIndex != undefined)
-        indexInStateContent = initIndex;
+    if(initIndex != undefined)
+      indexInStateContent = initIndex;
 
+    if(classToAssign == "text-zone"){
       component = $($compile('<textcomponent text="stateContent['+indexInStateContent+'].contenttext" uuid="'+uuid+'">')($scope));
     }
     
+    if(classToAssign == "video" || classToAssign == "pdf"){
+      
+      console.log($scope.stateContent[indexInStateContent]);
+
+      component = $($compile('<pathedcomponent path="stateContent['+indexInStateContent+'].path" uuid="'+uuid+'">')($scope));
+    }
     
     if(!initiate){
       component.css({
@@ -159,8 +167,6 @@ app.controller('StateEditionCtrl', function($scope, $timeout, $rootScope,$compil
     }
 
     assignClass(classToAssign, component);
-    
-    
         
     $scope.plumbInstance.draggable(component, {
       containment: $('#working-zone'),
