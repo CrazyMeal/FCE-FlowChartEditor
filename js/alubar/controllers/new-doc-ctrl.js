@@ -397,6 +397,7 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, uuid
 			});
 
 			jsPlumb.bind('dblclick', function(conn, originalEvent){
+				console.log("jsPlumb event: double clicked on label");
 				originalEvent.stopPropagation();
 				angular.forEach($scope.connections, function(e, idx){
 					if(e.uuid === conn.uuid){
@@ -405,6 +406,7 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, uuid
 					}
 				});
 				$scope.workingConnection = conn;
+				$scope.$apply();
 			});
 			
 			jsPlumb.importDefaults({
@@ -426,8 +428,10 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, uuid
 			});
 			$('#plumbing-zone').dblclick(function(e) {
 				
-				if($(e.target).hasClass("aLabel"))
+				if($(e.target).hasClass("aLabel")){
+					console.log("Double click on a label");
 					return;
+				}
 				jsPlumb.setSuspendDrawing(true);
 
 				if($scope.documentSaved){
