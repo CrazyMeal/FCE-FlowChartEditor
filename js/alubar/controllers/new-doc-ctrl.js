@@ -11,6 +11,7 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, uuid
 	$scope.documentSaveState = "btn-success";
 	$scope.inStateEditionMode = false;
 	$scope.labelInEdition = {};
+	$scope.workingConnection = {};
 
 	setStateCss = function(state, e){
 		state.container.css({
@@ -336,6 +337,14 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, uuid
 	$scope.$apply();
 	};
 	
+	$scope.validateConnectionEdition = function(){
+		console.log("Validating connection edition");
+		//var label = { label:"Label", id:"label", cssClass:"aLabel" };
+		var t = $scope.workingConnection.getOverlay("label");
+		t.setLabel($scope.labelInEdition.label);
+		$scope.connectionEditionMode = false;
+	};
+
 	$scope.init = function() {
 
 		Mousetrap.bind(['ctrl+del', 'ctrl+backspace'], function(){
@@ -385,20 +394,19 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, uuid
 						label: label.label
 					});
 				};
-				jsPlumb.bind('dblclick', function(conn, originalEvent){
-					originalEvent.stopPropagation();
-					angular.forEach($scope.connections, function(e, idx){
-						if(e.uuid === conn.uuid){
-							$scope.labelInEdition.label = e.label;
-							$scope.connectionEditionMode = true;
-						}
-					});
-					var label = { label:"Label", id:"label", cssClass:"aLabel" };
-					var t = conn.getOverlay("label");
-				});
-				
 			});
 
+			jsPlumb.bind('dblclick', function(conn, originalEvent){
+				originalEvent.stopPropagation();
+				angular.forEach($scope.connections, function(e, idx){
+					if(e.uuid === conn.uuid){
+						$scope.labelInEdition.label = e.label;
+						$scope.connectionEditionMode = true;
+					}
+				});
+				$scope.workingConnection = conn;
+			});
+			
 			jsPlumb.importDefaults({
 				Endpoint : ["Dot", {radius:3}],
 				HoverPaintStyle : {strokeStyle:"#1e8151", lineWidth:2 },
@@ -417,7 +425,7 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, uuid
 				e.stopPropagation();
 			});
 			$('#plumbing-zone').dblclick(function(e) {
-				e.stopPropagation();
+				
 				if($(e.target).hasClass("aLabel"))
 					return;
 				jsPlumb.setSuspendDrawing(true);
