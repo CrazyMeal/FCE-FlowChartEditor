@@ -19,6 +19,11 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, uuid
 			'left': e.pageX - $('#plumbing-zone').offset().left
 		});
 	};
+	$scope.refresh = function(){
+		console.log("refreshing");
+		jsPlumb.repaintEverything();
+	};
+
 	$scope.saveDocument = function(){
 		if(!$scope.documentSaved){
 			if($scope.inStateEditionMode == true)
@@ -117,6 +122,7 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, uuid
 		});
 
 		jsPlumb.setSuspendDrawing(false, true);
+		$timeout(function(){jsPlumb.repaintEverything(); console.log("refreshed")}, 1);
 	};
 	$scope.saveDocumentToLocalStorage = function(){
 		if(!$scope.documentSaved){
@@ -187,8 +193,12 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, uuid
 	};
 
 	$scope.validateNameEdition = function(){
+		console.log("Validated name edition");
 		$scope.nameInEdition = {};
-		stateEditionMode = true;
+		$scope.stateEditionMode = true;
+		jsPlumb.repaintEverything();
+		//$scope.$apply();
+		//$timeout(function(){jsPlumb.repaintEverything(); console.log("refreshed")}, 1);
 		//jsPlumb.recalculateOffsets(".connectOut");
 		//jsPlumb.repaintEverything();
 		//jsPlumb.setSuspendDrawing(false, true);

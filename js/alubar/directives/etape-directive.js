@@ -12,13 +12,15 @@ app.directive('etape', function($compile){
             jsPlumb.draggable(element, {
                 containment: $('#plumbing-zone'),
                 stop: function(event) {
+                    console.log("Finished dragging state");
                     if(scope.$parent.documentSaved){
                         scope.$parent.documentSaved = false;
                         scope.$parent.documentName = scope.$parent.documentName + "*";
                         scope.$parent.documentSaveState = "btn-warning";
+                        
                         scope.$parent.$apply();
                     }
-                    
+                    jsPlumb.repaintEverything();
                 }
             });
         }
