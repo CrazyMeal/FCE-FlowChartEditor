@@ -196,7 +196,7 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, uuid
 		console.log("Validated name edition");
 		$scope.nameInEdition = {};
 		$scope.stateEditionMode = true;
-		jsPlumb.repaintEverything();
+		$timeout(function(){jsPlumb.repaintEverything(); console.log("refreshed")}, 1);
 		//$scope.$apply();
 		//$timeout(function(){jsPlumb.repaintEverything(); console.log("refreshed")}, 1);
 		//jsPlumb.recalculateOffsets(".connectOut");
@@ -477,6 +477,8 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, uuid
 		});
 		$scope.stateEditionMode = true;
 		$scope.$apply();
+
+		$timeout(function(){jsPlumb.repaintEverything(); console.log("refreshed")}, 1);
 	};
 
 	$scope.$on('tabChangeRequested', function(){
