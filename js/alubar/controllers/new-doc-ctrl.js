@@ -47,6 +47,8 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, uuid
 
 					lightStates.push(tmpState);
 				});
+				console.log("Saving connections");
+				console.log($scope.connections);
 				libraryService.saveScenario($scope.documentName, angular.copy(lightStates), angular.copy($scope.connections));
 			}, 1);
 		}
@@ -109,7 +111,9 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, uuid
 
 		// On relis tous les states entre eux selon les connections
 		angular.forEach(connections, function(connection, index){
-			jsPlumb.connect({source:connection.from, target:connection.to});
+			console.log(connection.label);
+			var theNewConnection = jsPlumb.connect({source:connection.from, target:connection.to});
+			theNewConnection.getOverlay("label").setLabel(connection.label);
 		});
 
 		jsPlumb.setSuspendDrawing(false, true);
@@ -401,7 +405,7 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, uuid
 				originalEvent.stopPropagation();
 				angular.forEach($scope.connections, function(e, idx){
 					if(e.uuid === conn.uuid){
-						$scope.labelInEdition.label = e.label;
+						$scope.labelInEdition = e;
 						$scope.connectionEditionMode = true;
 					}
 				});
