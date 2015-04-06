@@ -1,6 +1,6 @@
 var app = angular.module('fce-app');
 
-app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, uuid, localStorageService, libraryService, tabService, StateFactory){
+app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, uuid, localStorageService, libraryService, tabService){
 	$scope.ids = 0;
 	$scope.stateEditionMode = true;
 	$scope.connectionEditionMode = false;
@@ -23,7 +23,27 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, uuid
 		console.log("refreshing");
 		jsPlumb.repaintEverything();
 	};
+	$scope.editState = function(stateDiv){
+		//jsPlumb.setSuspendDrawing(true);
+		if($scope.documentSaved){
+			$scope.documentSaved = false;
+			$scope.documentName = $scope.documentName + "*";
+			$scope.documentSaveState = "btn-warning";
+		}
 
+		var stateId = stateDiv.attr('id');
+		$scope.idInEdition = stateId;
+
+		angular.forEach($scope.states, function(state, index){
+			if(state != undefined){
+				if(state.id == stateId){
+					$scope.nameInEdition = state;
+					$scope.stateEditionMode = false;
+					$scope.$apply();
+				}
+			}
+		});
+	};
 	$scope.saveDocument = function(){
 		if(!$scope.documentSaved){
 			if($scope.inStateEditionMode == true)
