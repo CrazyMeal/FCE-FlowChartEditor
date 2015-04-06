@@ -1,4 +1,4 @@
-var app = angular.module('alubar-app');
+var app = angular.module('fce-app');
 
 app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, uuid, localStorageService, libraryService, tabService, StateFactory){
 	$scope.ids = 0;
@@ -43,12 +43,6 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, uuid
 					tmpState.top = $(stateDiv).position().top;
 					tmpState.left = $(stateDiv).position().left;
 					tmpState.name = $(stateDiv).text();
-					angular.forEach($scope.states, function(state){
-						if(state != undefined && state.id == tmpState.id){
-							tmpState.content = state.content;
-							tmpState.interactions = state.interactions;
-						}
-					});
 
 					lightStates.push(tmpState);
 				});
@@ -106,9 +100,7 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, uuid
 					input: connectInDiv,
 					output: connectOutDiv,
 					id: state.id,
-					name : state.name,
-					content : state.content,
-					interactions : state.interactions
+					name : state.name
 			};
 			$scope.states.push(newstate);
 			$('#plumbing-zone').append(mainContainer);
@@ -202,27 +194,6 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, uuid
 		//jsPlumb.recalculateOffsets(".connectOut");
 		//jsPlumb.repaintEverything();
 		//jsPlumb.setSuspendDrawing(false, true);
-	};
-	$scope.editState = function(stateDiv){
-		//jsPlumb.setSuspendDrawing(true);
-		if($scope.documentSaved){
-			$scope.documentSaved = false;
-			$scope.documentName = $scope.documentName + "*";
-			$scope.documentSaveState = "btn-warning";
-		}
-
-		var stateId = stateDiv.attr('id');
-		$scope.idInEdition = stateId;
-
-		angular.forEach($scope.states, function(state, index){
-			if(state != undefined){
-				if(state.id == stateId){
-					$scope.nameInEdition = state;
-					$scope.stateEditionMode = false;
-					$scope.$apply();
-				}
-			}
-		});
 	};
 
 	$scope.createNewState = function(){
@@ -495,43 +466,4 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, uuid
 		}
 
 	});
-
-	$scope.editContent = function(){
-		StateFactory.reset();
-		console.log("will edit> " + $scope.idInEdition);
-		StateFactory.setWorkingStateId($scope.idInEdition);
-
-		angular.forEach($scope.states, function(state, index){
-			if(state != undefined && state.id == $scope.idInEdition){
-				if(state.content != undefined)
-					StateFactory.setStateContent(state.content);
-				if(state.interactions != undefined)
-					StateFactory.setInteractions(state.interactions);
-			}
-		});
-		$rootScope.$broadcast('beginEdition');
-		$scope.stateEditionMode = true;
-		$scope.inStateEditionMode = true;
-	};
-
-	$scope.$on('finishEdition', function(){$scope.finishEdition()});
-
-	$scope.finishEdition = function(){
-		var editedId = StateFactory.getWorkingStateId();
-		console.log("Edited content of id> " + editedId);
-		console.log(StateFactory.getStateContent());
-		
-		angular.forEach($scope.states, function(state, index){
-			if(state != undefined && state.id == editedId){
-				state.content = angular.copy(StateFactory.getStateContent());
-				state.interactions = angular.copy(StateFactory.getInteractions());
-			}
-		});
-
-	    angular.forEach($(".dropped-component"), function(divElement, index){
-	      divElement.remove();
-	    });
-
-		$scope.inStateEditionMode = false;
-	};
 });

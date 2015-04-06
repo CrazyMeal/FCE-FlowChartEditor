@@ -1,4 +1,4 @@
-var app = angular.module('alubar-app');
+var app = angular.module('fce-app');
 app.controller('AdminCtrl', function($scope) {
     $scope.addUserCollapse = true;
 
