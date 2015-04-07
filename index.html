@@ -23,7 +23,7 @@
 
             <div id="left-panel" class="col-md-2">
                 <div id="menu" class="btn-group-vertical" role="group" aria-label="...">
-                    <a ng-click="MainController.selectTab(1)" class="btn btn-default">Scenario builder</a>
+                    <a ng-click="MainController.selectTab(1)" class="btn btn-default">flowchart builder</a>
                     <a ng-click="MainController.selectTab(2)" class="btn btn-default">Library</a>
                     <a ng-click="MainController.selectTab(3)" class="btn btn-default">Administration</a>
                 </div>
@@ -63,7 +63,7 @@
                     </div>
                     <div class="panel-body">
                         <div class="table-responsive panel-body">
-                            <a type="button" class="btn btn-primary" ng-class="(selected==null||selected.edit==false)?'enabled':'disabled'" ng-click="newScenario()">New scenario</a>
+                            <a type="button" class="btn btn-primary" ng-class="(selected==null||selected.edit==false)?'enabled':'disabled'" ng-click="newflowchart()">New flowchart</a>
                             <a type="button" class="btn btn-primary" ng-class="selected!=null?'enabled':'disabled'" ng-click="editName()">Rename</a>
                             <a type="button" class="btn btn-primary" ng-class="(selected!=null&&selected.edit==false)?'enabled':'disabled'" ng-click="load();MainController.selectTab(1)">Load</a>
                             <a type="button" class="btn btn-primary" ng-class="selected!=null?'enabled':'disabled'" ng-click="delete()">Delete</a>
@@ -74,13 +74,13 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="scenario in scenarios" ng-class="{true: 'info'}[scenario.selected]">
-                                    <td ng-click="select(scenario)">
+                                    <tr ng-repeat="flowchart in flowcharts" ng-class="{true: 'info'}[flowchart.selected]">
+                                    <td ng-click="select(flowchart)">
                                     <div ng-dblclick="editName()">
-                                        <p ng-hide="scenario.edit">{{scenario.name}}</p>
-                                        <input ng-show="scenario.edit" ng-model="scenario.tmpName"></input>
-                                        <a type="button" class="btn btn-primary" ng-show="scenario.edit" ng-click="editName()">OK</a>
-                                        <a type="button" class="btn btn-primary" ng-show="scenario.edit" ng-click="scenario.edit=!scenario.edit" ng-class="selected.name!=null?'enabled':'disabled'">Cancel</a>
+                                        <p ng-hide="flowchart.edit">{{flowchart.name}}</p>
+                                        <input ng-show="flowchart.edit" ng-model="flowchart.tmpName"></input>
+                                        <a type="button" class="btn btn-primary" ng-show="flowchart.edit" ng-click="editName()">OK</a>
+                                        <a type="button" class="btn btn-primary" ng-show="flowchart.edit" ng-click="flowchart.edit=!flowchart.edit" ng-class="selected.name!=null?'enabled':'disabled'">Cancel</a>
                                     </div>
                                     </td>
                                     </tr>

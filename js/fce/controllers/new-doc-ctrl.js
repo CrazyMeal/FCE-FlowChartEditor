@@ -68,14 +68,14 @@ app.controller('NewDocCtrl', function($scope,$compile,$timeout, $rootScope, uuid
 				});
 				console.log("Saving connections");
 				console.log($scope.connections);
-				libraryService.saveScenario($scope.documentName, angular.copy(lightStates), angular.copy($scope.connections));
+				libraryService.saveflowchart($scope.documentName, angular.copy(lightStates), angular.copy($scope.connections));
 			}, 1);
 		}
 	};
 
 	$scope.$on('load', function(){
-		var scenario = libraryService.scenario;
-		$timeout(function(){$scope.loadDocument(scenario.name, scenario.state, scenario.transition)}, 1);
+		var flowchart = libraryService.flowchart;
+		$timeout(function(){$scope.loadDocument(flowchart.name, flowchart.state, flowchart.transition)}, 1);
 	});
 
 	$scope.loadDocument = function(name, states, connections){

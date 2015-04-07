@@ -1,38 +1,38 @@
 var app = angular.module('fce-app');
 
 app.controller('LibraryController', function($scope,$compile, libraryService, localStorageService){
-	$scope.scenarios = localStorageService.get('scenarios');
-	if($scope.scenarios == null)
-		$scope.scenarios = [];
+	$scope.flowcharts = localStorageService.get('flowcharts');
+	if($scope.flowcharts == null)
+		$scope.flowcharts = [];
 	
 	$scope.selected = null;
 	
-	$scope.select = function(scenario){
+	$scope.select = function(flowchart){
 		if($scope.selected != null){
 			if($scope.selected.edit == true)
 				return;
 			$scope.selected.selected = false;
 		}
-		$scope.selected = scenario;
-		scenario.selected = true;
+		$scope.selected = flowchart;
+		flowchart.selected = true;
 	};
 	
 	$scope.delete = function(){
-		for(var i = $scope.scenarios.length - 1; i >= 0; i--) {
-			if($scope.scenarios[i].name === $scope.selected.name) {
-				$scope.scenarios.splice(i, 1);
+		for(var i = $scope.flowcharts.length - 1; i >= 0; i--) {
+			if($scope.flowcharts[i].name === $scope.selected.name) {
+				$scope.flowcharts.splice(i, 1);
 			}
 		}
 		$scope.selected = null;
 		$scope.saveAll();
 	}
 	
-	$scope.newScenario = function(){
+	$scope.newflowchart = function(){
 		if($scope.selected != null && $scope.selected.edit == true)
 			return;
 		
 		var s = {state:[], transition:[], edit:false};
-		$scope.scenarios.push(s);
+		$scope.flowcharts.push(s);
 		$scope.select(s);
 		$scope.editName();
 	}
@@ -40,8 +40,8 @@ app.controller('LibraryController', function($scope,$compile, libraryService, lo
 	$scope.editName = function(){
 		if($scope.selected.edit == true){
 			var found = 0;
-			for(var i = $scope.scenarios.length - 1; i >= 0; i--) {
-				if($scope.scenarios[i].name === $scope.selected.tmpName && $scope.selected.tmpName != $scope.selected.name) {
+			for(var i = $scope.flowcharts.length - 1; i >= 0; i--) {
+				if($scope.flowcharts[i].name === $scope.selected.tmpName && $scope.selected.tmpName != $scope.selected.name) {
 					found++;
 				}
 			}
@@ -65,7 +65,7 @@ app.controller('LibraryController', function($scope,$compile, libraryService, lo
 			$scope.selected.edit = false;
 			$scope.selected.selected = false;
 		}
-		localStorageService.set('scenarios', angular.copy($scope.scenarios));
+		localStorageService.set('flowcharts', angular.copy($scope.flowcharts));
 		if($scope.selected!=null){ 
 			$scope.selected.selected = true;
 		}
@@ -73,28 +73,28 @@ app.controller('LibraryController', function($scope,$compile, libraryService, lo
 	
 	
 	$scope.load = function(){
-		libraryService.loadScenario($scope.selected);
+		libraryService.loadflowchart($scope.selected);
 	}
 	
 	$scope.$on('save', function(){
 		var found = false;
-		var s = libraryService.scenario;
+		var s = libraryService.flowchart;
 		s.edit = false;
-		if($scope.selected != null && $scope.selected.name === libraryService.scenario.name){
+		if($scope.selected != null && $scope.selected.name === libraryService.flowchart.name){
 			s.selected = true;
 			$scope.selected = s;
 		}
 		else
 			s.selected = false;
 		
-		for(var i = $scope.scenarios.length - 1; i >= 0; i--) {
-			if($scope.scenarios[i].name === libraryService.scenario.name) {
-				$scope.scenarios[i] = s;
+		for(var i = $scope.flowcharts.length - 1; i >= 0; i--) {
+			if($scope.flowcharts[i].name === libraryService.flowchart.name) {
+				$scope.flowcharts[i] = s;
 				found = true;
 			}
 		}
 		if(!found)
-			$scope.scenarios.push(s);
+			$scope.flowcharts.push(s);
 		
 		$scope.saveAll();
 	})
